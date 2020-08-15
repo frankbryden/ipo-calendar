@@ -20,9 +20,9 @@ class App extends React.Component {
         }
         this.ipoFetcher = new IpoFetcher();
         setTimeout(() => {
-            this.getIpos()
+            //this.getIpos()
         }, 2000);
-        //this.getIpos();
+        this.getIpos();
     }
 
     async getIpos() {
