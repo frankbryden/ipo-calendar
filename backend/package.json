@@ -6,9 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Maximilian Vonbonsdorff and Frank Bryden",
+  "author": "Maximilian von Bonsdorff and Frank Bryden",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "express": "^4.17.1"
   }
 }
