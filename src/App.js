@@ -19,17 +19,21 @@ class App extends React.Component {
             ipos: []
         }
         this.ipoFetcher = new IpoFetcher();
-        setTimeout(() => {
-            this.getIpos()
+        
+	}
+	
+	componentDidMount() {
+		setTimeout(() => {
+           this.getIpos();
         }, 2000);
         //this.getIpos();
-    }
+	}
 
     async getIpos() {
         const iposData = await this.ipoFetcher.fetchIpos();
         console.log(iposData)
         let ipoObjs = iposData.ipos.map(ipo => new Ipo(ipo));
-        let ipoComponents = ipoObjs.map(ipoObj => <IpoCard ipo={ipoObj} />);
+        let ipoComponents = ipoObjs.map((ipoObj, index) => <IpoCard key={index} ipo={ipoObj} />);
         this.setState({ loading: false, ipos: ipoComponents });
     }
 	render() {
