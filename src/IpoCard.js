@@ -11,6 +11,7 @@ class IpoCard extends React.Component {
         return (
             <div>
                 <Card title={this.props.ipo.name} style={{ width:300 }}>
+                    <p><strong>{this.props.ipo.marketCap}</strong></p>
                     <p>{this.props.ipo.description}</p>
                     <p>{this.props.ipo.status}</p>
                     <p>{this.props.ipo.tags}</p>

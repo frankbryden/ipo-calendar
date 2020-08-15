@@ -16,37 +16,36 @@ const port = 5000;
 app.listen(port);
 
 app.get('/ipos', (req, res) => {
-    getIpoInformation();
+    getIpoInformation(res);
 })
 
-function getIpoInformation() {
+function getIpoInformation(response) {
     let date = getDate();
     let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
 
-    axios.get(url).then(res => {
+    axios.get(url).then(async (res) => {
         let ipos = [];
         let pricedInCompanyInfo = res.data.data.priced.rows;
-        for (item in pricedInCompanyInfo.slice(0, 2)) {
-            let dealDetails = getDealDetails(pricedInCompanyInfo[item].dealID);
+        for (item in pricedInCompanyInfo.slice(0, 4)) {
+            let dealDetails = await getDealDetails(pricedInCompanyInfo[item].dealID);
             ipos.push(dealDetails);
         }
+        console.log(ipos);
+        response.json({"ipos": ipos});
     })
 }
 
-function getDealDetails(dealID) {
-    axios.get(`https://api.nasdaq.com/api/ipo/overview/?dealId=${dealID}`).then(res => {
-        let ipoOverview = res.data.data.poOverview;
-        let companyInfo = {
-            "name": ipoOverview.CompanyName.value,
-            "marketcap": calculateMarketCap(ipoOverview.ProposedSharePrice.value, ipoOverview.SharesOutstanding.value),
-            "description": createCompanyDescription(res.data.data.companyInformation.companyDescription),
-            "tags": ["Fintech", "Machine Learning"], // not done yet
-            "status": ipoOverview.DealStatus.value,
-        }
-        console.log(companyInfo);
-        return companyInfo;
-    })
-
+async function getDealDetails(dealID) {
+    let res = await axios.get(`https://api.nasdaq.com/api/ipo/overview/?dealId=${dealID}`)
+    let ipoOverview = res.data.data.poOverview;
+    let companyInfo = {
+        "name": ipoOverview.CompanyName.value,
+        "marketcap": calculateMarketCap(ipoOverview.ProposedSharePrice.value, ipoOverview.SharesOutstanding.value),
+        "description": createCompanyDescription(res.data.data.companyInformation.companyDescription),
+        "tags": ["Fintech", "Machine Learning"], // not done yet
+        "status": ipoOverview.DealStatus.value,
+    }
+    return companyInfo;
 }
 
 function calculateMarketCap(sharePrice, sharesOutstanding) {
@@ -63,7 +62,7 @@ function createCompanyDescription(fullDescription) {
     for (item in arrayOfDescriptionLines) {  //maybe useless code not sure.
         arrayOfDescriptionLines[item] = arrayOfDescriptionLines[item] + ". ";
     }
-    quickDescription = arrayOfDescriptionLines[0] + arrayOfDescriptionLines[1];
+    quickDescription = arrayOfDescriptionLines[0];
     return quickDescription;
 }
 
