@@ -2,15 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
-// axios.interceptors.request.use(request => {
-//     console.log('Starting Request', request)
-//     return request
-//   })
-  
-//   axios.interceptors.response.use(response => {
-//     console.log('Response:', response)
-//     return response
-//   })
+const status = ["PricedIn", "Upcoming", "Filed"];
+const tags = ["Fintech", "Machine Learning", "Blockchain", "Deep Learning", "Cryptocurrency"];
 
 const port = 5000;
 app.listen(port);
@@ -29,6 +22,7 @@ function getIpoInformation(response) {
         for (item in pricedInCompanyInfo.slice(0, 4)) {
             let dealDetails = await getDealDetails(pricedInCompanyInfo[item].dealID);
             ipos.push(dealDetails);
+
         }
         console.log(ipos);
         response.json({"ipos": ipos});
@@ -59,7 +53,7 @@ function calculateMarketCap(sharePrice, sharesOutstanding) {
 function createCompanyDescription(fullDescription) {
     fullDescription = fullDescription.replace(/\n/g, " ");
     arrayOfDescriptionLines = fullDescription.split(". ");
-    for (item in arrayOfDescriptionLines) {  //maybe useless code not sure.
+    for (item in arrayOfDescriptionLines) {  
         arrayOfDescriptionLines[item] = arrayOfDescriptionLines[item] + ". ";
     }
     quickDescription = arrayOfDescriptionLines[0];
@@ -73,3 +67,11 @@ function getDate() {
     return year + "-" + month;
 }
 
+
+app.get('/status', (req, res) => {
+    res.json(status);
+})
+
+app.get('/tags', (req, res) => {
+    res.json(tags);
+})
