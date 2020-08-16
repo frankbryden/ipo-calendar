@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Card, Button } from 'antd';
+import { Card, Button, Space } from 'antd';
 import { Row, Col } from 'antd';
 import FilterCard from './FilterCard';
 

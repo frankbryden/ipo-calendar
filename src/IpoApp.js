@@ -27,7 +27,7 @@ class IpoApp extends React.Component {
         return (
             <div>
                 <Layout trigger={null} collapsible collapsed={this.state.collapsed}>
-                    <Sider width='20vw'
+                    <Sider width='22vw'
                         breakpoint='lg'
                         collapsedWidth="0">
                         <Card title="Filters">
