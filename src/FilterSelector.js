@@ -24,7 +24,7 @@ class FilterSelector extends React.Component {
         };
         for (let item of filters) {
             let callbackId = item.id;
-            let btn = <Button key={callbackId} btnid={callbackId} onClick={() => this.btnCallback(callbackId)}>{item.name}</Button>;
+            let btn = <Button className="cardBtn" size="small" key={callbackId} btnid={callbackId} onClick={() => this.btnCallback(callbackId)}>{item.name}</Button>;
             if (item.active)
                 itemLists.active.push(btn)
             else
@@ -54,12 +54,11 @@ class FilterSelector extends React.Component {
     }
 
     btnCallback(id){
-        console.log(`Callback with id ${id}`);
-        console.log(this.state);
         //Get both lists
         let active = this.state.activeFiltersCards;
         let inactive = this.state.inactiveFiltersCards;
-        let itemIsActive = this.state.filters[id].active;
+        let filters = this.state.filters;
+        let itemIsActive = filters[id].active;
 
         //Get item/itemIndex of clickedItem
         let clickedItem;
@@ -72,20 +71,15 @@ class FilterSelector extends React.Component {
         } else {
             sourceList = inactive;
         }
-
+        
         for (let item of sourceList) {
             if (item.props.btnid == id) {
                 clickedItem = item;
                 break
-            } else {
-                console.log(`${item.props.btnid} == ${id} -> ${item.props.btnid == id}`)
             }
             clickedItemIndex++;
         }
-
-        console.log("Moving item ");
-        console.log(clickedItem);
-
+        
         //Put item in right list, removing from old list
         if (itemIsActive) {
             active.splice(clickedItemIndex, 1);
@@ -95,21 +89,27 @@ class FilterSelector extends React.Component {
             active.push(clickedItem);
         }
 
+        //toggle filter item active
+        filters[id].active = !itemIsActive;
+
         this.setState({
             activeFiltersCards: active,
-            inactiveFiltersCards: inactive
+            inactiveFiltersCards: inactive,
+            filters: filters
         });
     }
 
     render() {
         return (
             <div>
-                <Row>
+                <Row type="flex">
                     <Col span={12}>
-                        <FilterCard title="Active" cards={this.state.activeFiltersCards} />
+                        <h2>Inactive</h2>
+                        <FilterCard height={this.props.height} title="Inactive" cards={this.state.inactiveFiltersCards} />
                     </Col>
                     <Col span={12}>
-                        <FilterCard title="Inactive" cards={this.state.inactiveFiltersCards} />
+                        <h2>Active</h2>
+                        <FilterCard height={this.props.height} title="Active" cards={this.state.activeFiltersCards} />
                     </Col>
                 </Row>
 

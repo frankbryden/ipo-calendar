@@ -1,9 +1,10 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Card } from 'antd';
+import { Card, Space } from 'antd';
+import './FilterCard.css';
 
 class FilterCard extends React.Component {
-    constructor(){
+    constructor() {
         super();
     }
 
@@ -11,11 +12,11 @@ class FilterCard extends React.Component {
     render() {
         return (
             <div>
-                <Card title={this.props.title}>
-                    <div>
+                <div>
+                    <Space direction="vertical" size="small">
                         {this.props.cards}
-                    </div>
-                </Card>
+                    </Space>
+                </div>
             </div>
         )
     }
