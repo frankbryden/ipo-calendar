@@ -1,10 +1,11 @@
 .App {
   text-align: center;
   font-size: 2rem;
-  background-color: #2A9D8F;
-  --main-bg-color: #2A9D8F;
+  --main-bg-color: #264653;
   --sider-bg-color: #264653;
   --tags-bg-color: #E76F51;
+  --ipoCard-bg-color: #2A9D8F;
+  background-color: var(--main-bg-color);
 }
 
 .App-logo {
