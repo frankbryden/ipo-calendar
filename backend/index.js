@@ -2,8 +2,18 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 const tagprocessing =  require('./tag-processing.js');
-const status = ["PricedIn", "Upcoming", "Filed"];
 
+//Status
+const statusTitles = ["PricedIn", "Upcoming", "Filed"];
+const statusColours = ["#d2fdff","#3abeff","#29bf12"];
+let status = [];
+for (let i = 0; i < statusTitles.length; i++) {
+    status.push({
+        "name": statusTitles[i],
+        "color": statusColours[i]
+    });
+}
+console.log(status);
 //Tags
 const tagTitles = [
     {
