@@ -1,0 +1,22 @@
+.content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.card {
+    background-color: lightblue;
+}
+
+.marketCap {
+    font-size: 1.5rem;
+    color: green;
+}
+
+.description {
+    font-weight: bold;
+}
+
+.status {
+    font-size: 2rem;
+}

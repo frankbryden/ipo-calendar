@@ -2,8 +2,9 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Card, Button } from 'antd';
 import FilterSelector from './FilterSelector';
+import './card.css'
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout;
 
 class IpoApp extends React.Component {
     constructor() {
@@ -14,7 +15,7 @@ class IpoApp extends React.Component {
             collapsed: false
         }
     }
-    
+
     toggleSidebar() {
         console.log("toggleee");
         this.setState({
@@ -26,7 +27,9 @@ class IpoApp extends React.Component {
         return (
             <div>
                 <Layout trigger={null} collapsible collapsed={this.state.collapsed}>
-                    <Sider width={300}>
+                    <Sider width='20vw'
+                        breakpoint='lg'
+                        collapsedWidth="0">
                         <Card title="Filters">
                             <Card title="Tags">
                                 <FilterSelector height={400} items={this.props.tags} />
@@ -39,9 +42,8 @@ class IpoApp extends React.Component {
                         <Button onClick={() => this.toggleSidebar()}>Toggle</Button>
                     </Sider>
                     <Layout>
-                        <Header>IPOs</Header>
                         <Content>
-                            <div>
+                            <div className="content-wrapper">
                                 {this.props.ipos}
                             </div>
                         </Content>

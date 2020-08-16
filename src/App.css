@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  font-size: 2rem;
+}
+
+.test {
+  font-size: 2rem;
 }
 
 .App-logo {
