@@ -22,7 +22,7 @@ class IpoCard extends React.Component {
                     <p class="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>
                     <p class="description">{this.props.ipo.description}</p>
                     <p class="status">{this.props.ipo.status}</p>
-                    <p class="tags">{this.props.ipo.tags}</p>
+                    <p class="tags">{this.props.ipo.tags.map(tag => <div>{tag}</div>)}</p>
                 </Card>      
             </div>
         )
