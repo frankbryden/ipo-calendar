@@ -4,7 +4,7 @@ const app = express();
 const tagprocessing =  require('./tag-processing.js');
 
 //Status
-const statusTitles = ["PricedIn", "Upcoming", "Filed"];
+const statusTitles = ["Priced", "Upcoming", "Filed"];
 const statusColours = ["#d2fdff","#3abeff","#29bf12"];
 let status = [];
 for (let i = 0; i < statusTitles.length; i++) {
