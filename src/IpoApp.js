@@ -2,8 +2,9 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Layout } from 'antd';
 import FilterSelector from './FilterSelector';
+import './card.css'
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout;
 
 class IpoApp extends React.Component {
     constructor() {
@@ -18,13 +19,15 @@ class IpoApp extends React.Component {
         return (
             <div>
                 <Layout>
-                    <Sider>
+                    <Sider 
+                    width='20vw' 
+                    breakpoint='lg'
+                    collapsedWidth="0">
                         <FilterSelector items={["hey", "hi", "salut", "yo", "coucou"]} />
                     </Sider>
                     <Layout>
-                        <Header>IPOs</Header>
                         <Content>
-                            <div>
+                            <div className="content-wrapper">
                                 {this.props.ipos}
                             </div>
                         </Content>
