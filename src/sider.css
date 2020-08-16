@@ -6,7 +6,8 @@
     background-color: var(--tags-bg-color);
 }
 
-.ant-layout-sider .ant-card-head-title {
+.ant-layout-sider .ant-card-head-title, h2 {
+    font-weight: bold;
     font-size: 1.5rem;
     color: white;
 }
