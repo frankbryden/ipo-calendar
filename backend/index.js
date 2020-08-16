@@ -1,9 +1,58 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-
+const tagprocessing =  require('./tag-processing.js');
 const status = ["PricedIn", "Upcoming", "Filed"];
-const tags = ["Fintech", "Machine Learning", "Blockchain", "Deep Learning", "Cryptocurrency", "SPAC", "EV"];
+
+//Tags
+const tagTitles = [
+    {
+        "title": "Fintech",
+        "keywords": ["financial technology", "fintech"]
+    },
+    {
+        "title": "Machine Learning",
+        "keywords": ["machine learning", "ml"]
+    },
+    {
+        "title": "Blockchain",
+        "keywords": ["blockchain", "ledger"]
+    },
+    {
+        "title": "Deep Learning",
+        "keywords": ["deep learning", "dl"]
+    },
+    {
+        "title": "Cryptocurrency",
+        "keywords": ["cryptocurrency", "crypto", "wallet"]
+    },
+    {
+        "title": "SPAC",
+        "keywords": ["SPAC", "blank check", "acquisition"]
+    },
+    {
+        "title": "EV",
+        "keywords": ["ev", "electric vehicle"]
+    },
+    {
+        "title": "Biotech",
+        "keywords": ["biotechnology", "biotech"]
+    }
+];
+
+const tagColours = ["f2dc5d","f2a359","db9065","a4031f","240b36","51bbfe","9055a2", "5EA570"];
+let tags = [];
+for (let i = 0; i < tagTitles.length; i++) {
+    tags.push({
+        "name": tagTitles[i].title,
+        "keywords": tagTitles[i].keywords,
+        "color": tagColours[i]
+    });
+}
+
+console.log(tags);
+//Tagging object
+let myTagger = new tagprocessing.TagProcessing(tags);
 
 const port = 5000;
 app.listen(port);
@@ -42,11 +91,14 @@ function getIpoInformation(response) {
 async function getDealDetails(dealID, companyData) {
     let res = await axios.get(`https://api.nasdaq.com/api/ipo/overview/?dealId=${dealID}`)
     let ipoOverview = res.data.data.poOverview;
+    let description = stripCompanyDescription(res.data.data.companyInformation.companyDescription);
+    let associatedTags = myTagger.determineTags(description);
+
     let companyInfo = {
         "name": ipoOverview.CompanyName.value,
         "marketcap": calculateMarketCap(ipoOverview.ProposedSharePrice.value, ipoOverview.SharesOutstanding.value),
-        "description": createCompanyDescription(res.data.data.companyInformation.companyDescription),
-        "tags": tags, // not done yet
+        "description": createCompanySummary(description),
+        "tags": associatedTags, // not done yet
         "status": ipoOverview.DealStatus.value,
         "date": getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
     }
@@ -73,12 +125,13 @@ function calculateMarketCap(sharePrice, sharesOutstanding) {
     return marketCap;
 }
 
-function createCompanyDescription(fullDescription) {
-    fullDescription = fullDescription.replace(/\n/g, " ");
-    arrayOfDescriptionLines = fullDescription.split(". ");
-    for (item in arrayOfDescriptionLines) {  
-        arrayOfDescriptionLines[item] = arrayOfDescriptionLines[item] + ". ";
-    }
+function stripCompanyDescription(description) {
+    //Remove trailing \n (and possible more operations later on)
+    return description.replace(/\n/g, " ");
+}
+
+function createCompanySummary(fullDescription) {
+    let arrayOfDescriptionLines = fullDescription.split(". ");
     quickDescription = arrayOfDescriptionLines[0];
     return quickDescription;
 }
