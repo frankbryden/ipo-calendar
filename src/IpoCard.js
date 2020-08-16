@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Card, Col, Row } from 'antd';
+import { Card } from 'antd';
 import './card.css'
 
 class IpoCard extends React.Component {
@@ -8,13 +8,15 @@ class IpoCard extends React.Component {
         super();
     }
 
+    
+
     render () {
         return (
             <div>
                 <Card 
                 className="card"
                 title={this.props.ipo.name} 
-                style={{ width:300, height: 700, margin: 20}} 
+                style={{ width:400, height: 700, margin: 20}} 
                 cover={<img alt="Example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"></img>}
                 hoverable>
                     <p class="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>

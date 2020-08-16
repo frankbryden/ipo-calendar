@@ -71,7 +71,6 @@ function calculateMarketCap(sharePrice, sharesOutstanding) {
     sharesOutstanding = parseInt(sharesOutstanding.replace(/,/g, ""), 10);
     let marketCap = new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'USD'}).format(sharePrice * sharesOutstanding);
     return marketCap;
-
 }
 
 function createCompanyDescription(fullDescription) {
