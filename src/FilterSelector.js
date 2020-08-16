@@ -44,13 +44,7 @@ class FilterSelector extends React.Component {
                     "active": false
             });
         }
-        
         return filters
-
-    }
-
-    componentDidMount(){
-
     }
 
     btnCallback(id){
@@ -105,11 +99,11 @@ class FilterSelector extends React.Component {
                 <Row type="flex">
                     <Col span={12}>
                         <h2>Inactive</h2>
-                        <FilterCard height={this.props.height} title="Inactive" cards={this.state.inactiveFiltersCards} />
+                        <FilterCard height={this.props.height} cards={this.state.inactiveFiltersCards} />
                     </Col>
                     <Col span={12}>
                         <h2>Active</h2>
-                        <FilterCard height={this.props.height} title="Active" cards={this.state.activeFiltersCards} />
+                        <FilterCard height={this.props.height} cards={this.state.activeFiltersCards} />
                     </Col>
                 </Row>
 
