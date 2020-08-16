@@ -9,25 +9,33 @@
     background-color: var(--ipoCard-bg-color);
 }
 
+.card .ant-card-head-title {
+    color: #363434;
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
 .marketCap {
     font-size: 1.5rem;
-    color: green;
+    color: #82A88D;
 }
 
 .description {
-    font-weight: bold;
+    color: #363434;
+    font-size: 1.05rem;
 }
 
 .status {
+    color: #363434;
     font-size: 2rem;
+    font-weight: bolder;
 }
 
 .tag {
+    font-size: 1.1rem;
     display: inline-block;
     color: white;
     margin: 5px;
-    padding: 5px;
-    border: 2px solid darkblue;
-    /*background-color: darkblue;*/
+    padding: 7.5px;
     border-radius: 5px;
 }
