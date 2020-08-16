@@ -28,7 +28,7 @@ const tagTitles = [
     },
     {
         "title": "SPAC",
-        "keywords": ["SPAC", "blank check", "acquisition"]
+        "keywords": ["SPAC", "blank check", "company acquisition"]
     },
     {
         "title": "EV",

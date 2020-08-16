@@ -86,6 +86,9 @@ class FilterSelector extends React.Component {
         //toggle filter item active
         filters[id].active = !itemIsActive;
 
+        //notify parent through callback
+        this.props.filterChangeCallback(filters[id].tag.name, !itemIsActive);
+
         this.setState({
             activeFiltersCards: active,
             inactiveFiltersCards: inactive,
