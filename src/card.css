@@ -2,6 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    background-color: var(--main-bg-color)
 }
 
 .card {
@@ -19,4 +20,14 @@
 
 .status {
     font-size: 2rem;
+}
+
+.tag {
+    display: inline-block;
+    color: white;
+    margin: 5px;
+    padding: 5px;
+    border: 2px solid darkblue;
+    background-color: darkblue;
+    border-radius: 5px;
 }

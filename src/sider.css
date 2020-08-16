@@ -1,0 +1,12 @@
+.ant-layout-sider, .filterContainer {
+    background-color: var(--sider-bg-color);
+}
+
+.filter {
+    background-color: var(--tags-bg-color);
+}
+
+.ant-layout-sider .ant-card-head-title {
+    font-size: 1.5rem;
+    color: white;
+}

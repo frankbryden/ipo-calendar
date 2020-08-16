@@ -19,10 +19,10 @@ class IpoCard extends React.Component {
                 style={{ width:400, height: 700, margin: 20}} 
                 cover={<img alt="Example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"></img>}
                 hoverable>
-                    <p class="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>
-                    <p class="description">{this.props.ipo.description}</p>
-                    <p class="status">{this.props.ipo.status}</p>
-                    <p class="tags">{this.props.ipo.tags.map(tag => <div>{tag}</div>)}</p>
+                    <p className="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>
+                    <p className="description">{this.props.ipo.description}</p>
+                    <p className="status">{this.props.ipo.status}</p>
+                    <div className="tags">{this.props.ipo.tags.map(tag => <div className="tag">{tag.name}</div>)}</div>
                 </Card>      
             </div>
         )
