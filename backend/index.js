@@ -40,7 +40,7 @@ const tagTitles = [
     }
 ];
 
-const tagColours = ["f2dc5d","f2a359","db9065","a4031f","240b36","51bbfe","9055a2", "5EA570"];
+const tagColours = ["#f2dc5d","#f2a359","#db9065","#a4031f","#240b36","#51bbfe","#9055a2", "#5EA570"];
 let tags = [];
 for (let i = 0; i < tagTitles.length; i++) {
     tags.push({
