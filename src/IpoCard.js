@@ -48,14 +48,14 @@ class IpoCard extends React.Component {
                         <p className="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>
                     </Popover>
                     <p className="description">{this.props.ipo.description}</p>
-                    <div class="statusAndDate">
+                    <div className="statusAndDate">
                         <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>
                         <Popover content={"Date of first trading day"}>
                             <div className="date" style={{ color: this.checkDate(this.props.ipo.date)}}>{this.props.ipo.date}</div>
                         </Popover>
                     </div>
                     <div className="tags">
-                        {this.props.ipo.tags.map(tag => <div style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
+                        {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
                     </div>
                 </Card>
             </div>

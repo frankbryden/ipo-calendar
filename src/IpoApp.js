@@ -95,11 +95,8 @@ class IpoApp extends React.Component {
     render() {
         return (
             <div>
-                <Layout trigger={null} collapsible collapsed={this.state.collapsed}>
-                    <Sider 
-                        width='22vw'
-                        breakpoint='lg'
-                        collapsedWidth="0">
+                <Layout>
+                    <Sider width='22vw' breakpoint='lg'  collapsible collapsedWidth="0">
                         <Card title="Filters" className="filterContainer">
                             <Card title="Tags" className="filter">
                                 <FilterSelector height={400} items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
@@ -109,7 +106,8 @@ class IpoApp extends React.Component {
                             </Card>
 
                         </Card>
-                        <Button onClick={() => this.toggleSidebar()}>Toggle</Button>
+                        {/*<Button onClick={() => this.toggleSidebar()}>Toggle</Button> */
+                        }
                     </Sider>
                     <Layout>
                         <Content>
