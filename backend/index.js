@@ -3,6 +3,9 @@ const axios = require('axios');
 const app = express();
 const tagprocessing =  require('./tag-processing.js');
 
+console.log(Intl);
+console.log(process.versions.icu);
+console.log(Intl.NumberFormat.supportedLocalesOf('en'));
 //Status
 const statusTitles = ["Priced", "Upcoming", "Filed"];
 const statusColours = ["#d2fdff","#3abeff","#29bf12"];
@@ -13,7 +16,7 @@ for (let i = 0; i < statusTitles.length; i++) {
         "color": statusColours[i]
     });
 }
-console.log(status);
+
 //Tags
 const tagTitles = [
     {
@@ -60,7 +63,6 @@ for (let i = 0; i < tagTitles.length; i++) {
     });
 }
 
-console.log(tags);
 //Tagging object
 let myTagger = new tagprocessing.TagProcessing(tags);
 
@@ -131,7 +133,7 @@ function getIpoDate(status, data) {
 function calculateMarketCap(sharePrice, sharesOutstanding) {
     sharePrice = parseInt(sharePrice.substr(1, sharePrice.length).replace(",", ""), 10);
     sharesOutstanding = parseInt(sharesOutstanding.replace(/,/g, ""), 10);
-    let marketCap = new Intl.NumberFormat('de-DE', {style: 'currency', currency: 'USD'}).format(sharePrice * sharesOutstanding);
+    let marketCap = new Intl.NumberFormat('en-GB', {style: 'currency', currency: 'USD'}).format(sharePrice * sharesOutstanding);
     return marketCap;
 }
 

@@ -42,3 +42,18 @@
     transform: rotate(360deg);
   }
 }
+
+#trigger {
+  font-size: 18px;
+  line-height: 18px;
+  padding: 0 0px;
+  cursor: pointer;
+  transition: color 0.3s;
+  position: fixed;
+  top:-8;
+  color: rgb(189, 240, 247);
+}
+
+#trigger:hover {
+  color: #1890ff;
+}
