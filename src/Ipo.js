@@ -5,6 +5,7 @@ class Ipo {
         this.description = ipoData.description;
         this.tags = ipoData.tags;
         this.status = ipoData.status;
+        this.date = ipoData.date;
     }
 }
 
