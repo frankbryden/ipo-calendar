@@ -1,17 +1,21 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Card, Button } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import './card.css';
 import './sider.css';
 
-const { Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content, Header } = Layout;
 
 class IpoApp extends React.Component {
     constructor(props) {
         super(props);
         this.statusFilterChange = this.statusFilterChange.bind(this);
         this.tagFilterChange = this.tagFilterChange.bind(this);
+        this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.sidebarLeftMargin = "22vw";
+        this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
             ipos: this.props.ipos.map(ipo => {
@@ -35,7 +39,7 @@ class IpoApp extends React.Component {
         });
     }
 
-    
+
     tagFilterChange(filter, toggle) {
         console.log(`tag filter change with ${filter} and toggle = ${toggle}`);
         //toggle = true means filter was added
@@ -80,14 +84,14 @@ class IpoApp extends React.Component {
             if (includeTagFilters) {
                 if (!ipo.tags.map(tag => this.state.tagFilters.includes(tag)).includes(true)) {
                     visible = false;
-                    
+
                 }
-                
+
             }
             ipo.visible = visible;
         }
         this.setState({
-            ipos: ipos
+            ipos: ipos,
         });
     }
 
@@ -96,7 +100,11 @@ class IpoApp extends React.Component {
         return (
             <div>
                 <Layout>
-                    <Sider width='22vw' breakpoint='lg'  collapsible collapsedWidth="0">
+                    <Sider width='22vw' breakpoint='lg' trigger={null} collapsed={this.state.collapsed} collapsible collapsedWidth="0" style={{
+                        position: 'fixed',
+                        height: "100%",
+                        left: 0,
+                    }}>
                         <Card title="Filters" className="filterContainer">
                             <Card title="Tags" className="filter">
                                 <FilterSelector height={400} items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
@@ -109,8 +117,17 @@ class IpoApp extends React.Component {
                         {/*<Button onClick={() => this.toggleSidebar()}>Toggle</Button> */
                         }
                     </Sider>
-                    <Layout>
-                        <Content>
+                    <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.sidebarLeftMargin }}>
+
+                        <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
+                        {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            id: 'trigger',
+                            style: {
+                                position: "fixed",
+                                left: this.state.collapsed ? this.sidebarNoMargin : this.sidebarLeftMargin, 
+                            },
+                            onClick: this.toggleSidebar,
+                        })}
                             <div className="content-wrapper">
                                 {this.state.ipos.filter(ipo => ipo.visible == true).map(ipo => ipo.ipo)}
                             </div>
