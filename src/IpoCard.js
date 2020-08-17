@@ -12,7 +12,7 @@ class IpoCard extends React.Component {
 
     checkDate(date) {
         if (date === "No date set") {
-            return "#F7A5A5";
+            return "grey";
         };
     }
 
@@ -42,17 +42,17 @@ class IpoCard extends React.Component {
                     bordered={false}
                     className="card"
                     title={this.props.ipo.name}
-                    style={{ width: 400, margin: 20 }}
+                    style={{ width: 400, margin: 20}}
                     cover={<img alt="Bizniz" src={ this.getCoverImage(this.props.ipo.tags) }></img>}>
                     <Popover content={"Expected market cap at proposed share price"}>
-                        <p className="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>
-                    </Popover>
-                    <p className="description">{this.props.ipo.description}</p>
-                    <div className="statusAndDate">
+                        <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
                         <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>
-                        <Popover content={"Date of first trading day"}>
-                            <div className="date" style={{ color: this.checkDate(this.props.ipo.date)}}>{this.props.ipo.date}</div>
-                        </Popover>
+                    </Popover>
+                    <div className="description">{this.props.ipo.description}</div>
+                    
+                    <div class="tradingDayWrapper">
+                        <div>First trading day:</div>
+                        <div className="date" style={{ color: this.checkDate(this.props.ipo.date)}}>{this.props.ipo.date}</div>
                     </div>
                     <div className="tags">
                         {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
