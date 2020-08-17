@@ -153,9 +153,15 @@ class IpoApp extends React.Component {
                             },
                             onClick: this.toggleSidebar,
                         })}
+                        {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                             <div className="content-wrapper">
                                 {this.state.ipos.filter(ipo => ipo.visible == true).map(ipo => ipo.ipo)}
+                            </div>:
+                            <div className="noContent">
+                                <span>Nothing matched your search!</span>
                             </div>
+                        }
+
                         </Content>
                         <Footer>Footer</Footer>
                     </Layout>

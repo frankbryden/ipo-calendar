@@ -18,28 +18,34 @@
 }
 
 .marketCap {
+    text-align: left;
     font-size: 1.5rem;
     color: #82A88D;
 }
 
-.description {
-    color: #363434;
-    font-size: 1.05rem;
-    padding: 15px;
-    background-color: #F5E7E1;
-    border-radius: 5px;
-}
-
-.statusAndDate {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.status {
+    text-align: left;
+    font-size: 1.2rem;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
-.status, .date{
-    font-size: 1.4rem;
-    font-weight: bolder;
+.description {
+    text-align: left;
+    color: #363434;
+    font-size: 1.05rem;
+    /* background-color: #F5E7E1; */
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.tradingDayWrapper {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .date {
@@ -47,12 +53,16 @@
 }
 
 .tag {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     display: inline-block;
     color: white;
     margin: 5px;
-    padding: 7.5px;
-    border-radius: 5px;
+    padding: 10px;
+    border-radius: 50px;
 }
 
+.noContent {
+    margin: 30vh;
+    color: #363434;
+}
