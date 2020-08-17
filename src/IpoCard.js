@@ -42,7 +42,7 @@ class IpoCard extends React.Component {
                     bordered={false}
                     className="card"
                     title={this.props.ipo.name}
-                    style={{ width: 400, height: 800, margin: 20 }}
+                    style={{ width: 400, margin: 20 }}
                     cover={<img alt="Bizniz" src={ this.getCoverImage(this.props.ipo.tags) }></img>}>
                     <Popover content={"Expected market cap at proposed share price"}>
                         <p className="marketCap"><strong>{this.props.ipo.marketCap}</strong></p>
