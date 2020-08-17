@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Button } from 'antd';
+import { Layout, Card, Button, Input } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import './card.css';
@@ -14,6 +14,7 @@ class IpoApp extends React.Component {
         this.statusFilterChange = this.statusFilterChange.bind(this);
         this.tagFilterChange = this.tagFilterChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.onSearch = this.onSearch.bind(this);
         this.sidebarLeftMargin = "22vw";
         this.sidebarNoMargin = "0vw";
         this.state = {
@@ -28,8 +29,15 @@ class IpoApp extends React.Component {
             }),
             collapsed: false,
             tagFilters: [],
-            statusFilters: []
+            statusFilters: [],
         }
+    }
+
+    onSearch() {
+        this.setState({
+            searchValue: ""
+        });
+        console.log("hye")
     }
 
     toggleSidebar() {
@@ -95,6 +103,20 @@ class IpoApp extends React.Component {
         });
     }
 
+    filterBySearch(input) {
+        let ipos = this.state.ipos;
+        for (let ipo of ipos) {
+            let companyName = ipo.ipo.props.ipo.name.toLowerCase();
+            if(!companyName.includes(input)) {
+                ipo.visible = false;
+            } else {
+                ipo.visible = true;
+            } 
+        }
+        this.setState({
+            ipos: ipos,
+        });
+    }
 
     render() {
         return (
@@ -105,6 +127,11 @@ class IpoApp extends React.Component {
                         height: "100%",
                         left: 0,
                     }}>
+                        <Input
+                            placeholder="Search for specific company"
+                            onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
+                            style={{ width: 200, margin: 30 }}>    
+                        </Input>
                         <Card title="Filters" className="filterContainer">
                             <Card title="Tags" className="filter">
                                 <FilterSelector height={400} items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
