@@ -14,7 +14,6 @@ class IpoApp extends React.Component {
         this.statusFilterChange = this.statusFilterChange.bind(this);
         this.tagFilterChange = this.tagFilterChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
-        this.onSearch = this.onSearch.bind(this);
         this.sidebarLeftMargin = "22vw";
         this.sidebarNoMargin = "0vw";
         this.state = {
@@ -30,14 +29,8 @@ class IpoApp extends React.Component {
             collapsed: false,
             tagFilters: [],
             statusFilters: [],
+            searchValue: "",
         }
-    }
-
-    onSearch() {
-        this.setState({
-            searchValue: ""
-        });
-        console.log("hye")
     }
 
     toggleSidebar() {
@@ -57,10 +50,10 @@ class IpoApp extends React.Component {
         } else {
             tagFilters.splice(tagFilters.indexOf(filter), 1);
         }
-        this.updateIPOVisibility();
         this.setState({
             tagFilters: tagFilters
         });
+        this.updateIPOVisibility();
     }
 
     statusFilterChange(filter, toggle) {
@@ -71,16 +64,18 @@ class IpoApp extends React.Component {
         } else {
             statusFilters.splice(statusFilters.indexOf(filter), 1);
         }
-        this.updateIPOVisibility();
         this.setState({
             statusFilters: statusFilters
         });
+        this.updateIPOVisibility();
     }
 
     updateIPOVisibility() {
+        console.log(`Got to update with ${this.state.searchValue}`);
         let ipos = this.state.ipos;
         let includeStatusFilters = this.state.statusFilters.length > 0;
         let includeTagFilters = this.state.tagFilters.length > 0;
+        let includeSearch = this.state.searchValue.length > 0;
 
         for (let ipo of ipos) {
             let visible = true;
@@ -92,10 +87,18 @@ class IpoApp extends React.Component {
             if (includeTagFilters) {
                 if (!ipo.tags.map(tag => this.state.tagFilters.includes(tag)).includes(true)) {
                     visible = false;
-
                 }
-
             }
+            if (includeSearch) {
+                let companyName = ipo.ipo.props.ipo.name.toLowerCase();
+                console.log(`${this.searchValue} includes ${companyName}`);
+                if (!companyName.includes(this.searchValue)) {
+                    visible = false;
+                } else {
+                    console.log(`${companyName} does not contain ${this.searchValue}`);
+                }
+            }
+
             ipo.visible = visible;
         }
         this.setState({
@@ -104,18 +107,12 @@ class IpoApp extends React.Component {
     }
 
     filterBySearch(input) {
-        let ipos = this.state.ipos;
-        for (let ipo of ipos) {
-            let companyName = ipo.ipo.props.ipo.name.toLowerCase();
-            if(!companyName.includes(input)) {
-                ipo.visible = false;
-            } else {
-                ipo.visible = true;
-            } 
-        }
+        console.log(`Setting search value to ${input}`);
         this.setState({
-            ipos: ipos,
+            "searchValue": input
         });
+        this.searchValue = input;
+        this.updateIPOVisibility();
     }
 
     render() {
@@ -128,8 +125,9 @@ class IpoApp extends React.Component {
                         left: 0,
                     }}>
                         <Input
-                            placeholder="Search for specific company"
+                            placeholder="Search IPOs"
                             onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
+                            value={this.searchValue}
                             style={{ width: 200, margin: 30 }}>    
                         </Input>
                         <Card title="Filters" className="filterContainer">
