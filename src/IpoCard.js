@@ -13,7 +13,7 @@ class IpoCard extends React.Component {
             locallyStoredIPOs: JSON.parse(localStorage.getItem('ipos')),
             expanded: false,
             cardWidth: 400,
-            starColor: 'orange'
+            starColor: 'orange',
         }
         this.cardRef = React.createRef();
     }

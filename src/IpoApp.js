@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import { Layout, Card, Button, Input, Space } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
+import IpoCard from './IpoCard';
 import './card.css';
 import './sider.css';
 
@@ -18,12 +19,15 @@ class IpoApp extends React.Component {
         this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
-            ipos: this.props.ipos.map(ipo => {
+            ipos: this.props.ipos.map((ipo, index) => {
                 return {
-                    "ipo": ipo,
-                    "tags": ipo.props.ipo.tags.map(tag => tag.name),
-                    "status": ipo.props.ipo.status,
-                    "visible": true
+                    ipoCard: <IpoCard key={index} ipo={ipo} onSave={() => this.saveIPOLocally(index)} />,
+                    ipo: ipo,
+                    cardId: index,
+                    tags: ipo.tags.map(tag => tag.name),
+                    status: ipo.status,
+                    visible: true,
+                    storedLocally: false,
                 }
             }),
             collapsed: false,
@@ -106,6 +110,23 @@ class IpoApp extends React.Component {
         });
     }
 
+    saveIPOLocally(id) {
+        let savedItem;
+        for (let item of this.state.ipos) {
+            if (item.cardId == id) {
+                savedItem = item;
+            }
+        }
+
+        //As Max pointed out, to save we simply need to store the dealIds.
+        //I do not have that information for now, so off to bed....
+        if (savedItem.storedLocally) {
+            //unsave
+        } else {
+            //save
+        }
+    }
+
     filterBySearch(input) {
         console.log(`Setting search value to ${input}`);
         this.setState({
@@ -164,7 +185,7 @@ class IpoApp extends React.Component {
                         })}
                         {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                             <div className="content-wrapper">
-                                {this.state.ipos.filter(ipo => ipo.visible == true).map(ipo => ipo.ipo)}
+                                {this.state.ipos.filter(ipo => ipo.visible == true).map(ipo => ipo.ipoCard)}
                             </div>:
                             <div className="noContent">
                                 <span>Nothing matched your search!</span>

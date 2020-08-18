@@ -47,8 +47,7 @@ class App extends React.Component {
 		const iposData = await this.dataFetcher.fetchIpos();
 		console.log(iposData);
         let ipoObjs = iposData.ipos.map(ipo => new Ipo(ipo));
-        let ipoComponents = ipoObjs.map((ipoObj, index) => <IpoCard key={index} ipo={ipoObj} />);
-		this.ipos = ipoComponents;
+		this.ipos = ipoObjs;//ipoComponents;
 		this.dataReceived();
 	}
 	
