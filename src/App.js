@@ -19,34 +19,33 @@ class App extends React.Component {
             loading: true,
             ipos: []
 		}
-		this.dataToFetch = 0;
+		this.dataToFetch = 1;
 		this.dataFetcher = new DataFetcher();
-		this.ipos = ipos;
+		/*this.ipos = ipos;
 		this.statusOpts = status;
 		this.tags = tags;
-        
+        */
 	}
 	
 	componentDidMount() {
 		setTimeout(() => {
 		   //this.fetchData();
-		   this.dataToFetch = 1;
-		   this.getIpos();
+		   //this.dataToFetch = 1;
+		   //this.getIpos();
         }, 1);
-        //this.getIpos();
+        this.fetchData();
 	}
 
 	async fetchData() {
+		this.dataToFetch = 3;
 		this.getIpos();
-		this.dataToFetch++;
 		this.getStatusOpts();
-		this.dataToFetch++;
 		this.getTags();
-		this.dataToFetch++;
 	}
 
     async getIpos() {
-        const iposData = ipos;//await this.dataFetcher.fetchIpos();
+		const iposData = await this.dataFetcher.fetchIpos();
+		console.log(iposData);
         let ipoObjs = iposData.ipos.map(ipo => new Ipo(ipo));
         let ipoComponents = ipoObjs.map((ipoObj, index) => <IpoCard key={index} ipo={ipoObj} />);
 		this.ipos = ipoComponents;

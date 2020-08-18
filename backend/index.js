@@ -64,13 +64,15 @@ for (let i = 0; i < tagTitles.length; i++) {
 //Tagging object
 let myTagger = new tagprocessing.TagProcessing(tags);
 let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
-apiFetcher.loadDailyDataToDb();
+
+//TODO find a way to not write duplicate data.
+//apiFetcher.loadDailyDataToDb();
 
 const port = 5000;
 app.listen(port);
 
 app.get('/ipos', (req, res) => {
-    getIpoInformation(res);
+    apiFetcher.getIpos().then(ipos => res.json({"ipos": ipos}));
 })
 
 app.get('/status', (req, res) => {

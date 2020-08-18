@@ -21,7 +21,7 @@ class DbAccess {
     }
 
     async readData(query) {
-        let result = await this.makeDbRequest("GET", `/collections/${dbName}/read`, query)
+        let res = await this.makeDbRequest("GET", `/collections/${dbName}/read`, query)
         return res.data;
     }
 
@@ -65,72 +65,15 @@ class IpoApiFetcher {
         this.dataToSend = [];
     }
 
-    async loadDailyDataToDb() {
-        let ipos = [
-            {
-              name: 'CureVac N.V.',
-              marketcap: 'US$2,815,491,264.00',
-              description: 'We are a global clinical-stage biopharmaceutical company developing a new class of transformative medicines based on messenger ribonucleic acid that has the potential to improve the lives of people',
-              tags: [],
-              status: 'Priced',
-              date: '08/14/2020'
-            },
-            {
-              name: 'DUCK CREEK TECHNOLOGIES, INC.',
-              marketcap: 'US$3,464,478,432.00',
-              description: 'Our Mission  We empower property and casualty insurance carriers to transform their information technology, business practices, insurance products, and customer experiences, making their organizations stronger and their customers safer and more satisfied',
-              tags: [ [Object] ],
-              status: 'Priced',
-              date: '08/14/2020'
-            },
-            {
-              name: 'Nano-X Imaging Ltd.',
-              marketcap: 'US$663,243,728.00',
-              description: 'Early detection saves lives—and we at Nanox are focused on applying our proprietary medical imaging technology to make diagnostic medicine more accessible and affordable across the globe',
-              tags: [],
-              status: 'Filed',
-              date: '08/21/2020'
-            },
-            {
-              name: 'Harmony Biosciences Holdings, Inc.',
-              marketcap: 'US$1,259,610,800.00',
-              description: 'We are a commercial-stage pharmaceutical company focused on developing and commercializing innovative therapies for patients living with rare neurological disorders who have unmet medical needs',
-              tags: [],
-              status: 'Filed',
-              date: '08/19/2020'
-            },
-            {
-              name: 'North Mountain Merger Corp.',
-              marketcap: 'US$143,750,000.00',
-              description: 'We are a newly incorporated blank check company formed as a Delaware corporation for the purpose of effecting a merger, capital stock exchange, asset acquisition, stock purchase, reorganization or similar business combination with one or more businesses, which we refer to throughout this prospectus as our initial business combination',
-              tags: [],
-              status: 'Filed',
-              date: 'No date set'
-            },
-            {
-              name: 'Brookline Capital Acquisition Corp.',
-              marketcap: 'US$64,250,000.00',
-              description: 'We are a newly organized, blank check company formed as a Delaware corporation for the purpose of effecting a merger, capital stock exchange, asset acquisition, stock purchase, reorganization or similar business combination, which we refer to throughout this prospectus as our initial business combination, with one or more businesses, which we refer to throughout this prospectus as target businesses',
-              tags: [],
-              status: 'Filed',
-              date: 'No date set'
-            }
-          ];//await this.getIpoInformation();
-        console.log(`Got ${ipos.length} ipos`);
-        this.dataToSend = ipos;
-        this.sendData();
-
-        //ipos.map(ipo => this.dbHandle.writeData(ipo));
+    async getIpos(date) {
+        //TODO later, well soon probably, we'll need to only return ipos in a certain date range, as we'll have too many ipos in the db to send them all back
+        //or even load them progressively.
+        return this.dbHandle.readData("{}")
     }
 
-    sendData() {
-        console.log(`Still ${this.dataToSend.length} items to send`)
-        let data = this.dataToSend.pop();
-        console.log(`Now ${this.dataToSend.length} items to send`)
-        this.dbHandle.writeData({...data});
-        if (this.dataToSend.length > 0) {
-            setTimeout(() => this.sendData(), 200);
-        }
+    async loadDailyDataToDb() {
+        let ipos = await this.getIpoInformation();
+        ipos.map(ipo => this.dbHandle.writeData(ipo));
     }
 
     async getIpoInformation() {
