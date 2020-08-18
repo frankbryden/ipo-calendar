@@ -8,8 +8,14 @@ import placeholderImg from './images/business.jpg'
 class IpoCard extends React.Component {
     constructor() {
         super();
+        this.state = {
+            expanded: false,
+            cardWidth: 400
+        }
+        this.cardRef = React.createRef();
     }
 
+    // Maybe make all of these states instead?
     checkDate(date) {
         if (date === "No date set") {
             return "grey";
@@ -35,11 +41,22 @@ class IpoCard extends React.Component {
         }
     }
 
+    expandCard() {
+        if (!this.state.expanded) {
+            this.setState({ expanded: true})
+            this.cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            } else {
+                this.setState({ expanded: false})
+            }   
+    }
+
     render() {
         return (
-            <div>
+            <div ref={this.cardRef}>
+                {!this.state.expanded ?
                 <Card
-                    bordered={false}
+                    onClick={() => this.expandCard()}
+                    hoverable={true}
                     className="card"
                     title={this.props.ipo.name}
                     style={{ width: 400, margin: 20}}
@@ -57,7 +74,28 @@ class IpoCard extends React.Component {
                     <div className="tags">
                         {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
                     </div>
+                </Card>:
+
+                <Card
+                    onClick={() => this.expandCard()}
+                    className="card expandedCard"
+                    title={this.props.ipo.name}
+                    style={{ width: 800, margin: 20}}>
+                    
+                    <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
+                    <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>
+                    
+                    <div className="description">{this.props.ipo.description}</div>
+                    
+                    <div class="tradingDayWrapper">
+                        <div>First trading day:</div>
+                        <div className="date" style={{ color: this.checkDate(this.props.ipo.date)}}>{this.props.ipo.date}</div>
+                    </div>
+                    <div className="tags">
+                        {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
+                    </div>
                 </Card>
+                }
             </div>
         )
     }

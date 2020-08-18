@@ -24,7 +24,8 @@ class FilterSelector extends React.Component {
         };
         for (let item of filters) {
             let callbackId = item.id;
-            let btn = <Button className="cardBtn" size="small" key={callbackId} btnid={callbackId} onClick={() => this.btnCallback(callbackId)}>{item.tag.name}</Button>;
+            let btn = <Button className="cardBtn" size="default" key={callbackId} btnid={callbackId} onClick={() => this.btnCallback(callbackId)}>{item.tag.name}</Button>;
+
             if (item.active)
                 itemLists.active.push(btn)
             else
@@ -85,6 +86,8 @@ class FilterSelector extends React.Component {
 
         //toggle filter item active
         filters[id].active = !itemIsActive;
+
+        console.log(clickedItem);
 
         //notify parent through callback
         this.props.filterChangeCallback(filters[id].tag.name, !itemIsActive);

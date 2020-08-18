@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Button, Input } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { Layout, Card, Button, Input, Space } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import './card.css';
 import './sider.css';
@@ -119,22 +119,31 @@ class IpoApp extends React.Component {
         return (
             <div>
                 <Layout>
-                    <Sider width='22vw' breakpoint='lg' trigger={null} collapsed={this.state.collapsed} collapsible collapsedWidth="0" style={{
+                    <Sider width='22vw'
+                        bordered={false}
+                        breakpoint='lg' 
+                        trigger={null} 
+                        collapsed={this.state.collapsed} 
+                        collapsible collapsedWidth="0" 
+                        style={{
                         position: 'fixed',
                         height: "100%",
                         left: 0,
                     }}>
+                        <Space>
+                        <SearchOutlined style={{color: 'white'}} />
                         <Input
                             placeholder="Search IPOs"
                             onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
                             value={this.searchValue}
-                            style={{ width: 200, margin: 30 }}>    
+                            style={{ width: 300, margin: 30 }}>  
                         </Input>
-                        <Card title="Filters" className="filterContainer">
-                            <Card title="Tags" className="filter">
+                        </Space>
+                        <Card title="Filters" className="filterContainer" bordered={false}>
+                            <Card title="Tags" className="filter" bordered={false}>
                                 <FilterSelector height={400} items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
                             </Card>
-                            <Card title="Status" className="filter">
+                            <Card title="Status" className="filter" bordered={false}>
                                 <FilterSelector height={400} items={this.props.statusOpts} filterChangeCallback={this.statusFilterChange} />
                             </Card>
 
