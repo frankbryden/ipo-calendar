@@ -7,8 +7,16 @@
 }
 
 .card {
+    position: relative;
     background-color: var(--ipoCard-bg-color);
     border-radius: 5px;
+}
+
+.companyName {
+    color: black;
+    text-align: left;
+    font-weight: bold;
+    font-size: 2rem;
 }
 
 .expandedCard {
@@ -24,36 +32,34 @@
 .marketCap {
     text-align: left;
     font-size: 1.5rem;
-    color: #82A88D;
+    color: #008000;
+    margin-bottom: 20px;
 }
 
 .status {
     text-align: left;
     font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+    /* font-weight: bold; */
 }
 
 .description {
     text-align: left;
-    color: #363434;
+    color: black;
     font-size: 1.05rem;
     /* background-color: #F5E7E1; */
     border-radius: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .tradingDayWrapper {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    color: #008000;
+    text-align: left;
+    font-size: 1.2rem; 
+    margin-bottom: 10px;
 }
 
 .date {
-    color: #89A7D9;
+    color: #1E90FF;
 }
 
 .tag {
@@ -66,7 +72,18 @@
     border-radius: 25px;
 }
 
+.card img {
+    max-height: 250px;
+    margin-top: -1px;
+}
 .noContent {
     margin: 30vh;
     color: #363434;
 }
+
+.star {
+    float: right;
+    font-size: 1.5rem;
+}
+                
+

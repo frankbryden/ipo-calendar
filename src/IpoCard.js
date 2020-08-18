@@ -1,6 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Card, Popover } from 'antd';
+import { StarTwoTone } from '@ant-design/icons';
 import './card.css'
 
 import placeholderImg from './images/business.jpg'
@@ -9,8 +10,10 @@ class IpoCard extends React.Component {
     constructor() {
         super();
         this.state = {
+            locallyStoredIPOs: JSON.parse(localStorage.getItem('ipos')),
             expanded: false,
-            cardWidth: 400
+            cardWidth: 400,
+            starColor: 'orange'
         }
         this.cardRef = React.createRef();
     }
@@ -22,12 +25,12 @@ class IpoCard extends React.Component {
         };
     }
 
-    checkStatus(status) {
-        if (status === "Priced") {
-            return "#82A88D";
+    checkStatus() {
+        if (this.props.ipo.status === "Priced") {
+            return "Priced: ";
         }
-        if (status === "Filed") {
-            return "#89A7D9";
+        if (this.props.ipo.status === "Filed") {
+            return "First trading day: ";
         }
     }
 
@@ -50,27 +53,43 @@ class IpoCard extends React.Component {
             }   
     }
 
+    saveIPOlocally() { // this needs to only store DealID or something also I didn't have time to troubleshoot why it didn't work.
+        for (let item of this.state.locallyStoredIPOs) {
+            if (item === this.props.ipo) {
+                this.state.locallyStoredIPOs.pop(item);
+            } else {
+                this.state.locallyStoredIPOs.push(this.props.ipo);
+            }
+        }
+        localStorage.setItem('ipos', JSON.stringify(this.state.locallyStoredIPOs));
+        console.log(localStorage.getItem('ipos'));
+    }
+
     render() {
         return (
             <div ref={this.cardRef}>
                 {!this.state.expanded ?
                 <Card
                     onClick={() => this.expandCard()}
-                    hoverable={true}
                     className="card"
-                    title={this.props.ipo.name}
+                    // title={this.props.ipo.name}
                     style={{ width: 400, margin: 20}}
                     cover={<img alt="Bizniz" src={ this.getCoverImage(this.props.ipo.tags) }></img>}>
+
+                    <Popover content={"Save this IPO"}>
+                        <StarTwoTone className="star" twoToneColor='#1E90FF' onClick={() => this.saveIPOlocally()}/>
+                    </Popover>   
+
+                    <div className="companyName">{this.props.ipo.name}</div>
                     <Popover content={"Expected market cap at proposed share price"}>
                         <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
-                        <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>
+                        {/* <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div> */}
                     </Popover>
                     <div className="description">{this.props.ipo.description}</div>
                     
-                    <div class="tradingDayWrapper">
-                        <div>First trading day:</div>
-                        <div className="date" style={{ color: this.checkDate(this.props.ipo.date)}}>{this.props.ipo.date}</div>
-                    </div>
+                    {/* <div class="tradingDayWrapper"> */}
+                        <div class="tradingDayWrapper">{this.checkStatus()} <span className="date" style={{ color: this.checkDate(this.props.ipo.date)}}>{this.props.ipo.date}</span></div>
+                    {/* </div> */}
                     <div className="tags">
                         {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
                     </div>
