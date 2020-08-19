@@ -1,5 +1,6 @@
 .content-wrapper {
     display: flex;
+    flex-flow: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
@@ -66,6 +67,11 @@
 
 .date {
     color: #1E90FF;
+}
+
+.tags {
+    position: absolute;
+    bottom: 20px;
 }
 
 .tag {

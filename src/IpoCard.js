@@ -64,7 +64,7 @@ class IpoCard extends React.Component {
                     onClick={() => this.expandCard()}
                     className="card small"
                     // title={this.props.ipo.name}
-                    style={{ width: 400, height: 500, margin: 20}}
+                    style={{ width: 400, height: 600, margin: 20}}
                     >
 
                     <Popover content={"Save this IPO"}>
@@ -90,7 +90,7 @@ class IpoCard extends React.Component {
                     onClick={() => this.expandCard()}
                     className="card expandedCard"
                     title={this.props.ipo.name}
-                    style={{ width: 800, height: 500, margin: 20}}>
+                    style={{ width: 800, height: 600, margin: 20}}>
                     
                     <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
                     <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>

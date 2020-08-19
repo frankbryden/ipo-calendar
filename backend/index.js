@@ -50,7 +50,7 @@ const tagTitles = [
         "keywords": ["biotechnology", "biotech"]
     },
     {
-        "title": "Health Services",
+        "title": "Healthcare",
         "keywords": ["medical", "biopharmaceutical"]   
     },
     {
