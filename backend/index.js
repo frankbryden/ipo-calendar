@@ -66,7 +66,7 @@ let myTagger = new tagprocessing.TagProcessing(tags);
 let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
 
 //TODO find a way to not write duplicate data.
-// apiFetcher.loadDailyDataToDb();
+apiFetcher.loadDailyDataToDb();
 
 const port = 5000;
 app.listen(port);

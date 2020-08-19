@@ -83,19 +83,19 @@ class IpoApiFetcher {
         let res = await axios.get(url)
         let ipos = [];
         let pricedInCompanyInfo = res.data.data.priced.rows;
-        for (let item in pricedInCompanyInfo.slice(0, 2)) {
+        for (let item in pricedInCompanyInfo.slice(0, 5)) {
             let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
             ipos.push(dealDetails);
         }
 
         let upcomingCompanyInfo = res.data.data.upcoming.upcomingTable.rows;
-        for (let item in upcomingCompanyInfo.slice(0, 2)) {
+        for (let item in upcomingCompanyInfo.slice(0, 5)) {
             let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
             ipos.push(dealDetails);
         }
 
         let filedCompanyInfo = res.data.data.filed.rows;
-        for (let item in filedCompanyInfo.slice(0, 2)) {
+        for (let item in filedCompanyInfo.slice(0, 5)) {
             let dealDetails = await this.getDealDetails(filedCompanyInfo[item].dealID, filedCompanyInfo[item]);
             ipos.push(dealDetails);
         }
@@ -115,7 +115,7 @@ class IpoApiFetcher {
             "tags": associatedTags, // not done yet
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
-            "id": dealID
+            "_id": dealID
         }
         return companyInfo;
     }
@@ -136,7 +136,7 @@ class IpoApiFetcher {
     calculateMarketCap(sharePrice, sharesOutstanding) {
         sharePrice = parseInt(sharePrice.substr(1, sharePrice.length).replace(",", ""), 10);
         sharesOutstanding = parseInt(sharesOutstanding.replace(/,/g, ""), 10);
-        let marketCap = (Math.floor(sharePrice * sharesOutstanding / 1000)).toLocaleString();
+        let marketCap = "$ " +(Math.floor(sharePrice * sharesOutstanding / 1000)).toLocaleString() + "M";
         return marketCap;
     }
 
