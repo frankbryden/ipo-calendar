@@ -1,10 +1,20 @@
+@font-face {
+  font-family: "Rubik Regular";
+  src: url("fonts/Rubik-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Rubik Light";
+  src: url("fonts/Rubik-Light.ttf");
+}
+
 .App {
   text-align: center;
   font-size: 2rem;
-  --main-bg-color: #3D5A80;
-  --sider-bg-color: #293241;
-  --tags-bg-color: #293241;
-  --ipoCard-bg-color: #F4EDED;
+  --main-bg-color: #363434;
+  --sider-bg-color: black;
+  --tags-bg-color: black;
+  --ipoCard-bg-color: #fff6f5;
   background-color: var(--main-bg-color);
 }
 

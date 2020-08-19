@@ -53,7 +53,7 @@ class IpoCard extends React.Component {
     }
 
     setStarColor() {
-        console.log(this.props.test);
+        console.log()
     }
 
     render() {
@@ -64,8 +64,8 @@ class IpoCard extends React.Component {
                     onClick={() => this.expandCard()}
                     className="card small"
                     // title={this.props.ipo.name}
-                    style={{ width: 400, height: 700, margin: 20}}
-                    cover={<img alt="Bizniz" src={ this.getCoverImage(this.props.ipo.tags) }></img>}>
+                    style={{ width: 400, height: 500, margin: 20}}
+                    >
 
                     <Popover content={"Save this IPO"}>
                         <StarTwoTone className="star" twoToneColor={this.state.starColor} onClick={() => this.setStarColor()}/>
@@ -90,7 +90,7 @@ class IpoCard extends React.Component {
                     onClick={() => this.expandCard()}
                     className="card expandedCard"
                     title={this.props.ipo.name}
-                    style={{ width: 800, height: 700, margin: 20}}>
+                    style={{ width: 800, height: 500, margin: 20}}>
                     
                     <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
                     <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>

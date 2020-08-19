@@ -108,7 +108,6 @@ class IpoApiFetcher {
         let ipoOverview = res.data.data.poOverview;
         let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
         let associatedTags = this.tagger.determineTags(description);
-
         let companyInfo = {
             "name": ipoOverview.CompanyName.value,
             "marketcap": this.calculateMarketCap(ipoOverview.ProposedSharePrice.value, ipoOverview.SharesOutstanding.value),
@@ -116,7 +115,7 @@ class IpoApiFetcher {
             "tags": associatedTags, // not done yet
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
-            "id": deadlID
+            "id": dealID
         }
         return companyInfo;
     }
@@ -137,7 +136,7 @@ class IpoApiFetcher {
     calculateMarketCap(sharePrice, sharesOutstanding) {
         sharePrice = parseInt(sharePrice.substr(1, sharePrice.length).replace(",", ""), 10);
         sharesOutstanding = parseInt(sharesOutstanding.replace(/,/g, ""), 10);
-        let marketCap = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'USD' }).format(sharePrice * sharesOutstanding);
+        let marketCap = (Math.floor(sharePrice * sharesOutstanding / 1000)).toLocaleString();
         return marketCap;
     }
 

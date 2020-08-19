@@ -14,14 +14,15 @@
 }
 
 .small:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
+    
 }
 
 .companyName {
+    font-family: "Rubik Regular", sans-serif;
     line-height: 35px;
-    color: black;
+    color: #303030;
     text-align: left;
-    font-weight: bold;
     font-size: 2rem;
 }
 
@@ -32,9 +33,10 @@
 }
 
 .marketCap {
+    font-family: "Rubik Regular", sans-serif;
     text-align: left;
     font-size: 1.5rem;
-    color: #008000;
+    color: #04ad72;
     margin-bottom: 20px;
 }
 
@@ -45,8 +47,9 @@
 }
 
 .description {
+    font-family: "Rubik Light", sans-serif;
     text-align: left;
-    color: black;
+    color: #303030;
     font-size: 1.05rem;
     /* background-color: #F5E7E1; */
     border-radius: 5px;
@@ -54,6 +57,7 @@
 }
 
 .tradingDayWrapper {
+    font-family: "Rubik Light", sans-serif;
     color: #008000;
     text-align: left;
     font-size: 1.2rem; 
@@ -65,6 +69,7 @@
 }
 
 .tag {
+    font-family: "Rubik Light", sans-serif;
     font-size: 0.8rem;
     font-weight: bold;
     display: inline-block;
@@ -76,7 +81,7 @@
 
 .card img {
     max-height: 250px;
-    margin-top: -1px;
+    margin-top: -2px;
 }
 .noContent {
     margin: 30vh;
