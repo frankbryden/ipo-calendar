@@ -10,17 +10,19 @@
     position: relative;
     background-color: var(--ipoCard-bg-color);
     border-radius: 5px;
+    transition: 0.5s ease;
+}
+
+.small:hover {
+    transform: scale(1.03);
 }
 
 .companyName {
+    line-height: 35px;
     color: black;
     text-align: left;
     font-weight: bold;
     font-size: 2rem;
-}
-
-.expandedCard {
-    order: -1;
 }
 
 .card .ant-card-head-title {
@@ -83,7 +85,7 @@
 
 .star {
     float: right;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
 }
                 
 

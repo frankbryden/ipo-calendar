@@ -94,7 +94,7 @@ class IpoApp extends React.Component {
                 }
             }
             if (includeSearch) {
-                let companyName = ipo.ipo.props.ipo.name.toLowerCase();
+                let companyName = ipo.ipo.name.toLowerCase();
                 console.log(`${this.searchValue} includes ${companyName}`);
                 if (!companyName.includes(this.searchValue)) {
                     visible = false;
@@ -111,6 +111,7 @@ class IpoApp extends React.Component {
     }
 
     saveIPOLocally(id) {
+        
         let savedItem;
         for (let item of this.state.ipos) {
             if (item.cardId == id) {

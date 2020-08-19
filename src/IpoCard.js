@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Card, Popover } from 'antd';
-import { StarTwoTone } from '@ant-design/icons';
+import { StarTwoTone, StarOutlined } from '@ant-design/icons';
 import './card.css'
 
 import placeholderImg from './images/business.jpg'
@@ -13,7 +13,6 @@ class IpoCard extends React.Component {
             locallyStoredIPOs: JSON.parse(localStorage.getItem('ipos')),
             expanded: false,
             cardWidth: 400,
-            starColor: 'orange',
         }
         this.cardRef = React.createRef();
     }
@@ -46,23 +45,15 @@ class IpoCard extends React.Component {
 
     expandCard() {
         if (!this.state.expanded) {
-            this.setState({ expanded: true})
-            this.cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            this.setState({ expanded: true});
+            this.cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
-                this.setState({ expanded: false})
+                this.setState({ expanded: false});
             }   
     }
 
-    saveIPOlocally() { // this needs to only store DealID or something also I didn't have time to troubleshoot why it didn't work.
-        for (let item of this.state.locallyStoredIPOs) {
-            if (item === this.props.ipo) {
-                this.state.locallyStoredIPOs.pop(item);
-            } else {
-                this.state.locallyStoredIPOs.push(this.props.ipo);
-            }
-        }
-        localStorage.setItem('ipos', JSON.stringify(this.state.locallyStoredIPOs));
-        console.log(localStorage.getItem('ipos'));
+    setStarColor() {
+        console.log(this.props.test);
     }
 
     render() {
@@ -71,13 +62,13 @@ class IpoCard extends React.Component {
                 {!this.state.expanded ?
                 <Card
                     onClick={() => this.expandCard()}
-                    className="card"
+                    className="card small"
                     // title={this.props.ipo.name}
-                    style={{ width: 400, margin: 20}}
+                    style={{ width: 400, height: 700, margin: 20}}
                     cover={<img alt="Bizniz" src={ this.getCoverImage(this.props.ipo.tags) }></img>}>
 
                     <Popover content={"Save this IPO"}>
-                        <StarTwoTone className="star" twoToneColor='#1E90FF' onClick={() => this.saveIPOlocally()}/>
+                        <StarTwoTone className="star" twoToneColor={this.state.starColor} onClick={() => this.setStarColor()}/>
                     </Popover>   
 
                     <div className="companyName">{this.props.ipo.name}</div>
@@ -99,7 +90,7 @@ class IpoCard extends React.Component {
                     onClick={() => this.expandCard()}
                     className="card expandedCard"
                     title={this.props.ipo.name}
-                    style={{ width: 800, margin: 20}}>
+                    style={{ width: 800, height: 700, margin: 20}}>
                     
                     <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
                     <div className="status" style={{ color: this.checkStatus(this.props.ipo.status)}}>{this.props.ipo.status}</div>
