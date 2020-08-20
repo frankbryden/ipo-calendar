@@ -74,6 +74,7 @@ class IpoApiFetcher {
     async loadDailyDataToDb() {
         let ipos = await this.getIpoInformation();
         ipos.map(ipo => this.dbHandle.writeData(ipo));
+        console.log("Wrote daily data");
     }
 
     async getIpoInformation() {
@@ -115,7 +116,7 @@ class IpoApiFetcher {
             "tags": associatedTags, // not done yet
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
-            "_id": dealID
+            "id": dealID
         }
         return companyInfo;
     }

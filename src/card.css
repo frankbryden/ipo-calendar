@@ -15,7 +15,7 @@
 }
 
 .small:hover {
-    transform: scale(1.05);
+    /*transform: scale(1.05);*/
     
 }
 
@@ -98,4 +98,13 @@
     font-size: 1.1rem;
 }
                 
+.expandBtn {
+    background-color: #db5e56;
+    width: 80px;
+}
 
+.bottomRight {
+    right: 0;
+    bottom: 0;
+    position: absolute;
+}

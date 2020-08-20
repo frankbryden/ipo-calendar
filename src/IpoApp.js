@@ -15,6 +15,7 @@ class IpoApp extends React.Component {
         this.statusFilterChange = this.statusFilterChange.bind(this);
         this.tagFilterChange = this.tagFilterChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
+        this.saveIPOLocally = this.saveIPOLocally.bind(this);
         this.sidebarLeftMargin = "22vw";
         this.sidebarNoMargin = "0vw";
         this.state = {
@@ -27,7 +28,7 @@ class IpoApp extends React.Component {
                     tags: ipo.tags.map(tag => tag.name),
                     status: ipo.status,
                     visible: true,
-                    storedLocally: false,
+                    saved: false,
                 }
             }),
             collapsed: false,
@@ -111,14 +112,17 @@ class IpoApp extends React.Component {
     }
 
     saveIPOLocally(id) {
-        
+        console.log(`Save ipo with id ${id}`);
+        let ipos = this.state.ipos;
         let savedItem;
-        for (let item of this.state.ipos) {
+        for (let item of ipos) {
             if (item.cardId == id) {
-                savedItem = item;
+                savedItem = item
             }
         }
+        savedItem.saved = !savedItem.saved
 
+        
         //As Max pointed out, to save we simply need to store the dealIds.
         //I do not have that information for now, so off to bed....
         if (savedItem.storedLocally) {
@@ -126,6 +130,7 @@ class IpoApp extends React.Component {
         } else {
             //save
         }
+        this.setState({ipos: ipos});
     }
 
     filterBySearch(input) {
@@ -187,7 +192,7 @@ class IpoApp extends React.Component {
                         })}
                         {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                             <div className="content-wrapper">
-                                {this.state.ipos.filter(ipo => ipo.visible == true).map(ipo => ipo.ipoCard)}
+                                {this.state.ipos.filter(ipo => ipo.visible == true).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
                             </div>:
                             <div className="noContent">
                                 <span>Nothing matched your search!</span>
