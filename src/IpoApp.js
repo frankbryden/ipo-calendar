@@ -45,6 +45,16 @@ class IpoApp extends React.Component {
         });
     }
 
+    componentDidMount() {
+        let ipos = this.state.ipos;
+        for (let ipo of ipos) {
+            if (localStorage.getItem(ipo.ipo.id) != null) {
+                ipo.saved = true
+            }
+        }
+        this.setState({ipos: ipos});
+    }
+
 
     tagFilterChange(filter, toggle) {
         console.log(`tag filter change with ${filter} and toggle = ${toggle}`);
@@ -125,10 +135,12 @@ class IpoApp extends React.Component {
         
         //As Max pointed out, to save we simply need to store the dealIds.
         //I do not have that information for now, so off to bed....
-        if (savedItem.storedLocally) {
-            //unsave
-        } else {
+        if (savedItem.saved) {
             //save
+            localStorage.setItem(savedItem.ipo.id, "")
+        } else {
+            //unsave
+            localStorage.removeItem(savedItem.ipo.id, "")
         }
         this.setState({ipos: ipos});
     }
