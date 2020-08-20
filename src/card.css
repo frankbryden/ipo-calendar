@@ -70,8 +70,7 @@
 }
 
 .tags {
-    position: absolute;
-    bottom: 20px;
+    text-align: left;
 }
 
 .tag {
@@ -81,7 +80,7 @@
     display: inline-block;
     color: white;
     margin: 5px;
-    padding: 7.5px;
+    padding: 10px;
     border-radius: 25px;
 }
 

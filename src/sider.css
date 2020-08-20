@@ -9,11 +9,11 @@
 
 .ant-layout-sider .ant-card-head-title, h2 {
     font-size: 1.5rem;
-    color: white;
+    color: #fff6f5;
 }
 
 .logo {
-    font-family: "Rubik Regular", sans-serif;
+    font-family: "Rubik Black", sans-serif;
     font-size: 4rem;
-    color: orange;
+    color: #fff6f5;
 }

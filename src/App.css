@@ -8,6 +8,11 @@
   src: url("fonts/Rubik-Light.ttf");
 }
 
+@font-face {
+  font-family: "Rubik Black";
+  src: url("fonts/Rubik-Black.ttf");
+}
+
 .App {
   text-align: center;
   font-size: 2rem;

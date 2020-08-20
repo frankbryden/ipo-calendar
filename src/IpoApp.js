@@ -152,7 +152,7 @@ class IpoApp extends React.Component {
                         height: "100%",
                         left: 0,
                     }}>
-                        <div className="logo">IPOguys.io</div>
+                        <div className="logo">IPOc</div>
                         <Space>
                         <SearchOutlined style={{color: 'white'}} />
                         <Input

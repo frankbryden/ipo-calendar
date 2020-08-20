@@ -136,7 +136,7 @@ class IpoApiFetcher {
     calculateMarketCap(sharePrice, sharesOutstanding) {
         sharePrice = parseInt(sharePrice.substr(1, sharePrice.length).replace(",", ""), 10);
         sharesOutstanding = parseInt(sharesOutstanding.replace(/,/g, ""), 10);
-        let marketCap = "$ " +(Math.floor(sharePrice * sharesOutstanding / 1000)).toLocaleString() + "M";
+        let marketCap = "$ " +(Math.floor(sharePrice * sharesOutstanding / 1000000)).toLocaleString() + "M";
         return marketCap;
     }
 
@@ -146,8 +146,9 @@ class IpoApiFetcher {
     }
 
     createCompanySummary(fullDescription) {
-        let arrayOfDescriptionLines = fullDescription.split(". ");
-        let quickDescription = arrayOfDescriptionLines[0];
+        // let arrayOfDescriptionLines = fullDescription.split(". ");
+        // let quickDescription = arrayOfDescriptionLines[0];
+        let quickDescription = fullDescription.slice(0, 350) + "...";
         return quickDescription;
     }
 }
