@@ -14,11 +14,6 @@
     transition: 0.5s ease;
 }
 
-.small:hover {
-    /*transform: scale(1.05);*/
-    
-}
-
 .companyName {
     font-family: "Rubik Regular", sans-serif;
     line-height: 35px;

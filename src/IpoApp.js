@@ -16,7 +16,6 @@ class IpoApp extends React.Component {
         this.tagFilterChange = this.tagFilterChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.saveIPOLocally = this.saveIPOLocally.bind(this);
-        this.sidebarLeftMargin = "22vw";
         this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
@@ -31,6 +30,7 @@ class IpoApp extends React.Component {
                     saved: false,
                 }
             }),
+            sidebarLeftMargin: "30vw",
             collapsed: false,
             tagFilters: [],
             statusFilters: [],
@@ -154,16 +154,29 @@ class IpoApp extends React.Component {
         this.updateIPOVisibility();
     }
 
+    componentDidMount() {
+        window.addEventListener("resize", () => this.handleResize());
+    }
+
+    handleResize() {
+        if (window.innerWidth < 1200) {
+            this.setState({sidebarLeftMargin: "32vw"})
+        } if (window.innerWidth >= 1200) {
+            this.setState({sidebarLeftMargin: "22vw"})
+        }
+    }
+
     render() {
         return (
             <div>
                 <Layout>
-                    <Sider width='22vw'
+                    <Sider 
+                        width={this.state.sidebarLeftMargin}
                         bordered={false}
-                        breakpoint='lg' 
+                        breakpoint='sm'
                         trigger={null} 
                         collapsed={this.state.collapsed} 
-                        collapsible collapsedWidth="0" 
+                        collapsible collapsedWidth="0vw" 
                         style={{
                         position: 'fixed',
                         height: "100%",
@@ -171,34 +184,33 @@ class IpoApp extends React.Component {
                     }}>
                         <div className="logo">IPOc</div>
                         <Space>
-                        <SearchOutlined style={{color: 'white'}} />
                         <Input
                             placeholder="Search IPOs"
                             onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
                             value={this.searchValue}
-                            style={{ width: 300, margin: 30 }}>  
+                            style={{ width: "80%", margin: 10 }}>  
                         </Input>
                         </Space>
                         <Card title="Filters" className="filterContainer" bordered={false}>
                             <Card title="Tags" className="filter" bordered={false}>
-                                <FilterSelector height={400} items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
+                                <FilterSelector items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
                             </Card>
                             <Card title="Status" className="filter" bordered={false}>
-                                <FilterSelector height={400} items={this.props.statusOpts} filterChangeCallback={this.statusFilterChange} />
+                                <FilterSelector items={this.props.statusOpts} filterChangeCallback={this.statusFilterChange} />
                             </Card>
 
                         </Card>
                         {/*<Button onClick={() => this.toggleSidebar()}>Toggle</Button> */
                         }
                     </Sider>
-                    <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.sidebarLeftMargin }}>
+                    <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin }}>
 
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
                         {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                             id: 'trigger',
                             style: {
                                 position: "fixed",
-                                left: this.state.collapsed ? this.sidebarNoMargin : this.sidebarLeftMargin, 
+                                left: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin, 
                             },
                             onClick: this.toggleSidebar,
                         })}

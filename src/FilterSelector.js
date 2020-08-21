@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import { Card, Button, Space } from 'antd';
 import { Row, Col } from 'antd';
 import FilterCard from './FilterCard';
+import './sider.css';
 
 class FilterSelector extends React.Component {
     constructor(props){
@@ -102,12 +103,12 @@ class FilterSelector extends React.Component {
     render() {
         return (
             <div>
-                <Row type="flex">
-                    <Col span={12}>
+                <Row type="flex" flexWrap="wrap" className="filterRow">
+                    <Col span={12} className="inactiveCol">
                         <h2>Inactive</h2>
                         <FilterCard height={this.props.height} cards={this.state.inactiveFiltersCards} />
                     </Col>
-                    <Col span={12}>
+                    <Col span={12} className="activeCol">
                         <h2>Active</h2>
                         <FilterCard height={this.props.height} cards={this.state.activeFiltersCards} />
                     </Col>

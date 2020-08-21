@@ -39,16 +39,6 @@ class IpoCard extends React.Component {
         }
     }
 
-    getCoverImage(tag) {
-        if (tag.length == 0) {
-            return require('./images/business.jpg');
-        } if (tag[0].name === "SPAC") {
-            return require('./images/businessforsale.jpg');
-        } if (tag[0].name === "Biotech") {
-            return require('./images/biotech.jpg')
-        }
-    }
-
     expandCard() {
         if (!this.state.expanded) {
             this.setState({ expanded: true });
@@ -79,7 +69,7 @@ class IpoCard extends React.Component {
                     onMouseLeave={() => this.mouseLeft()}
                     className="card small"
                     // title={this.props.ipo.name}
-                    style={{ width: 400, height: 550, margin: 20 }}
+                    style={{ width: 400, height: 550, margin: 15 }} // <div style={{window.innerWidth > 768 ? '800px' : '400px'}}/> USE THIS MAX FOR THE MOBILE VERSION!
                 >
 
                     <Popover content={"Save this IPO"}>

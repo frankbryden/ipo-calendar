@@ -17,3 +17,18 @@
     font-size: 4rem;
     color: #fff6f5;
 }
+
+@media only screen and (max-width: 1600px) {
+    .filterRow {
+        margin: -20px;
+        margin-left: -40px;
+        margin-right: -40px;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+   .ant-layout-sider {
+       max-width: 30vw !important;
+       width: 30vw !important;
+   }
+}
