@@ -18,7 +18,13 @@
     color: #fff6f5;
 }
 
-@media only screen and (max-width: 1600px) {
+.mobileFilter {
+    max-width: 100%;
+    width: 100%;
+    margin: auto;
+}
+
+@media only screen and (max-width: 1600px) and (min-width: 850px) {
     .filterRow {
         margin: -20px;
         margin-left: -40px;

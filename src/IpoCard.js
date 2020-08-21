@@ -96,9 +96,6 @@ class IpoCard extends React.Component {
                     </TweenOne>
                     }
                 </Card>
-
-
-
             </div>
         )
     }

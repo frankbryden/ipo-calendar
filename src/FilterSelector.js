@@ -103,18 +103,23 @@ class FilterSelector extends React.Component {
     render() {
         return (
             <div>
-                <Row type="flex" flexWrap="wrap" className="filterRow">
-                    <Col span={12} className="inactiveCol">
-                        <h2>Inactive</h2>
-                        <FilterCard height={this.props.height} cards={this.state.inactiveFiltersCards} />
-                    </Col>
-                    <Col span={12} className="activeCol">
-                        <h2>Active</h2>
-                        <FilterCard height={this.props.height} cards={this.state.activeFiltersCards} />
-                    </Col>
+                <Row type="flex" flexWrap="wrap" className="filterRow"> 
+                    { window.innerWidth > 850 ? 
+                        <>
+                        <Col span={12} className="inactiveCol">
+                            <h2>Inactive</h2>
+                            <FilterCard height={this.props.height} cards={this.state.inactiveFiltersCards} />
+                        </Col>
+                        <Col span={12} className="activeCol">
+                            <h2>Active</h2>
+                            <FilterCard height={this.props.height} cards={this.state.activeFiltersCards} />
+                        </Col>
+                        </>:
+     
+                        <Col className="mobileFilter" span={2}>
+                            <FilterCard height={this.props.height} cards={this.state.inactiveFiltersCards.concat(this.state.activeFiltersCards)} />
+                        </Col>}
                 </Row>
-
-
             </div>
         )
     }

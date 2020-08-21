@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import  { Breakpoint, BreakpointProvider } from 'react-socks';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BreakpointProvider>
+      <App />
+    </BreakpointProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
