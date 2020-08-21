@@ -19,43 +19,43 @@ for (let i = 0; i < statusTitles.length; i++) {
 const tagTitles = [
     {
         "title": "Fintech",
-        "keywords": ["financial technology", "fintech"]
+        "keywords": [/financial technology/gm, /fintech/gm]
     },
     {
         "title": "Machine Learning",
-        "keywords": ["machine learning", "ml"]
+        "keywords": [/machine learning/gm, /ml/gm]
     },
     {
         "title": "Blockchain",
-        "keywords": ["blockchain", "ledger"]
+        "keywords": [/blockchain/gm, /ledger/gm]
     },
     {
         "title": "Deep Learning",
-        "keywords": ["deep learning", "dl"]
+        "keywords": [/deep learning/gm, /dl/gm]
     },
     {
         "title": "Cryptocurrency",
-        "keywords": ["cryptocurrency", "crypto", "wallet"]
+        "keywords": [/cryptocurrency/gm, /crypto/gm, /wallet/gm]
     },
     {
         "title": "SPAC",
-        "keywords": ["SPAC", "blank check", "company acquisition"]
+        "keywords": [/SPAC/gm, /blank check/gm, /company acquisition/gm]
     },
     {
         "title": "EV",
-        "keywords": ["ev", "electric vehicle"]
+        "keywords": [/ev/gm, /electric vehicle/gm]
     },
     {
         "title": "Biotech",
-        "keywords": ["biotechnology", "biotech"]
+        "keywords": [/biotechnology/gm, /biotech/gm]
     },
     {
         "title": "Healthcare",
-        "keywords": ["medical", "biopharmaceutical"]   
+        "keywords": [/medical/gm, /biopharmaceutical/gm]   
     },
     {
         "title": "AI",
-        "keywords": ["artificial intelligence", "AI"]   
+        "keywords": [/artificial intelligence/gm, /AI/gm]   
     }
 ];
 
@@ -72,6 +72,10 @@ for (let i = 0; i < tagTitles.length; i++) {
 //Tagging object
 let myTagger = new tagprocessing.TagProcessing(tags);
 let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
+
+let data = "We are a newly incorporated blank check company incorporated in July 2020 as a Delaware corporation whose business purpose is to effect a merger, capital stock exchange, asset acquisition, stock purchase, reorganization or similar business combination with one or more businesses, which we refer to throughout this prospectus as our initial business";
+tags = myTagger.determineTags(data);
+console.log(tags);
 
 //TODO find a way to not write duplicate data.
 //apiFetcher.loadDailyDataToDb();

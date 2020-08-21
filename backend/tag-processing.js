@@ -9,7 +9,9 @@ class TagProcessing {
         let tagsInData = [];
         for (let tag of this.tags) {
             for (let kw of tag.keywords){
-                if (data.includes(kw)){
+                let res = data.search(kw);
+                console.log(res);
+                if (data.search(kw)){
                     tagsInData.push(tag);
                     break;
                 }
