@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Button, Input, Space } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined } from '@ant-design/icons';
+import { Layout, Card, Button, Input, Space, Affix } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import IpoCard from './IpoCard';
 import './card.css';
@@ -217,14 +217,20 @@ class IpoApp extends React.Component {
                         
                     </Sider>
                     <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin }}>
+                        {this.state.collapsed ? 
+                        <Affix>
+                        <Header style={{backgroundColor: "black"}}>
+                            <div className="logo">IPOc</div>
+                            
+                        </Header></Affix>: <></>}
 
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
-                        {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                        {React.createElement(this.state.collapsed ? FilterOutlined : FilterOutlined, {
                             id: 'trigger',
                             style: {
                                 color: "orange",
                                 zIndex: "2",
-                                fontSize: "2rem",
+                                fontSize: "3rem",
                                 position: "fixed",
                                 left: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin, 
                             },
