@@ -39,11 +39,11 @@ const tagTitles = [
     },
     {
         "title": "SPAC",
-        "keywords": [/SPAC/gm, /blank check/gm, /company acquisition/gm]
+        "keywords": [/ SPAC[ \.]/gm, /blank check/gm, /company acquisition/gm]
     },
     {
         "title": "EV",
-        "keywords": [/ev/gm, /electric vehicle/gm]
+        "keywords": [/ ev[ \.]/gm, /electric vehicle/gm]
     },
     {
         "title": "Biotech",
@@ -73,12 +73,8 @@ for (let i = 0; i < tagTitles.length; i++) {
 let myTagger = new tagprocessing.TagProcessing(tags);
 let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
 
-let data = "We are a newly incorporated blank check company incorporated in July 2020 as a Delaware corporation whose business purpose is to effect a merger, capital stock exchange, asset acquisition, stock purchase, reorganization or similar business combination with one or more businesses, which we refer to throughout this prospectus as our initial business";
-tags = myTagger.determineTags(data);
-console.log(tags);
-
 //TODO find a way to not write duplicate data.
-//apiFetcher.loadDailyDataToDb();
+apiFetcher.loadDailyDataToDb();
 
 const port = 5000;
 app.listen(port);
