@@ -45,16 +45,6 @@ class IpoApp extends React.Component {
         });
     }
 
-    componentDidMount() {
-        let ipos = this.state.ipos;
-        for (let ipo of ipos) {
-            if (localStorage.getItem(ipo.ipo.id) != null) {
-                ipo.saved = true
-            }
-        }
-        this.setState({ipos: ipos});
-    }
-
 
     tagFilterChange(filter, toggle) {
         console.log(`tag filter change with ${filter} and toggle = ${toggle}`);
@@ -157,6 +147,15 @@ class IpoApp extends React.Component {
     componentDidMount() {
         this.handleResize();
         window.addEventListener("resize", () => this.handleResize());
+        
+        //Handle saved IPOs
+        let ipos = this.state.ipos;
+        for (let ipo of ipos) {
+            if (localStorage.getItem(ipo.ipo.id) != null) {
+                ipo.saved = true
+            }
+        }
+        this.setState({ipos: ipos});
     }
 
     handleResize() {
