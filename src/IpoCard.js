@@ -18,7 +18,6 @@ class IpoCard extends React.Component {
             locallyStoredIPOs: JSON.parse(localStorage.getItem('ipos')),
             expanded: false,
             showExpand: false,
-            cardWidth: 400,
         }
         this.cardRef = React.createRef();
     }
@@ -59,6 +58,7 @@ class IpoCard extends React.Component {
     mouseLeft(){
         this.setState({showExpand: false});
     }
+    
 
     render() {
         return (

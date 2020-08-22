@@ -103,3 +103,21 @@
     bottom: 0;
     position: absolute;
 }
+
+@media only screen and (max-width: 1200px) {
+    .card {
+        width: 350px !important;
+        height: 600px !important;
+    }
+ }
+
+ @media only screen and (max-width: 1120px) {
+    .card {
+        width: 95% !important;
+        height: auto !important;
+        margin: 20px auto 20px auto !important;
+    }
+ }
+
+
+

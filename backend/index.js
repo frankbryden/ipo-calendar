@@ -78,7 +78,7 @@ tags = myTagger.determineTags(data);
 console.log(tags);
 
 //TODO find a way to not write duplicate data.
-//apiFetcher.loadDailyDataToDb();
+// apiFetcher.loadDailyDataToDb();
 
 const port = 5000;
 app.listen(port);

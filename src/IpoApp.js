@@ -30,7 +30,7 @@ class IpoApp extends React.Component {
                     saved: false,
                 }
             }),
-            sidebarLeftMargin: "30vw",
+            sidebarLeftMargin: "22vw",
             collapsed: false,
             tagFilters: [],
             statusFilters: [],
@@ -155,14 +155,24 @@ class IpoApp extends React.Component {
     }
 
     componentDidMount() {
+        this.handleResize();
         window.addEventListener("resize", () => this.handleResize());
     }
 
     handleResize() {
         if (window.innerWidth < 1200) {
             this.setState({sidebarLeftMargin: "32vw"})
+            this.handleMobile()
         } if (window.innerWidth >= 1200) {
             this.setState({sidebarLeftMargin: "22vw"})
+        }
+    }
+    
+    handleMobile() {
+        if (window.innerWidth <= 768) {
+            this.setState({collapsed: true, sidebarLeftMargin: "90vw"});
+        } else {
+            this.setState({collapsed: false});
         }
     }
 
@@ -173,12 +183,14 @@ class IpoApp extends React.Component {
                     <Sider 
                         width={this.state.sidebarLeftMargin}
                         bordered={false}
-                        breakpoint='sm'
+                        breakpoint='md'
+                        onBreakpoint={() => this.handleMobile()}
                         trigger={null} 
                         collapsed={this.state.collapsed} 
                         collapsible collapsedWidth="0vw" 
                         style={{
                         position: 'fixed',
+                        overflow: 'scroll',
                         height: "100%",
                         left: 0,
                     }}>
@@ -202,6 +214,7 @@ class IpoApp extends React.Component {
                         </Card>
                         {/*<Button onClick={() => this.toggleSidebar()}>Toggle</Button> */
                         }
+                        
                     </Sider>
                     <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin }}>
 
@@ -209,6 +222,9 @@ class IpoApp extends React.Component {
                         {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                             id: 'trigger',
                             style: {
+                                color: "orange",
+                                zIndex: "2",
+                                fontSize: "2rem",
                                 position: "fixed",
                                 left: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin, 
                             },
