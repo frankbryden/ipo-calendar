@@ -116,6 +116,8 @@ class IpoApiFetcher {
             "tags": associatedTags, // not done yet
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
+            "ceo": ipoOverview.CEO.value,
+            "url": ipoOverview.CompanyWebsite.value,
             "id": dealID
         }
         return companyInfo;
