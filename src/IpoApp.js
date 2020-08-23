@@ -16,8 +16,8 @@ class IpoApp extends React.Component {
         this.tagFilterChange = this.tagFilterChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.saveIPOLocally = this.saveIPOLocally.bind(this);
+        this.toggleVisibilitySavedIPOs =  this.toggleVisibilitySavedIPOs.bind(this);
         this.sidebarNoMargin = "0vw";
-        this.showOnlySaved = false;
         this.state = {
             loading: true,
             ipos: this.props.ipos.map((ipo, index) => {
@@ -35,6 +35,7 @@ class IpoApp extends React.Component {
             collapsed: false,
             tagFilters: [],
             statusFilters: [],
+            showOnlySaved: false,
             searchValue: "",
         }
     }
@@ -58,7 +59,6 @@ class IpoApp extends React.Component {
         this.setState({
             tagFilters: tagFilters
         });
-        this.updateIPOVisibility();
     }
 
     statusFilterChange(filter, toggle) {
@@ -72,52 +72,50 @@ class IpoApp extends React.Component {
         this.setState({
             statusFilters: statusFilters
         });
-        this.updateIPOVisibility();
     }
 
-    updateIPOVisibility() {
-        console.log(`Got to update with ${this.state.searchValue}`);
-        let ipos = this.state.ipos;
+    toggleVisibilitySavedIPOs() {
+        this.setState({
+            showOnlySaved: !this.state.showOnlySaved
+        });
+    }
+
+
+
+    determineIPOVisibility(ipo) {
         let includeStatusFilters = this.state.statusFilters.length > 0;
         let includeTagFilters = this.state.tagFilters.length > 0;
         let includeSearch = this.state.searchValue.length > 0;
 
-        for (let ipo of ipos) {
-            let visible = true;
+        let visible = true;
 
-            if (this.showOnlySaved) {
-                if (ipo.saved) {
-                    visible = true;
-                } else {
-                    visible = false;
-                }
+        if (this.state.showOnlySaved) {
+            if (!ipo.saved) {
+                visible = false;
             }
-
-            if (includeStatusFilters) {
-                if (!this.state.statusFilters.includes(ipo.status)) {
-                    visible = false;
-                }
-            }
-            if (includeTagFilters) {
-                if (!ipo.tags.map(tag => this.state.tagFilters.includes(tag)).includes(true)) {
-                    visible = false;
-                }
-            }
-            if (includeSearch) {
-                let companyName = ipo.ipo.name.toLowerCase();
-                console.log(`${this.searchValue} includes ${companyName}`);
-                if (!companyName.includes(this.searchValue)) {
-                    visible = false;
-                } else {
-                    console.log(`${companyName} does not contain ${this.searchValue}`);
-                }
-            }
-
-            ipo.visible = visible;
         }
-        this.setState({
-            ipos: ipos,
-        });
+
+        if (includeStatusFilters) {
+            if (!this.state.statusFilters.includes(ipo.status)) {
+                visible = false;
+            }
+        }
+        if (includeTagFilters) {
+            if (!ipo.tags.map(tag => this.state.tagFilters.includes(tag)).includes(true)) {
+                visible = false;
+            }
+        }
+        if (includeSearch) {
+            let companyName = ipo.ipo.name.toLowerCase();
+            console.log(`${this.searchValue} includes ${companyName}`);
+            if (!companyName.includes(this.searchValue)) {
+                visible = false;
+            } else {
+                console.log(`${companyName} does not contain ${this.searchValue}`);
+            }
+        }
+
+        return visible;
     }
 
     saveIPOLocally(id) {
@@ -150,7 +148,6 @@ class IpoApp extends React.Component {
             "searchValue": input
         });
         this.searchValue = input;
-        this.updateIPOVisibility();
     }
 
     componentDidMount() {
@@ -218,8 +215,8 @@ class IpoApp extends React.Component {
                         </Space>
                         <Card title="Filters" className="filterContainer" bordered={false}>
                             <Button type="primary" size="large" 
-                            onClick={() => {this.showOnlySaved ? this.showOnlySaved = false : this.showOnlySaved = true ; this.updateIPOVisibility()} }
-                            style={{backgroundColor: "#db5e56", border: "none"}}>{this.showOnlySaved ? "Show All" : "Show Saved"}</Button>
+                            onClick={this.toggleVisibilitySavedIPOs}
+                            style={{backgroundColor: "#db5e56", border: "none"}}>{this.state.showOnlySaved ? "Show All" : "Show Saved"}</Button>
                             <Card title="Tags" className="filter" bordered={false}>
                                 <FilterSelector items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
                             </Card>
@@ -242,7 +239,7 @@ class IpoApp extends React.Component {
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
                         {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                             <div className="content-wrapper">
-                                {this.state.ipos.filter(ipo => ipo.visible == true).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
+                                {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
                             </div>:
                             <div className="noContent">
                                 <span>Nothing matched your search!</span>
