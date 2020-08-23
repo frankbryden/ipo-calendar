@@ -64,7 +64,7 @@ class IpoCard extends React.Component {
         return (
             <div ref={this.cardRef}>
                 <Card
-                    onClick={() => this.expandCard()}
+                    // onClick={() => this.expandCard()}
                     onMouseEnter={() => this.mouseEntered()}
                     onMouseLeave={() => this.mouseLeft()}
                     className="card small"

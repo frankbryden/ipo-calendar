@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Card, Button, Input, Space, Affix } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, CalculatorFilled } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import IpoCard from './IpoCard';
 import './card.css';
@@ -17,6 +17,7 @@ class IpoApp extends React.Component {
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.saveIPOLocally = this.saveIPOLocally.bind(this);
         this.sidebarNoMargin = "0vw";
+        this.showOnlySaved = false;
         this.state = {
             loading: true,
             ipos: this.props.ipos.map((ipo, index) => {
@@ -39,7 +40,6 @@ class IpoApp extends React.Component {
     }
 
     toggleSidebar() {
-        console.log("toggleee");
         this.setState({
             collapsed: !this.state.collapsed
         });
@@ -84,6 +84,15 @@ class IpoApp extends React.Component {
 
         for (let ipo of ipos) {
             let visible = true;
+
+            if (this.showOnlySaved) {
+                if (ipo.saved) {
+                    visible = true;
+                } else {
+                    visible = false;
+                }
+            }
+
             if (includeStatusFilters) {
                 if (!this.state.statusFilters.includes(ipo.status)) {
                     visible = false;
@@ -182,7 +191,7 @@ class IpoApp extends React.Component {
                     <Sider 
                         width={this.state.sidebarLeftMargin}
                         bordered={false}
-                        breakpoint='md'
+                        breakpoint='sm'
                         onBreakpoint={() => this.handleMobile()}
                         trigger={null} 
                         collapsed={this.state.collapsed} 
@@ -193,6 +202,11 @@ class IpoApp extends React.Component {
                         height: "100%",
                         left: 0,
                     }}>
+                        <MenuFoldOutlined 
+                            style={{color: "white", position: "fixed", fontSize: "2rem",
+                            left: this.state.collapsed ? -50 : `calc(${this.state.sidebarLeftMargin} - 50px)`, 
+                            top: 10, zIndex: 2}}
+                            onClick={() => this.toggleSidebar()} />
                         <div className="logo">IPOc</div>
                         <Space>
                         <Input
@@ -203,6 +217,9 @@ class IpoApp extends React.Component {
                         </Input>
                         </Space>
                         <Card title="Filters" className="filterContainer" bordered={false}>
+                            <Button type="primary" size="large" 
+                            onClick={() => {this.showOnlySaved ? this.showOnlySaved = false : this.showOnlySaved = true ; this.updateIPOVisibility()} }
+                            style={{backgroundColor: "#db5e56", border: "none"}}>{this.showOnlySaved ? "Show All" : "Show Saved"}</Button>
                             <Card title="Tags" className="filter" bordered={false}>
                                 <FilterSelector items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
                             </Card>
@@ -211,30 +228,18 @@ class IpoApp extends React.Component {
                             </Card>
 
                         </Card>
-                        {/*<Button onClick={() => this.toggleSidebar()}>Toggle</Button> */
-                        }
                         
                     </Sider>
                     <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin }}>
                         {this.state.collapsed ? 
                         <Affix>
                         <Header style={{backgroundColor: "black"}}>
-                            <div className="logo">IPOc</div>
-                            
+                            <MenuUnfoldOutlined style={{color: "white", fontSize: "2rem", position: "fixed", left: 10, top: 15}}
+                            onClick={() => this.toggleSidebar()} />
+                            <div className="logo">IPOc</div>   
                         </Header></Affix>: <></>}
 
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
-                        {React.createElement(this.state.collapsed ? FilterOutlined : FilterOutlined, {
-                            id: 'trigger',
-                            style: {
-                                color: "orange",
-                                zIndex: "2",
-                                fontSize: "3rem",
-                                position: "fixed",
-                                left: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin, 
-                            },
-                            onClick: this.toggleSidebar,
-                        })}
                         {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                             <div className="content-wrapper">
                                 {this.state.ipos.filter(ipo => ipo.visible == true).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
