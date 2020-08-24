@@ -4,6 +4,7 @@ import { Card, Popover, Button } from 'antd';
 import { StarTwoTone, PlusOutlined } from '@ant-design/icons';
 import TweenOne from 'rc-tween-one';
 import './card.css'
+import { motion, useMotionValue, MotionValue } from "framer-motion"
 
 import placeholderImg from './images/business.jpg'
 
@@ -13,13 +14,14 @@ const starUnsavedColor = "#a4c7ed";
 class IpoCard extends React.Component {
     constructor(props) {
         super(props);
+        this.cardRef = React.createRef();
         this.saveIpo = this.saveIpo.bind(this);
         this.state = {
             locallyStoredIPOs: JSON.parse(localStorage.getItem('ipos')),
             expanded: false,
             showExpand: false,
+            variants: {},
         }
-        this.cardRef = React.createRef();
     }
 
     // Maybe make all of these states instead?
@@ -39,12 +41,29 @@ class IpoCard extends React.Component {
     }
 
     expandCard() {
+        this.calculateCardPosition()
         if (!this.state.expanded) {
             this.setState({ expanded: true });
-            this.cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
         } else {
             this.setState({ expanded: false });
         }
+    }
+
+    calculateCardPosition() {
+        let rect = this.cardRef.current.getBoundingClientRect();
+        console.log(rect);
+        let siderWidth = document.querySelector(".ant-layout-sider").clientWidth;
+        let targetWidth = window.innerWidth / 2 + siderWidth;
+        let targetHeight = window.innerHeight / 4;
+
+        let deltaX = targetWidth - rect.x - rect.width / 2 - siderWidth;
+        let deltaY = targetHeight - rect.y;
+
+        this.setState({ variants: {
+            open: { type: "spring", stiffness: 100, damping: 30, x: deltaX, y: deltaY},
+            closed: { type: "spring", stiffness: 50, damping: 30,  x: 0, y: 0},
+          }});
     }
 
     saveIpo() {
@@ -55,22 +74,24 @@ class IpoCard extends React.Component {
         this.setState({showExpand: true});
     }
 
-    mouseLeft(){
+    mouseLeft() {
         this.setState({showExpand: false});
     }
-    
 
     render() {
         return (
-            <div ref={this.cardRef}>
+                <motion.div
+                    ref={this.cardRef}
+                    animate={ this.state.expanded ? "open" : "closed" }
+                    variants={this.state.variants}
+                    transition={{ duration: 0.3 }}
+                    style={{zIndex: this.state.expanded ? 2 : 0}}>
+                                  
                 <Card
-                    // onClick={() => this.expandCard()}
                     onMouseEnter={() => this.mouseEntered()}
                     onMouseLeave={() => this.mouseLeft()}
-                    className="card small"
-                    // title={this.props.ipo.name}
-                    style={{ width: 400, height: 550, margin: 15 }} // <div style={{window.innerWidth > 768 ? '800px' : '400px'}}/> USE THIS MAX FOR THE MOBILE VERSION!
-                >
+                    className={`card ${this.state.expanded && "expanded"}`}
+                    style={{ width: 400, height: 550, margin: 15 }}>
 
                     <Popover content={"Save this IPO"}>
                         <StarTwoTone className="star" twoToneColor={this.props.saved ? starSavedColor : starUnsavedColor} onClick={this.saveIpo} />
@@ -90,13 +111,18 @@ class IpoCard extends React.Component {
                     <TweenOne
                         className="bottomRight"
                         animation={[{ x:1, y: 50, type: 'from', opacity: 0, duration:150, ease: 'easeOutQuad' },
-                        {  x: 1, y: 1, duration:20 }]}
-                    >
+                        {  x: 1, y: 1, duration:20 }]}>
+                        
                         <Button onClick={() => this.expandCard()} className="expandBtn"><PlusOutlined /></Button>
+                        
                     </TweenOne>
                     }
+                    {this.state.expanded ? 
+                    <div className="companyName">{this.props.ipo.name}</div>: <></>}
                 </Card>
-            </div>
+                </motion.div>  
+                
+            
         )
     }
 }

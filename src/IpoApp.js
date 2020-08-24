@@ -6,6 +6,7 @@ import FilterSelector from './FilterSelector';
 import IpoCard from './IpoCard';
 import './card.css';
 import './sider.css';
+import { motion, AnimateSharedLayout } from 'framer-motion';
 
 const { Footer, Sider, Content, Header } = Layout;
 
@@ -238,8 +239,8 @@ class IpoApp extends React.Component {
 
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
                         {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
-                            <div className="content-wrapper">
-                                {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
+                            <div className="content-wrapper">  
+                                {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}   
                             </div>:
                             <div className="noContent">
                                 <span>Nothing matched your search!</span>

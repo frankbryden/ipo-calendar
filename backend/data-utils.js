@@ -107,6 +107,7 @@ class IpoApiFetcher {
     async getDealDetails(dealID, companyData) {
         let res = await axios.get(`https://api.nasdaq.com/api/ipo/overview/?dealId=${dealID}`)
         let ipoOverview = res.data.data.poOverview;
+        let financialData = await axios.get(`https://api.nasdaq.com/api/ipo/financials-filings/?dealId=${dealID}`)
         let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
         let associatedTags = this.tagger.determineTags(description);
         let companyInfo = {
@@ -116,7 +117,9 @@ class IpoApiFetcher {
             "tags": associatedTags, // not done yet
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
-            "id": dealID
+            "id": dealID,
+            "financialData": financialData.data.data
+            // "descriptionLong": description,
         }
         return companyInfo;
     }
