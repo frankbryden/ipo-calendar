@@ -56,10 +56,15 @@ const tagTitles = [
     {
         "title": "AI",
         "keywords": [/artificial intelligence/gm, /AI/gm]   
+    },
+    {
+        "title": "Cannabis",
+        "keywords": [/cannabis/gm]   
     }
+    
 ];
 
-const tagColours = ["#f2dc5d","#f2a359","#db9065","#a4031f","#240b36","#51bbfe","#9055a2", "#5EA570", "#7AC74F", "#E87461"];
+const tagColours = ["#f2dc5d","#f2a359","#db9065","#a4031f","#240b36","#51bbfe","#9055a2", "#5EA570", "#7AC74F", "#E87461", "#738d76"];
 let tags = [];
 for (let i = 0; i < tagTitles.length; i++) {
     tags.push({
