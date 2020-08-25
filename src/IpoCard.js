@@ -57,7 +57,7 @@ class IpoCard extends React.Component {
         console.log(rect);
         let siderWidth = document.querySelector(".ant-layout-sider").clientWidth;
         let targetWidth = window.innerWidth / 2 + siderWidth;
-        let targetHeight = window.innerHeight / 4;
+        let targetHeight = window.innerHeight / 12;
 
         let deltaX = targetWidth - rect.x - rect.width / 2 - siderWidth;
         let deltaY = targetHeight - rect.y;

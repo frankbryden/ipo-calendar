@@ -1,28 +1,45 @@
 const express = require('express');
 const axios = require('axios');
 
+const dbUrl = "http://localhost:80";
 const dbName = "ipo";
+const adminDbName = "ipo_admin";
 
 class DbAccess {
-    constructor(dbUrl) {
+    constructor(dbUrl, dbName) {
         this.dbUrl = dbUrl;
+        this.dbName = dbName;
     }
 
     initDb() {
         //Create the collection
         this.makeDbRequest("POST", "/collections", {
-            "name": dbName
-        })
+            "name": this.dbName
+        });
     }
 
     async writeData(data) {
-        let res = await this.makeDbRequest("POST", `/collections/${dbName}/create`, data)
+        let res = await this.makeDbRequest("POST", `/collections/${this.dbName}/create`, data)
         return res.data.id;
     }
 
     async readData(query) {
-        let res = await this.makeDbRequest("GET", `/collections/${dbName}/read`, query)
+        let res = await this.makeDbRequest("GET", `/collections/${this.dbName}/read`, query)
         return res.data;
+    }
+
+    async updateData(objId, patch) {
+        let res = await this.makeDbRequest("PATCH", `/collections/ipo_admin/${objId}`, patch)
+        return res.data;
+        
+    }
+
+    async getOrCreate(name) {
+        let res = await this.readData({"varName": name});
+        if (Object.keys(res).length === 0) {
+            return this.writeData({"varName": name, "value": ""});
+        }
+        return res[0].id;
     }
 
     makeDbRequest(method, path, data) {
@@ -59,8 +76,10 @@ class DbAccess {
 class IpoApiFetcher {
     constructor(tagger) {
         this.loadDailyDataToDb = this.loadDailyDataToDb.bind(this);
-        this.dbHandle = new DbAccess("http://localhost:80");
+        this.dbHandle = new DbAccess(dbUrl, dbName);
         this.dbHandle.initDb();
+        this.adminDbHandle = new DbAccess(dbUrl, adminDbName);
+        this.adminDbHandle.initDb();
         this.tagger = tagger;
         this.dataToSend = [];
     }
@@ -72,10 +91,25 @@ class IpoApiFetcher {
     }
 
     async loadDailyDataToDb() {
-        let ipos = await this.getIpoInformation();
-        ipos.map(ipo => this.dbHandle.writeData(ipo));
+        let lastWriteId = await this.adminDbHandle.getOrCreate("lastWrite");
+        let lastWriteObj = await this.adminDbHandle.readData({"id": lastWriteId});
+        let lastWriteTime = lastWriteObj[0].value;
+        let currentTime = new Date().getTime();
+        let delta = (currentTime - lastWriteTime)/(1000*60*60);
+        console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
+        if (delta < 10) {
+            console.log("It has been less than 10 hours since last write - skip");
+            return;
+        }
+
+        /*let ipos = await this.getIpoInformation();
+        ipos.map(ipo => this.dbHandle.writeData(ipo));*/
+        
+        this.adminDbHandle.updateData(lastWriteId, {"value": currentTime});
         console.log("Wrote daily data");
     }
+
+    
 
     async getIpoInformation() {
         let date = getDate();
