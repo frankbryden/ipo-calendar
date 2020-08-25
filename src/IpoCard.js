@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Card, Popover, Button } from 'antd';
-import { StarTwoTone, PlusOutlined } from '@ant-design/icons';
+import { StarTwoTone, PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import TweenOne from 'rc-tween-one';
 import './card.css'
 import { motion, useMotionValue, MotionValue } from "framer-motion"
@@ -41,7 +41,9 @@ class IpoCard extends React.Component {
     }
 
     expandCard() {
-        this.calculateCardPosition()
+        if (window.innerWidth > 1200) {
+            this.calculateCardPosition()
+        }
         if (!this.state.expanded) {
             this.setState({ expanded: true });
             
@@ -62,7 +64,7 @@ class IpoCard extends React.Component {
 
         this.setState({ variants: {
             open: { type: "spring", stiffness: 100, damping: 30, x: deltaX, y: deltaY},
-            closed: { type: "spring", stiffness: 50, damping: 30,  x: 0, y: 0},
+            closed: { type: "spring", stiffness: 50, damping: 30, x: 0, y: 0},
           }});
     }
 
@@ -80,18 +82,22 @@ class IpoCard extends React.Component {
 
     render() {
         return (
+            <div>
+                <div className="overlay" style={{visibility: this.state.expanded && window.innerWidth > 1200? "visible": "hidden", 
+                zIndex: this.state.expanded? "1": "-1"}}
+                onClick={() => this.setState({expanded: false})}></div>
                 <motion.div
                     ref={this.cardRef}
                     animate={ this.state.expanded ? "open" : "closed" }
                     variants={this.state.variants}
                     transition={{ duration: 0.3 }}
                     style={{zIndex: this.state.expanded ? 2 : 0}}>
-                                  
+
                 <Card
                     onMouseEnter={() => this.mouseEntered()}
                     onMouseLeave={() => this.mouseLeft()}
                     className={`card ${this.state.expanded && "expanded"}`}
-                    style={{ width: 400, height: 550, margin: 15 }}>
+                    style={{ width: 400, height: 600, margin: "auto"}}>
 
                     <Popover content={"Save this IPO"}>
                         <StarTwoTone className="star" twoToneColor={this.props.saved ? starSavedColor : starUnsavedColor} onClick={this.saveIpo} />
@@ -107,21 +113,32 @@ class IpoCard extends React.Component {
                     <div className="tags">
                         {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
                     </div>
-                    {this.state.showExpand && 
-                    <TweenOne
+ 
+                    {this.state.expanded ? 
+                    <div>
+                        <div className="companyName">{this.props.ipo.name}</div>
+                        <div className="companyName">{this.props.ipo.name}</div>
+                        <div className="companyName">{this.props.ipo.name}</div>
+                        <div className="companyName">{this.props.ipo.name}</div>
+                        <TweenOne
+                        className="bottomRight"
+                        animation={[{ x:1, y: 50, type: 'from', opacity: 0, duration:150, ease: 'easeOutQuad' },
+                        {  x: 1, y: 1, duration:20 }]}>
+                        
+                        <Button onClick={() => this.expandCard()} className="expandBtn"><MinusOutlined /></Button>
+                        
+                    </TweenOne>
+                    </div>: <TweenOne
                         className="bottomRight"
                         animation={[{ x:1, y: 50, type: 'from', opacity: 0, duration:150, ease: 'easeOutQuad' },
                         {  x: 1, y: 1, duration:20 }]}>
                         
                         <Button onClick={() => this.expandCard()} className="expandBtn"><PlusOutlined /></Button>
                         
-                    </TweenOne>
-                    }
-                    {this.state.expanded ? 
-                    <div className="companyName">{this.props.ipo.name}</div>: <></>}
+                    </TweenOne>}
                 </Card>
                 </motion.div>  
-                
+            </div>    
             
         )
     }

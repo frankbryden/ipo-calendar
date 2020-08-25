@@ -248,7 +248,7 @@ class IpoApp extends React.Component {
                         }
 
                         </Content>
-                        <Footer>Footer</Footer>
+                        <Footer style={{minHeight: "5vh"}}>Footer</Footer>
                     </Layout>
                 </Layout>
 
