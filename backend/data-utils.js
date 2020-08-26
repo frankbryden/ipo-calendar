@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const parser = require('node-html-parser');
 
 const dbUrl = "http://localhost:80";
 const dbName = "ipo";
@@ -102,8 +103,8 @@ class IpoApiFetcher {
             return;
         }
 
-        /*let ipos = await this.getIpoInformation();
-        ipos.map(ipo => this.dbHandle.writeData(ipo));*/
+        let ipos = await this.getIpoInformation();
+        ipos.map(ipo => this.dbHandle.writeData(ipo));
         
         this.adminDbHandle.updateData(lastWriteId, {"value": currentTime});
         console.log("Wrote daily data");
@@ -151,7 +152,7 @@ class IpoApiFetcher {
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
             "ceo": ipoOverview.CEO.value,
-            "url": ipoOverview.CompanyWebsite.value,
+            "url": this.extractUrl(ipoOverview.CompanyWebsite.value),
             "id": dealID
         }
         return companyInfo;
@@ -187,6 +188,19 @@ class IpoApiFetcher {
         // let quickDescription = arrayOfDescriptionLines[0];
         let quickDescription = fullDescription.slice(0, 350) + "...";
         return quickDescription;
+    }
+
+    extractUrl(rawUrlData) {
+        //The API returns a string representation of an a tag. Parse it 
+        //and extract the href.
+        //<a href='http://www.oakstreethealth.com' target='_blank'>www.oakstreethealth.com</a>
+        const root = parser.parse(rawUrlData);
+        const aTag = root.firstChild;
+        const tentativeA = aTag.firstChild;
+        if (tentativeA == null) {
+            return ""
+        }
+        return tentativeA.rawText
     }
 }
 
