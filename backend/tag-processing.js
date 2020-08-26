@@ -10,7 +10,10 @@ class TagProcessing {
         for (let tag of this.tags) {
             for (let kw of tag.keywords){
                 if (data.search(kw) > 0){
-                    tagsInData.push(tag);
+                    tagsInData.push({
+                        name: tag.name,
+                        color: tag.color
+                    });
                     break;
                 }
             }

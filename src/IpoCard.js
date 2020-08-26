@@ -117,7 +117,7 @@ class IpoCard extends React.Component {
     
                         {this.state.expanded ? 
                         <div>
-                            <div className="companyName">{this.props.ipo.name}</div>
+                            <div className="companyName">{this.props.ipo.url}</div>
                             <div className="companyName">{this.props.ipo.name}</div>
                             <div className="companyName">{this.props.ipo.name}</div>
                             <div className="companyName">{this.props.ipo.name}</div>
