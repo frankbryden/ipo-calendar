@@ -7,6 +7,8 @@ class Ipo {
         this.status = ipoData.status;
         this.date = ipoData.date;
         this.id = ipoData.id;
+        this.ceo = ipoData.ceo;
+        this.url = ipoData.url;
     }
 }
 

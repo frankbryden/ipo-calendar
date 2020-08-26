@@ -102,8 +102,8 @@ class IpoApiFetcher {
             return;
         }
 
-        /*let ipos = await this.getIpoInformation();
-        ipos.map(ipo => this.dbHandle.writeData(ipo));*/
+        let ipos = await this.getIpoInformation();
+        ipos.map(ipo => this.dbHandle.writeData(ipo));
         
         this.adminDbHandle.updateData(lastWriteId, {"value": currentTime});
         console.log("Wrote daily data");
