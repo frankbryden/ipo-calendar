@@ -18,10 +18,10 @@
 }
 
 .expanded {
-    position: fixed;
+    position: relative;
     max-width: 800px !important;
     width: 800px !important;  
-}
+} 
 
 .overlay {
     z-index: 1;

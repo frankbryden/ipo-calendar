@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'antd/dist/antd.css';
 import IpoApp from './IpoApp.js';
+import OverviewApp from './OverviewApp.js';
 import DataFetcher from './DataFetcher.js';
 import Ipo from './Ipo.js';
 import IpoCard from './IpoCard';
@@ -14,9 +15,11 @@ let tags = [{"name":"Fintech","keywords":["financial technology","fintech"],"col
 //Hey max
 class App extends React.Component {
 	constructor() {
-        super();
+		super();
+		this.swapOverviewState = this.swapOverviewState.bind(this);
         this.state = {
-            loading: true,
+			loading: true,
+			overview: false,
             ipos: []
 		}
 		this.dataToFetch = 1;
@@ -77,14 +80,28 @@ class App extends React.Component {
 		}
 	}
 
+	swapOverviewState() {
+		console.log("Swap!")
+		this.setState({
+			overview: !this.state.overview
+		});
+	}
+
 	render() {
 		return (
 			<div className="App">
 				{this.state.loading ?
-					<div> <LoadingOutlined /> Loading </div> :
-
+					<div><LoadingOutlined />Loading</div> :
 					<div>
-						<IpoApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} />
+
+						{this.state.overview ?
+							<div>
+								<OverviewApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />
+							</div> :
+							<div>
+								<IpoApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />
+							</div>
+						}
 					</div>
 				}
 

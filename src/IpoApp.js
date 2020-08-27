@@ -205,7 +205,7 @@ class IpoApp extends React.Component {
                             left: this.state.collapsed ? -50 : `calc(${this.state.sidebarLeftMargin} - 50px)`, 
                             top: 10, zIndex: 2}}
                             onClick={() => this.toggleSidebar()} />
-                        <div className="logo">IPOc</div>
+                        <div onClick={this.props.swapOverviewCallback} className="logo">IPOc</div>
                         <Space>
                         <Input
                             placeholder="Search IPOs"
