@@ -143,19 +143,36 @@ class IpoApiFetcher {
         let res = await axios.get(`https://api.nasdaq.com/api/ipo/overview/?dealId=${dealID}`)
         let ipoOverview = res.data.data.poOverview;
         let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
+        let financial_data = await axios.get(`https://api.nasdaq.com/api/ipo/financials-filings/?dealId=${dealID}`);
+        financial_data = financial_data.data.data;
         let associatedTags = this.tagger.determineTags(description);
         let companyInfo = {
             "name": ipoOverview.CompanyName.value,
+            "ticker": ipoOverview.Symbol.value,
             "marketcap": this.calculateMarketCap(ipoOverview.ProposedSharePrice.value, ipoOverview.SharesOutstanding.value),
-            "description": this.createCompanySummary(description),
+            "description": description,
             "tags": associatedTags, // not done yet
             "status": ipoOverview.DealStatus.value,
             "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
             "ceo": ipoOverview.CEO.value,
             "url": this.extractUrl(ipoOverview.CompanyWebsite.value),
-            "id": dealID
+            "id": dealID,
+            "revenue": financial_data.financials[0].Revenue.value,
+            "income": financial_data.financials[0].NetIncome.value,
+            "stockholdersEquity": financial_data.financials[0].StockholdersEquity.value,
+            "filings": this.sortFilings(financial_data.filings),
         }
         return companyInfo;
+    }
+
+    sortFilings(filings) {
+        let list_of_filings = [];
+        for (let i = 0; i < filings.length; i++) {
+            let formType = filings[i].FormType.value;
+            let link = filings[i].FilingLink.value;
+            list_of_filings.push([formType, link])
+        }
+        return list_of_filings;
     }
 
     getIpoDate(status, data) {
@@ -181,13 +198,6 @@ class IpoApiFetcher {
     stripCompanyDescription(description) {
         //Remove trailing \n (and possible more operations later on)
         return description.replace(/\n/g, " ");
-    }
-
-    createCompanySummary(fullDescription) {
-        // let arrayOfDescriptionLines = fullDescription.split(". ");
-        // let quickDescription = arrayOfDescriptionLines[0];
-        let quickDescription = fullDescription.slice(0, 350) + "...";
-        return quickDescription;
     }
 
     extractUrl(rawUrlData) {

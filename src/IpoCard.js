@@ -21,13 +21,14 @@ class IpoCard extends React.Component {
             expanded: false,
             showExpand: false,
             variants: {},
+            dateColor: this.checkDate(),
+            statusText: this.checkStatus(),
         }
     }
 
-    // Maybe make all of these states instead?
-    checkDate(date) {
-        if (date === "No date set") {
-            return "grey";
+    checkDate() {
+        if (this.props.ipo.date === "No date set") {
+           return "grey";
         };
     }
 
@@ -36,7 +37,7 @@ class IpoCard extends React.Component {
             return "Priced: ";
         }
         if (this.props.ipo.status === "Filed") {
-            return "First trading day: ";
+            return "First Trading Day: ";
         }
     }
 
@@ -104,23 +105,31 @@ class IpoCard extends React.Component {
                             <StarTwoTone className="star" twoToneColor={this.props.saved ? starSavedColor : starUnsavedColor} onClick={this.saveIpo} />
                         </Popover>
 
-                        <div className="companyName">{this.props.ipo.name}</div>
+                        <div className="companyName">{this.state.expanded ? this.props.ipo.name + " " + this.props.ipo.ticker: this.props.ipo.name}</div>
                         <Popover content={"Expected market cap at proposed share price"}>
                             <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
                         </Popover>
-                        <div className="description">{this.props.ipo.description}</div>
+                        <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
 
-                        <div className="tradingDayWrapper">{this.checkStatus()} <span className="date" style={{ color: this.checkDate(this.props.ipo.date) }}>{this.props.ipo.date}</span></div>
-                        <div className="tags">
-                            {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
-                        </div>
-    
+                        <div className="tradingDayWrapper">{this.state.statusText} <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span></div>
+
                         {this.state.expanded ? 
+                        
                         <div>
-                            <div className="companyName">{this.props.ipo.url}</div>
-                            <div className="companyName">{this.props.ipo.name}</div>
-                            <div className="companyName">{this.props.ipo.name}</div>
-                            <div className="companyName">{this.props.ipo.name}</div>
+                            <div className="expandedInfoWrapper">
+                                <div className="financialInfo"> Financial information: 
+                                    <div>Revenue: {this.props.ipo.revenue}</div>
+                                    <div>Net income: {this.props.ipo.income}</div>
+                                    <div>Stockholders Equity: {this.props.ipo.stockholdersEquity}</div>
+                                    <div>CEO: {this.props.ipo.ceo}</div>
+                                </div>
+                                <div className="furtherReading">Further Reading:
+                                    <div className="website"><a href={this.props.ipo.url} target="_blank">Company Website</a></div>
+                                    <div className="latestfilings">{this.props.ipo.filings.map(filing => <a href={filing[1]} target="_blank">{filing[0]}</a>)}</div>
+                                </div>
+                                
+                            </div>
+
                             <TweenOne
                             className="bottomRight"
                             animation={[{ x:1, y: 50, type: 'from', opacity: 0, duration:150, ease: 'easeOutQuad' },
@@ -137,6 +146,10 @@ class IpoCard extends React.Component {
                             <Button onClick={() => this.expandCard()} className="expandBtn"><PlusOutlined /></Button>
                             
                         </TweenOne>}
+
+                        <div className="tags">
+                            {this.props.ipo.tags.map((tag, index) => <div key={index} style={{ backgroundColor: tag.color }} className="tag">{tag.name}</div>)}
+                        </div>
                     </Card>
                 </motion.div>  
             </>   
