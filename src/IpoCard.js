@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Card, Popover, Button } from 'antd';
 import { StarTwoTone, PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import Scrollbar  from 'react-scrollbars-custom';
 import TweenOne from 'rc-tween-one';
 import './card.css'
 import { motion, useMotionValue, MotionValue } from "framer-motion"
@@ -109,8 +110,9 @@ class IpoCard extends React.Component {
                         <Popover content={"Expected market cap at proposed share price"}>
                             <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
                         </Popover>
-                        <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
-
+                        <Scrollbar style={{ height: '300px' }}>
+                            <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
+                        </Scrollbar>
                         <div className="tradingDayWrapper">{this.state.statusText} <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span></div>
 
                         {this.state.expanded ? 

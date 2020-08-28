@@ -32,12 +32,11 @@ class DbAccess {
     async updateData(objId, patch) {
         let res = await this.makeDbRequest("PATCH", `/collections/ipo_admin/${objId}`, patch)
         return res.data;
-        
     }
 
     async getOrCreate(name) {
         let res = await this.readData({"varName": name});
-        if (Object.keys(res).length === 0) {
+        if (Object.keys(res).length === 0 || res.hasOwnProperty("error")) {
             return this.writeData({"varName": name, "value": ""});
         }
         return res[0].id;
