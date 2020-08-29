@@ -20,7 +20,7 @@ class App extends React.Component {
         this.state = {
 			loading: true,
 			overview: false,
-            ipos: []
+			ipos: []
 		}
 		this.dataToFetch = 1;
 		this.dataFetcher = new DataFetcher();
@@ -40,10 +40,11 @@ class App extends React.Component {
 	}
 
 	async fetchData() {
-		this.dataToFetch = 3;
+		this.dataToFetch = 4;
 		this.getIpos();
 		this.getStatusOpts();
 		this.getTags();
+		this.getStats();
 	}
 
     async getIpos() {
@@ -56,6 +57,7 @@ class App extends React.Component {
 	
 	async getStatusOpts() {
 		this.statusOpts = await this.dataFetcher.fetchStatusOpts();
+		console.log(this.statusOpts);
 		this.dataReceived();
 	}
 
@@ -64,16 +66,23 @@ class App extends React.Component {
 		this.dataReceived();
 	}
 
+	async getStats() {
+		this.stats = await this.dataFetcher.fetchStats();
+		this.dataReceived();
+	}
+
 	dataReceived() {
 		this.dataToFetch--;
 		console.log(`Data received! ${this.dataToFetch} to go!`);
 		if (this.dataToFetch == 0) {
 			console.log("Setting state...")
+			console.log(this.statusOpts);
 			this.setState({ 
 				loading: false,
 				ipos: this.ipos,
 				statusOpts: this.statusOpts,
-				tags: this.tags
+				tags: this.tags,
+				stats: this.stats
 			});
 		} else {
 			console.log(`${this.dataToFetch} == ${0} -> ${this.dataToFetch == 0}`)
@@ -96,7 +105,7 @@ class App extends React.Component {
 
 						{this.state.overview ?
 							<div>
-								<OverviewApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />
+								<OverviewApp stats={this.state.stats} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />
 							</div> :
 							<div>
 								<IpoApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />

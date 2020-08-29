@@ -10,6 +10,7 @@ class FilterSelector extends React.Component {
         super(props);
 
         let filters = this.initFilters(this.props.items)
+        
         let itemLists = this.initItemLists(filters)
         this.state = {
             activeFiltersCards: itemLists.active,
@@ -38,7 +39,6 @@ class FilterSelector extends React.Component {
 
     initFilters(items) {
         let filters = [];
-        console.log(items);
         for (let i = 0; i < items.length; i++) {
             filters.push({
                     "id": i,
@@ -87,8 +87,6 @@ class FilterSelector extends React.Component {
 
         //toggle filter item active
         filters[id].active = !itemIsActive;
-
-        console.log(clickedItem);
 
         //notify parent through callback
         this.props.filterChangeCallback(filters[id].tag.name, !itemIsActive);

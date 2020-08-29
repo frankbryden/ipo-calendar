@@ -4,17 +4,22 @@ class DataFetcher {
     }
 
     async fetchIpos() {
-        const js = await await this.fetchData("ipos");
+        const js = await this.fetchData("ipos");
         return js;
     }
 
     async fetchStatusOpts() {
-        const js = await await this.fetchData("status");
+        const js = await this.fetchData("status");
         return js;
     }
 
     async fetchTags() {
-        const js = await await this.fetchData("tags");
+        const js = await this.fetchData("tags");
+        return js;
+    }
+
+    async fetchStats() {
+        const js = await this.fetchData("stats");
         return js;
     }
 

@@ -4,6 +4,7 @@ const app = express();
 const tagprocessing = require('./tag-processing.js');
 const dataUtils = require('./data-utils.js');
 const requestIp = require('request-ip');
+const statsLib = require('./overview-stats.js');
 
 //Status
 const statusTitles = ["Priced", "Upcoming", "Filed"];
@@ -82,8 +83,13 @@ let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
 //Stat tracker
 let statTracker = new dataUtils.StatTracker();
 
-//TODO find a way to not write duplicate data.
-apiFetcher.loadDailyDataToDb();
+//Overview stats
+let overviewStats = new statsLib.OverviewStatsGen();
+
+apiFetcher.loadDailyDataToDb().then(() => {
+    console.log("IPO db operations done, moving onto to overview stats...");
+    overviewStats.updateStats();
+});
 
 const port = 5000;
 
@@ -93,15 +99,22 @@ app.listen(port);
 
 app.get('/ipos', (req, res) => {
     apiFetcher.getIpos().then(ipos => res.json({"ipos": ipos}));
-})
+});
 
 app.get('/status', (req, res) => {
     res.json(status);
-})
+});
 
 app.get('/tags', (req, res) => {
     const ip = req.clientIp;
     console.log(ip);
     statTracker.logIp(ip);
     res.json(tags);
-})
+});
+
+app.get('/stats', (req, res) => {
+    res.json({
+        ipoCount: overviewStats.ipoCount,
+        tagCounts: overviewStats.tagCounts
+    });
+});

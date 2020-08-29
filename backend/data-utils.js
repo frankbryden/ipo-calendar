@@ -1,11 +1,11 @@
-const express = require('express');
 const axios = require('axios');
 const parser = require('node-html-parser');
 
 const dbUrl = "http://localhost:80";
 const dbName = "ipo";
 const adminDbName = "ipo_admin";
-const statsDbName = "ipo_stats";
+const userStatsDbName = "ipo_user_stats";
+const overviewStatsDbName = "ipo_stats";
 
 class DbAccess {
     constructor(dbUrl, dbName) {
@@ -221,7 +221,7 @@ class IpoApiFetcher {
 
 class StatTracker {
     constructor() {
-        this.dbHandle = new DbAccess(dbUrl, statsDbName);
+        this.dbHandle = new DbAccess(dbUrl, userStatsDbName);
         this.dbHandle.initDb();
     }
 
@@ -257,5 +257,8 @@ function getDate() {
 module.exports = {
     DbAccess,
     IpoApiFetcher,
-    StatTracker
+    StatTracker,
+    dbUrl,
+    dbName,
+    overviewStatsDbName
 }
