@@ -119,7 +119,7 @@ class IpoCard extends React.Component {
                         
                         <div>
                             <div className="expandedInfoWrapper">
-                                <div className="financialInfo"> Financial information: 
+                                <div className="financialInfo"> <h2>Financial information:</h2>
                                     <div>Revenue: {this.props.ipo.revenue}</div>
                                     <div>Net income: {this.props.ipo.income}</div>
                                     <div>Stockholders Equity: {this.props.ipo.stockholdersEquity}</div>
