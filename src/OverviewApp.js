@@ -11,7 +11,7 @@ class OverviewApp extends React.Component {
     constructor(props) {
         super(props);
         this.sidebarNoMargin = "0vw";
-        let formattedData = this.breakdownStats(this.props.stats.tagCounts);
+        let formattedData = this.breakdownStats(this.props.stats.tagCounts, this.props.tags);
         console.log(formattedData)
         this.state = {
             sidebarLeftMargin: "22vw",
@@ -21,7 +21,7 @@ class OverviewApp extends React.Component {
                     {
                         label: 'My First dataset',
                         backgroundColor: 'rgba(255,99,132,0.2)',
-                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: formattedData.colors,
                         borderWidth: 1,
                         hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                         hoverBorderColor: 'rgba(255,99,132,1)',
@@ -55,19 +55,26 @@ class OverviewApp extends React.Component {
         }
     }
 
-    breakdownStats(data) {
+    breakdownStats(data, tags) {
         //from an object of the form
         // {"SPAC":7,"Fintech":3,"Healthcare":2,"Cannabis":1,"Deep Learning":3,"Biotech":1,"Machine Learning":1,"EV":2,"AI":1}
         //produce
-        // {"labels": ["SPAC", "Fintech", "Healthcare"...], counts: [7, 3, 2, 1...]}
+        // {"labels": ["SPAC", "Fintech", "Healthcare"...], counts: [7, 3, 2, 1...], colors: ['red', 'blue'...]}
         let formattedData = {
             labels: [],
-            counts: []
+            counts: [],
+            colors: [],
         };
         
         for (let tag of Object.keys(data)) {
             formattedData.labels.push(tag);
             formattedData.counts.push(data[tag]);
+            for (let tagObj of tags) {
+                if (tagObj.name == tag) {
+                    formattedData.colors.push(tagObj.color);
+                    break;
+                }
+            }
         }
         return formattedData;
     }
@@ -76,7 +83,7 @@ class OverviewApp extends React.Component {
         return (
             <div>
                 <h1>Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                <Doughnut data={this.state.data} />
+                <Doughnut  width={100} height={50}data={this.state.data} />
                 <Button onClick={this.props.swapOverviewCallback}>Swap</Button>
             </div>
         )
