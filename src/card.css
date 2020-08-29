@@ -21,7 +21,7 @@
     position: fixed;
     max-width: 900px !important;
     width: 900px !important; 
-    height: 850px !important;
+    height: auto !important;
 } 
 
 .expanded .description {
@@ -146,7 +146,7 @@
 .expandedInfoWrapper h2 {
     font-size: 2rem;
     font-family: "Rubik Regular", sans-serif;
-    color: black;
+    color: #363434;
 }
 
 .furtherReading, .financialInfo {
@@ -160,6 +160,23 @@
 
 .latestfilings {
     list-style-type: none;
+}
+
+.financialInfo {
+    text-align: left;
+}
+
+.financialData {
+    display: block;
+    font-family: "Rubik Regular", sans-serif;
+    text-align: right;
+    color: #008000;
+}
+
+@media only screen and (max-width: 1400px) {
+    .expanded {
+        max-width: 700px !important;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
@@ -189,5 +206,10 @@
     }
  }
 
+ @media only screen and (max-width: 600px) {
+     .expandedInfoWrapper {
+         grid-template-columns: auto;
+     }
+ }
 
 

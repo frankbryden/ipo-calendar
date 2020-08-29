@@ -108,7 +108,7 @@ class IpoCard extends React.Component {
 
                         <div className="companyName">{this.state.expanded ? this.props.ipo.name + " " + this.props.ipo.ticker: this.props.ipo.name}</div>
                         <Popover content={"Expected market cap at proposed share price"}>
-                            <div className="marketCap"><strong>{this.props.ipo.marketCap}</strong></div>
+                            <div className="marketCap"><strong>{this.props.ipo.marketCap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketCap}</strong></div>
                         </Popover>
                         <Scrollbar style={{ height: '300px' }}>
                             <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
@@ -120,12 +120,12 @@ class IpoCard extends React.Component {
                         <div>
                             <div className="expandedInfoWrapper">
                                 <div className="financialInfo"> <h2>Financial information:</h2>
-                                    <div>Revenue: {this.props.ipo.revenue}</div>
-                                    <div>Net income: {this.props.ipo.income}</div>
-                                    <div>Stockholders Equity: {this.props.ipo.stockholdersEquity}</div>
-                                    <div>CEO: {this.props.ipo.ceo}</div>
+                                    <div>Revenue: <span className="financialData">{this.props.ipo.revenue}</span></div>
+                                    <div>Net income: <span className="financialData">{this.props.ipo.income}</span></div>
+                                    <div>Stockholders Equity: <span className="financialData">{this.props.ipo.stockholdersEquity}</span></div>
+                                    <div>CEO: <span className="financialData">{this.props.ipo.ceo}</span></div>
                                 </div>
-                                <div className="furtherReading">Further Reading:
+                                <div className="furtherReading"> <h2>Further Reading:</h2>
                                 {
                                     this.props.ipo.url.length > 0 &&
                                     <div className="website"><a href={"http://" + this.props.ipo.url} target="_blank">Company Website</a></div>
