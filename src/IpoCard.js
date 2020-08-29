@@ -119,15 +119,15 @@ class IpoCard extends React.Component {
                         
                         <div>
                             <div className="expandedInfoWrapper">
-                                <div className="financialInfo"> Financial information: 
+                                <div className="financialInfo"> <h2>Financial information:</h2>
                                     <div>Revenue: {this.props.ipo.revenue}</div>
                                     <div>Net income: {this.props.ipo.income}</div>
                                     <div>Stockholders Equity: {this.props.ipo.stockholdersEquity}</div>
                                     <div>CEO: {this.props.ipo.ceo}</div>
                                 </div>
-                                <div className="furtherReading">Further Reading:
+                                <div className="furtherReading"><h2>Further Reading:</h2>
                                     <div className="website"><a href={this.props.ipo.url} target="_blank">Company Website</a></div>
-                                    <div className="latestfilings">{this.props.ipo.filings.map(filing => <a href={filing[1]} target="_blank">{filing[0]}</a>)}</div>
+                                    <ul className="latestfilings">{this.props.ipo.filings.map(filing => <li><a href={filing[1]} target="_blank">{filing[0]}</a></li>)}</ul>
                                 </div>
                                 
                             </div>
