@@ -107,7 +107,6 @@ app.get('/status', (req, res) => {
 
 app.get('/tags', (req, res) => {
     const ip = req.clientIp;
-    console.log(ip);
     statTracker.logIp(ip);
     res.json(tags);
 });
