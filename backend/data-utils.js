@@ -5,6 +5,7 @@ const parser = require('node-html-parser');
 const dbUrl = "http://localhost:80";
 const dbName = "ipo";
 const adminDbName = "ipo_admin";
+const statsDbName = "ipo_stats";
 
 class DbAccess {
     constructor(dbUrl, dbName) {
@@ -30,16 +31,20 @@ class DbAccess {
     }
 
     async updateData(objId, patch) {
-        let res = await this.makeDbRequest("PATCH", `/collections/ipo_admin/${objId}`, patch)
+        let res = await this.makeDbRequest("PATCH", `/collections/${this.dbName}/${objId}`, patch)
         return res.data;
     }
 
     async getOrCreate(name) {
         let res = await this.readData({"varName": name});
-        if (Object.keys(res).length === 0 || res.hasOwnProperty("error")) {
+        if (this.isFail(res)) {
             return this.writeData({"varName": name, "value": ""});
         }
         return res[0].id;
+    }
+
+    isFail(res) {
+        return Object.keys(res).length === 0 || res.hasOwnProperty("error");
     }
 
     makeDbRequest(method, path, data) {
@@ -64,6 +69,7 @@ class DbAccess {
                 console.error("Unknown method " + method);
                 return;
         }*/
+        console.log(`${this.dbUrl}${path} -> ${data}`);
 
         return axios({
             url: this.dbUrl + path,
@@ -213,6 +219,34 @@ class IpoApiFetcher {
     }
 }
 
+class StatTracker {
+    constructor() {
+        this.dbHandle = new DbAccess(dbUrl, statsDbName);
+        this.dbHandle.initDb();
+    }
+
+    async logIp(ip) {
+        //fetch data. If it is there, increase by 1. If not, create and set count to 1
+        let res = await this.dbHandle.readData({id: ip});
+
+        //Write or update data depending on response
+        if (this.dbHandle.isFail(res)) {
+            console.log(`Writing fresh obj with id ${ip}`);
+            this.dbHandle.writeData({
+                id: ip,
+                count: 1
+            });
+        } else {
+            res = res[0];
+            console.log(res);
+            console.log(`Updating existing obj with count ${res.count + 1}`);
+            this.dbHandle.updateData(ip, {
+                count: res.count + 1
+            });
+        }
+    }
+}
+
 function getDate() {
     let date = new Date();
     let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -222,5 +256,6 @@ function getDate() {
 
 module.exports = {
     DbAccess,
-    IpoApiFetcher
+    IpoApiFetcher,
+    StatTracker
 }

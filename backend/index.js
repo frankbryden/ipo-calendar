@@ -3,6 +3,7 @@ const axios = require('axios');
 const app = express();
 const tagprocessing = require('./tag-processing.js');
 const dataUtils = require('./data-utils.js');
+const requestIp = require('request-ip');
 
 //Status
 const statusTitles = ["Priced", "Upcoming", "Filed"];
@@ -78,10 +79,16 @@ for (let i = 0; i < tagTitles.length; i++) {
 let myTagger = new tagprocessing.TagProcessing(tags);
 let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
 
+//Stat tracker
+let statTracker = new dataUtils.StatTracker();
+
 //TODO find a way to not write duplicate data.
 apiFetcher.loadDailyDataToDb();
 
 const port = 5000;
+
+app.use(requestIp.mw())
+
 app.listen(port);
 
 app.get('/ipos', (req, res) => {
@@ -93,5 +100,8 @@ app.get('/status', (req, res) => {
 })
 
 app.get('/tags', (req, res) => {
+    const ip = req.clientIp;
+    console.log(ip);
+    statTracker.logIp(ip);
     res.json(tags);
 })
