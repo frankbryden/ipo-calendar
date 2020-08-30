@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const tagprocessing = require('./tag-processing.js');
@@ -94,6 +95,7 @@ apiFetcher.loadDailyDataToDb().then(() => {
 const port = 5000;
 
 app.use(requestIp.mw())
+app.use(cors())
 
 app.listen(port);
 
