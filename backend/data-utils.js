@@ -1,7 +1,7 @@
 const axios = require('axios');
 const parser = require('node-html-parser');
 
-const dbUrl = "http://localhost:80";
+const dbUrl = "http://localhost:9999";
 const dbName = "ipo";
 const adminDbName = "ipo_admin";
 const userStatsDbName = "ipo_user_stats";
