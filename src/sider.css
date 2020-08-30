@@ -1,6 +1,6 @@
 .ant-layout-sider, .filterContainer {
     font-family: "Rubik Light", sans-serif;
-    background-color: var(--sider-bg-color);
+    background-color: var(--tags-bg-color);
 }
 
 .filter {
@@ -10,6 +10,28 @@
 .ant-layout-sider .ant-card-head-title, h2 {
     font-size: 1.5rem;
     color: #fff6f5;
+}
+
+.sliderWrapper {
+    margin-left: 30%;
+    margin-right: 30%;
+    color: white;
+    font-size: 1.2rem;
+    text-align: left;
+}
+
+.sliderWrapper span {
+    display: block;
+}
+
+.ant-switch {
+    display: block;
+    float: right;
+    background-color: grey;
+}
+
+.ant-switch-checked {
+    background-color: #1890ff;
 }
 
 .logo {
@@ -24,10 +46,29 @@
     margin: auto;
 }
 
+@media only screen and (max-width: 2100px) {
+    .sliderWrapper {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}
+
 @media only screen and (max-width: 1600px) {
     .filterRow {
         margin: -20px;
         margin-left: -40px;
         margin-right: -40px;
+    }
+
+    .sliderWrapper {
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .sliderWrapper {
+        margin-left: 15%;
+        margin-right: 15%;
     }
 }

@@ -9,8 +9,8 @@ import { motion, useMotionValue, MotionValue } from "framer-motion"
 
 import placeholderImg from './images/business.jpg'
 
-const starSavedColor = "#db5e56";//"#3990ed";
-const starUnsavedColor = "#a4c7ed";
+const starSavedColor = "orange";//"#3990ed";
+const starUnsavedColor = "#3990ed";
 
 class IpoCard extends React.Component {
     constructor(props) {
@@ -99,21 +99,24 @@ class IpoCard extends React.Component {
                     <Card
                         onMouseEnter={() => this.mouseEntered()}
                         onMouseLeave={() => this.mouseLeft()}
-                        className={`card ${this.state.expanded && "expanded"}`}
+                        className={`card ${this.state.expanded && "expanded"} ${this.props.minimized && !this.state.expanded && "minimized"}`}
                         style={{ width: 400, height: 600, margin: "auto"}}>
 
                         <Popover content={"Save this IPO"}>
                             <StarTwoTone className="star" twoToneColor={this.props.saved ? starSavedColor : starUnsavedColor} onClick={this.saveIpo} />
                         </Popover>
 
-                        <div className="companyName">{this.state.expanded ? this.props.ipo.name + " " + this.props.ipo.ticker: this.props.ipo.name}</div>
+                        <div className="companyName">{this.state.expanded ? this.props.ipo.name + " (" + this.props.ipo.ticker + ")": this.props.ipo.name}</div>
                         <Popover content={"Expected market cap at proposed share price"}>
                             <div className="marketCap"><strong>{this.props.ipo.marketCap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketCap}</strong></div>
                         </Popover>
-                        <Scrollbar style={{ height: '300px' }}>
-                            <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
-                        </Scrollbar>
-                        <div className="tradingDayWrapper">{this.state.statusText} <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span></div>
+
+                        {this.props.minimized && !this.state.expanded ? <></>: <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div> }
+                        
+                        <div className="tradingDayWrapper">{this.state.statusText} 
+                            <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span>
+                            <span className="exchange">{this.props.ipo.exchange}</span>
+                        </div>
 
                         {this.state.expanded ? 
                         
@@ -122,7 +125,7 @@ class IpoCard extends React.Component {
                                 <div className="financialInfo"> <h2>Financial information:</h2>
                                     <div>Revenue: <span className="financialData">{this.props.ipo.revenue}</span></div>
                                     <div>Net income: <span className="financialData">{this.props.ipo.income}</span></div>
-                                    <div>Stockholders Equity: <span className="financialData">{this.props.ipo.stockholdersEquity}</span></div>
+                                    <div>Stockholders Equity: <span className="financialData" style={{color: this.props.ipo.stockholdersEquity.includes("(") ? '#AD2403': '#04ad72'}}>{this.props.ipo.stockholdersEquity}</span></div>
                                     <div>CEO: <span className="financialData">{this.props.ipo.ceo}</span></div>
                                 </div>
                                 <div className="furtherReading"> <h2>Further Reading:</h2>
@@ -131,7 +134,7 @@ class IpoCard extends React.Component {
                                     <div className="website"><a href={"http://" + this.props.ipo.url} target="_blank">Company Website</a></div>
                                 }
                                     
-                                    <div className="latestfilings">{this.props.ipo.filings.map(filing => <a href={filing[1]} target="_blank">{filing[0]}</a>)}</div>
+                                    <div className="latestfilings">{this.props.ipo.filings.map(filing => <a href={filing[1]} target="_blank">{filing[0]}<br></br></a>)}</div>
                                 </div>
                                 
                             </div>

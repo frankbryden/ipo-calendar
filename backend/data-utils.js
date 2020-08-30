@@ -124,19 +124,19 @@ class IpoApiFetcher {
         let res = await axios.get(url)
         let ipos = [];
         let pricedInCompanyInfo = res.data.data.priced.rows;
-        for (let item in pricedInCompanyInfo.slice(0, 5)) {
+        for (let item in pricedInCompanyInfo.slice(0, 15)) {
             let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
             ipos.push(dealDetails);
         }
 
         let upcomingCompanyInfo = res.data.data.upcoming.upcomingTable.rows;
-        for (let item in upcomingCompanyInfo.slice(0, 5)) {
+        for (let item in upcomingCompanyInfo.slice(0, 15)) {
             let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
             ipos.push(dealDetails);
         }
 
         let filedCompanyInfo = res.data.data.filed.rows;
-        for (let item in filedCompanyInfo.slice(0, 5)) {
+        for (let item in filedCompanyInfo.slice(0, 15)) {
             let dealDetails = await this.getDealDetails(filedCompanyInfo[item].dealID, filedCompanyInfo[item]);
             ipos.push(dealDetails);
         }
@@ -166,6 +166,7 @@ class IpoApiFetcher {
             "income": financial_data.financials[0].NetIncome.value,
             "stockholdersEquity": financial_data.financials[0].StockholdersEquity.value,
             "filings": this.sortFilings(financial_data.filings),
+            "exchange": ipoOverview.Exchange.value,
         }
         return companyInfo;
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Button, Input, Space, Affix } from 'antd';
+import { Layout, Card, Button, Input, Space, Affix, Switch } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, CalculatorFilled } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import IpoCard from './IpoCard';
@@ -18,6 +18,7 @@ class IpoApp extends React.Component {
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.saveIPOLocally = this.saveIPOLocally.bind(this);
         this.toggleVisibilitySavedIPOs =  this.toggleVisibilitySavedIPOs.bind(this);
+        this.toggleMinimizedCards = this.toggleMinimizedCards.bind(this);
         this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
@@ -38,6 +39,7 @@ class IpoApp extends React.Component {
             statusFilters: [],
             showOnlySaved: false,
             searchValue: "",
+            showCardsMinimized: true,
         }
     }
 
@@ -81,7 +83,11 @@ class IpoApp extends React.Component {
         });
     }
 
-
+    toggleMinimizedCards() {
+        this.setState({
+            showCardsMinimized: !this.state.showCardsMinimized
+        })
+    }
 
     determineIPOVisibility(ipo) {
         let includeStatusFilters = this.state.statusFilters.length > 0;
@@ -215,9 +221,13 @@ class IpoApp extends React.Component {
                         </Input>
                         </Space>
                         <Card title="Filters" className="filterContainer" bordered={false}>
-                            <Button type="primary" size="large" 
-                            onClick={this.toggleVisibilitySavedIPOs}
-                            style={{backgroundColor: "#db5e56", border: "none"}}>{this.state.showOnlySaved ? "Show All" : "Show Saved"}</Button>
+
+                            <div className="sliderWrapper">
+                                <span>Show Saved<Switch  onChange={this.toggleVisibilitySavedIPOs}></Switch></span>
+                                <br></br>
+                                <span>Expand Cards<Switch onChange={this.toggleMinimizedCards}></Switch></span>
+                            </div>
+
                             <Card title="Tags" className="filter" bordered={false}>
                                 <FilterSelector items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
                             </Card>
@@ -240,7 +250,7 @@ class IpoApp extends React.Component {
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
                         {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                             <div className="content-wrapper">  
-                                {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}   
+                                {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} minimized={this.state.showCardsMinimized} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}   
                             </div>:
                             <div className="noContent">
                                 <span>Nothing matched your search!</span>
