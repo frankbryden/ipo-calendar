@@ -24,6 +24,10 @@
     height: auto !important;
 } 
 
+.minimized {
+    height: 350px !important;
+}
+
 .expanded .description {
     max-height: 250px;
     overflow: scroll;
@@ -75,12 +79,20 @@
     font-size: 1.05rem;
     /* background-color: #F5E7E1; */
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.description::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
 }
 
 .tradingDayWrapper {
     font-family: "Rubik Light", sans-serif;
-    color: #008000;
+    color: #04ad72;
     text-align: left;
     font-size: 1.2rem; 
     margin-bottom: 10px;
@@ -92,6 +104,7 @@
 
 .tags {
     text-align: left;
+    margin-bottom: 20px;
 }
 
 .tag {
@@ -116,13 +129,13 @@
 
 .star {
     float: right;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
                 
 .expandBtn {
     margin: 10px;
     border: none;
-    background-color: #db5e56;
+    background-color: #CCC5C4;
     width: 80px;
 }
 
@@ -133,29 +146,43 @@
 }
 
 .expandedInfoWrapper {
-    text-align: left;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
 }
 
 .expanded .tradingDayWrapper {
-    font-size: 2rem;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.expanded .exchange {
+    float: right;
+    margin-right: 100px;
+}
+
+.exchange {
+    /* font-family: "Rubik Regular", sans-serif; */
+    display: block;
+    
 }
 
 .expandedInfoWrapper h2 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-family: "Rubik Regular", sans-serif;
     color: #363434;
 }
 
 .furtherReading, .financialInfo {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-family: "Rubik Light", sans-serif;
 }
 
 .furtherReading {
-    margin: auto;
+    text-align: left;
+    width: 40%;
+    padding-left: 30px;
 }
 
 .latestfilings {
@@ -163,14 +190,29 @@
 }
 
 .financialInfo {
+    width: 60%;
+    padding-right: 30px;
     text-align: left;
+    padding-bottom: 20px;
+}
+
+.financialInfo div {
+    margin-bottom: 20px;
 }
 
 .financialData {
     display: block;
+    float: right;
     font-family: "Rubik Regular", sans-serif;
     text-align: right;
-    color: #008000;
+    color: #04ad72;
+}
+
+@media only screen and (max-width: 500px) {
+    .financialInfo, .furtherReading {
+        padding: 0;
+        width: 100%;
+    }
 }
 
 @media only screen and (max-width: 1400px) {
@@ -207,9 +249,12 @@
  }
 
  @media only screen and (max-width: 600px) {
-     .expandedInfoWrapper {
-         grid-template-columns: auto;
-     }
- }
+    .expandedInfoWrapper {
+        grid-template-columns: auto;
+    }
+    .expanded .exchange {
+        float: none;
+    }
+}
 
 

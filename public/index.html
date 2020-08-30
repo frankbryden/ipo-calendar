@@ -9,6 +9,13 @@
       name="description"
       content="An innovative IPO Calendar"
     />
+    <script type="text/javascript"> // disables back button.
+      history.pushState(null, document.title, location.href);
+      window.addEventListener('popstate', function (event)
+      {
+        history.pushState(null, document.title, location.href);
+      });
+    </script>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a

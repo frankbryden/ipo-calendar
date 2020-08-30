@@ -14,6 +14,7 @@ class Ipo {
         this.income = ipoData.income;
         this.stockholdersEquity = ipoData.stockholdersEquity;
         this.filings = ipoData.filings;
+        this.exchange = ipoData.exchange;
     }
 }
 
