@@ -223,9 +223,10 @@ class IpoApp extends React.Component {
                         <Card title="Filters" className="filterContainer" bordered={false}>
 
                             <div className="sliderWrapper">
-                                <span>Show Saved<Switch  onChange={this.toggleVisibilitySavedIPOs}></Switch></span>
-                                <br></br>
-                                <span>Expand Cards<Switch onChange={this.toggleMinimizedCards}></Switch></span>
+                                <span>Show Saved</span>
+                                    <Switch  onChange={this.toggleVisibilitySavedIPOs}></Switch>
+                                <span>Expand Cards</span>
+                                    <Switch onChange={this.toggleMinimizedCards}></Switch>
                             </div>
 
                             <Card title="Tags" className="filter" bordered={false}>

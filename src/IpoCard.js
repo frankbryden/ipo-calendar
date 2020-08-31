@@ -111,12 +111,14 @@ class IpoCard extends React.Component {
                             <div className="marketCap"><strong>{this.props.ipo.marketCap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketCap}</strong></div>
                         </Popover>
 
-                        {this.props.minimized && !this.state.expanded ? <></>: <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div> }
-                        
-                        <div className="tradingDayWrapper">{this.state.statusText} 
-                            <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span>
-                            <span className="exchange">{this.props.ipo.exchange}</span>
-                        </div>
+                        {this.props.minimized && !this.state.expanded ? <></>: <>
+                            <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
+                            <div className="tradingDayWrapper">{this.state.statusText} 
+                                <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span>
+                                <span className="exchange">{this.props.ipo.exchange}</span>
+                            </div>
+                            </>
+                        }
 
                         {this.state.expanded ? 
                         
