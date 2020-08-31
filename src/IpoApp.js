@@ -211,7 +211,10 @@ class IpoApp extends React.Component {
                             left: this.state.collapsed ? -50 : `calc(${this.state.sidebarLeftMargin} - 50px)`, 
                             top: 10, zIndex: 2}}
                             onClick={() => this.toggleSidebar()} />
-                        <div onClick={this.props.swapOverviewCallback} className="logo">IPOc</div>
+                            
+                        <div onClick={this.props.swapOverviewCallback} className="logo">IPO
+                            <span>c</span></div>
+                        
                         <Space>
                         <Input
                             placeholder="Search IPOs"
@@ -230,10 +233,10 @@ class IpoApp extends React.Component {
                             </div>
 
                             <Card title="Tags" className="filter" bordered={false}>
-                                <FilterSelector items={this.props.tags} filterChangeCallback={this.tagFilterChange} />
+                                <FilterSelector items={this.props.tags} needColor={true} filterChangeCallback={this.tagFilterChange} />
                             </Card>
                             <Card title="Status" className="filter" bordered={false}>
-                                <FilterSelector items={this.props.statusOpts} filterChangeCallback={this.statusFilterChange} />
+                                <FilterSelector items={this.props.statusOpts} needColor={false} filterChangeCallback={this.statusFilterChange} />
                             </Card>
 
                         </Card>
@@ -245,7 +248,7 @@ class IpoApp extends React.Component {
                         <Header style={{backgroundColor: "black"}}>
                             <MenuUnfoldOutlined style={{color: "white", fontSize: "2rem", position: "fixed", left: 10, top: 15}}
                             onClick={() => this.toggleSidebar()} />
-                            <div className="logo">IPOc</div>   
+                            <div className="logo">IPO<span>c</span></div>   
                         </Header></Affix>: <></>}
 
                         <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>

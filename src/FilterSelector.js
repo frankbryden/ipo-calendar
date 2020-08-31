@@ -10,7 +10,6 @@ class FilterSelector extends React.Component {
         super(props);
 
         let filters = this.initFilters(this.props.items)
-        
         let itemLists = this.initItemLists(filters)
         this.state = {
             activeFiltersCards: itemLists.active,
@@ -26,7 +25,7 @@ class FilterSelector extends React.Component {
         };
         for (let item of filters) {
             let callbackId = item.id;
-            let btn = <Button className="cardBtn" size="default" key={callbackId} btnid={callbackId} onClick={() => this.btnCallback(callbackId)}>{item.tag.name}</Button>;
+            let btn = <Button style={{background: `linear-gradient(to right, ${this.props.needColor ? item.tag.color: "white"} 6%, white 0%)`}} className="cardBtn" size="default" key={callbackId} btnid={callbackId} onClick={() => this.btnCallback(callbackId)}>{item.tag.name}</Button>;
 
             if (item.active)
                 itemLists.active.push(btn)
