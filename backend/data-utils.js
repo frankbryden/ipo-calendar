@@ -109,6 +109,7 @@ class IpoApiFetcher {
         }
 
         let ipos = await this.getIpoInformation();
+	console.log(`Got ${ipos.length} ipos`);
         ipos.map(ipo => this.dbHandle.writeData(ipo));
         
         this.adminDbHandle.updateData(lastWriteId, {"value": currentTime});
@@ -120,8 +121,9 @@ class IpoApiFetcher {
     async getIpoInformation() {
         let date = getDate();
         let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
-
+	console.log("Fetching initial data...");
         let res = await axios.get(url)
+	console.log("Done.");
         let ipos = [];
         let pricedInCompanyInfo = res.data.data.priced.rows;
         for (let item in pricedInCompanyInfo.slice(0, 15)) {
