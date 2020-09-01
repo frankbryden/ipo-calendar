@@ -100,7 +100,12 @@ app.use(cors())
 app.listen(port);
 
 app.get('/ipos', (req, res) => {
-    apiFetcher.getIpos().then(ipos => res.json({"ipos": ipos}));
+    console.log(req.query.s, req.query.e);
+    apiFetcher.getIpos().then(ipos => {
+        let sorted = ipos.sort((a, b) => )
+        let page = ipos.slice(req.query.s, req.query.e);
+        res.json({"ipos": page})
+    });
 });
 
 app.get('/status', (req, res) => {

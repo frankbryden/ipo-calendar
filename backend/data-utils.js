@@ -107,7 +107,7 @@ class IpoApiFetcher {
                 "description": description,
                 "tags": allIpoInfo[i].tags, // not done yet
                 "status": overview.DealStatus.value,
-                "date": this.getIpoDate(overview.DealStatus.value, allIpoInfo[i].frontPageDetails.expectedPriceDate), //headache inducing
+                "date": this.getIpoDate(overview.DealStatus.value, allIpoInfo[i].frontPageDetails), //headache inducing
                 "ceo": overview.CEO.value,
                 "url": this.extractUrl(overview.CompanyWebsite.value),
                 "id": allIpoInfo[i].dealID,
@@ -119,7 +119,6 @@ class IpoApiFetcher {
             }
             dataToSendToFront.push(companyInfo);
         }
-        console.log(dataToSendToFront);
         return dataToSendToFront
     }
 
@@ -147,6 +146,7 @@ class IpoApiFetcher {
 
     async getIpoInformation() {
         let date = getDate();
+        date = "2020-08";
         let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
 	console.log("Fetching initial data...");
         let res = await axios.get(url)
@@ -154,6 +154,7 @@ class IpoApiFetcher {
         let pricedInCompanyInfo = res.data.data.priced.rows;
         if (pricedInCompanyInfo != null) {
             for (let item in pricedInCompanyInfo) {
+                console.log(".");
                 let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
                 ipos.push(dealDetails);
             }
@@ -162,6 +163,7 @@ class IpoApiFetcher {
         let upcomingCompanyInfo = res.data.data.upcoming.upcomingTable.rows;
         if (upcomingCompanyInfo != null) {
             for (let item in upcomingCompanyInfo) {
+                console.log("/");
                 let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
                 ipos.push(dealDetails);
             }
@@ -170,6 +172,7 @@ class IpoApiFetcher {
         let filedCompanyInfo = res.data.data.filed.rows;
         if (filedCompanyInfo != null) {
             for (let item in filedCompanyInfo) {
+                console.log(";");
                 let dealDetails = await this.getDealDetails(filedCompanyInfo[item].dealID, filedCompanyInfo[item]);
                 ipos.push(dealDetails);
             }
@@ -185,7 +188,7 @@ class IpoApiFetcher {
         financial_data = financial_data.data.data;
         let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
         let associatedTags = this.tagger.determineTags(description);
-        return {tags: associatedTags, dealID: dealID, frontPageDetails: companyData, general: ipoOverview, financial: financial_data};
+        return {tags: associatedTags, id: dealID, frontPageDetails: companyData, general: ipoOverview, financial: financial_data};
     }
 
     sortFilings(filings) {
@@ -207,7 +210,7 @@ class IpoApiFetcher {
             }
         }
         else if (status === "Priced") {
-            return data.pricedDate;
+            return data.pricedDate || data.expectedPriceDate;
         }
     }
 
