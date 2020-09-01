@@ -90,10 +90,37 @@ class IpoApiFetcher {
         this.dataToSend = [];
     }
 
-    async getIpos(date) {
+    async getIpos(date) { //here i should sort the information.
         //TODO later, well soon probably, we'll need to only return ipos in a certain date range, as we'll have too many ipos in the db to send them all back
         //or even load them progressively.
-        return this.dbHandle.readData("{}")
+        let allIpoInfo = await this.dbHandle.readData({})
+        let dataToSendToFront = [];
+
+        for (let i = 0; i < allIpoInfo.length; i++) {
+            let overview = allIpoInfo[i].general.poOverview;
+            let financial = allIpoInfo[i].financial;
+            let description = this.stripCompanyDescription(allIpoInfo[i].general.companyInformation.companyDescription);
+            let companyInfo = {
+                "name": overview.CompanyName.value,
+                "ticker": overview.Symbol.value,
+                "marketcap": this.calculateMarketCap(overview.ProposedSharePrice.value, overview.SharesOutstanding.value),
+                "description": description,
+                "tags": allIpoInfo[i].tags, // not done yet
+                "status": overview.DealStatus.value,
+                "date": this.getIpoDate(overview.DealStatus.value, allIpoInfo[i].frontPageDetails.expectedPriceDate), //headache inducing
+                "ceo": overview.CEO.value,
+                "url": this.extractUrl(overview.CompanyWebsite.value),
+                "id": allIpoInfo[i].dealID,
+                "revenue": financial.financials[0].Revenue.value,
+                "income": financial.financials[0].NetIncome.value,
+                "stockholdersEquity": financial.financials[0].StockholdersEquity.value,
+                "filings": this.sortFilings(financial.filings),
+                "exchange": overview.Exchange.value,
+            }
+            dataToSendToFront.push(companyInfo);
+        }
+        console.log(dataToSendToFront);
+        return dataToSendToFront
     }
 
     async loadDailyDataToDb() {
@@ -105,11 +132,11 @@ class IpoApiFetcher {
         console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
         if (delta < 10) {
             console.log("It has been less than 10 hours since last write - skip");
+            this.getIpos();
             return;
         }
 
         let ipos = await this.getIpoInformation();
-	console.log(`Got ${ipos.length} ipos`);
         ipos.map(ipo => this.dbHandle.writeData(ipo));
         
         this.adminDbHandle.updateData(lastWriteId, {"value": currentTime});
@@ -123,54 +150,42 @@ class IpoApiFetcher {
         let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
 	console.log("Fetching initial data...");
         let res = await axios.get(url)
-	console.log("Done.");
         let ipos = [];
         let pricedInCompanyInfo = res.data.data.priced.rows;
-        for (let item in pricedInCompanyInfo.slice(0, 15)) {
-            let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
-            ipos.push(dealDetails);
+        if (pricedInCompanyInfo != null) {
+            for (let item in pricedInCompanyInfo) {
+                let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
+                ipos.push(dealDetails);
+            }
         }
 
         let upcomingCompanyInfo = res.data.data.upcoming.upcomingTable.rows;
-        for (let item in upcomingCompanyInfo.slice(0, 15)) {
-            let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
-            ipos.push(dealDetails);
+        if (upcomingCompanyInfo != null) {
+            for (let item in upcomingCompanyInfo) {
+                let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
+                ipos.push(dealDetails);
+            }
         }
 
         let filedCompanyInfo = res.data.data.filed.rows;
-        for (let item in filedCompanyInfo.slice(0, 15)) {
-            let dealDetails = await this.getDealDetails(filedCompanyInfo[item].dealID, filedCompanyInfo[item]);
-            ipos.push(dealDetails);
-        }
+        if (filedCompanyInfo != null) {
+            for (let item in filedCompanyInfo) {
+                let dealDetails = await this.getDealDetails(filedCompanyInfo[item].dealID, filedCompanyInfo[item]);
+                ipos.push(dealDetails);
+            }
+        }   
 
         return ipos;
     }
 
-    async getDealDetails(dealID, companyData) {
+    async getDealDetails(dealID, companyData) { //rewrite the sorting in a new function
         let res = await axios.get(`https://api.nasdaq.com/api/ipo/overview/?dealId=${dealID}`)
-        let ipoOverview = res.data.data.poOverview;
-        let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
+        let ipoOverview = res.data.data;
         let financial_data = await axios.get(`https://api.nasdaq.com/api/ipo/financials-filings/?dealId=${dealID}`);
         financial_data = financial_data.data.data;
+        let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
         let associatedTags = this.tagger.determineTags(description);
-        let companyInfo = {
-            "name": ipoOverview.CompanyName.value,
-            "ticker": ipoOverview.Symbol.value,
-            "marketcap": this.calculateMarketCap(ipoOverview.ProposedSharePrice.value, ipoOverview.SharesOutstanding.value),
-            "description": description,
-            "tags": associatedTags, // not done yet
-            "status": ipoOverview.DealStatus.value,
-            "date": this.getIpoDate(ipoOverview.DealStatus.value, companyData), //headache inducing
-            "ceo": ipoOverview.CEO.value,
-            "url": this.extractUrl(ipoOverview.CompanyWebsite.value),
-            "id": dealID,
-            "revenue": financial_data.financials[0].Revenue.value,
-            "income": financial_data.financials[0].NetIncome.value,
-            "stockholdersEquity": financial_data.financials[0].StockholdersEquity.value,
-            "filings": this.sortFilings(financial_data.filings),
-            "exchange": ipoOverview.Exchange.value,
-        }
-        return companyInfo;
+        return {tags: associatedTags, dealID: dealID, frontPageDetails: companyData, general: ipoOverview, financial: financial_data};
     }
 
     sortFilings(filings) {
