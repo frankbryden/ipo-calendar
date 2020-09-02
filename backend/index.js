@@ -102,8 +102,12 @@ app.listen(port);
 app.get('/ipos', (req, res) => {
     console.log(req.query.s, req.query.e);
     apiFetcher.getIpos().then(ipos => {
-        let sorted = ipos.sort((a, b) => )
-        let page = ipos.slice(req.query.s, req.query.e);
+        let sorted = ipos.sort((a, b) => {
+            let valA = a.pricedDate ?? a.filedDate;
+            let valB = b.pricedDate ?? b.filedDate;
+            return a.date < b.date;
+        })
+        let page = sorted.slice(req.query.s, req.query.e);
         res.json({"ipos": page})
     });
 });

@@ -1,10 +1,11 @@
 class DataFetcher {
     constructor () {
-
+        this.iposFetched = 0;
     }
 
-    async fetchIpos() {
-        const js = await this.fetchData("ipos");
+    async fetchIpos(count) {
+        const js = await this.fetchData(`ipos?s=${this.iposFetched}&e=${this.iposFetched+count}`);
+        this.iposFetched += count;
         return js;
     }
 

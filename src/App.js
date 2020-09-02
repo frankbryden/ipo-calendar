@@ -48,7 +48,7 @@ class App extends React.Component {
 	}
 
     async getIpos() {
-		const iposData = await this.dataFetcher.fetchIpos();
+		const iposData = await this.dataFetcher.fetchIpos(10);
 		console.log(iposData);
         let ipoObjs = iposData.ipos.map(ipo => new Ipo(ipo));
 		this.ipos = ipoObjs;//ipoComponents;
@@ -108,7 +108,7 @@ class App extends React.Component {
 								<OverviewApp stats={this.state.stats} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />
 							</div> :
 							<div>
-								<IpoApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} swapOverviewCallback={this.swapOverviewState} />
+								<IpoApp statusOpts={this.state.statusOpts} tags={this.state.tags} ipos={this.state.ipos} dataFetcher={this.dataFetcher} swapOverviewCallback={this.swapOverviewState} />
 							</div>
 						}
 					</div>

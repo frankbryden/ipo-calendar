@@ -17,14 +17,14 @@ class IpoApp extends React.Component {
         this.tagFilterChange = this.tagFilterChange.bind(this);
         this.toggleSidebar = this.toggleSidebar.bind(this);
         this.saveIPOLocally = this.saveIPOLocally.bind(this);
-        this.toggleVisibilitySavedIPOs =  this.toggleVisibilitySavedIPOs.bind(this);
+        this.toggleVisibilitySavedIPOs = this.toggleVisibilitySavedIPOs.bind(this);
         this.toggleMinimizedCards = this.toggleMinimizedCards.bind(this);
+        this.trackScrolling = this.trackScrolling.bind(this);
         this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
             ipos: this.props.ipos.map((ipo, index) => {
                 return {
-                    ipoCard: <IpoCard key={index} ipo={ipo} onSave={() => this.saveIPOLocally(index)} />,
                     ipo: ipo,
                     cardId: index,
                     tags: ipo.tags.map(tag => tag.name),
@@ -136,7 +136,7 @@ class IpoApp extends React.Component {
         }
         savedItem.saved = !savedItem.saved
 
-        
+
         //As Max pointed out, to save we simply need to store the dealIds.
         //I do not have that information for now, so off to bed....
         if (savedItem.saved) {
@@ -146,7 +146,7 @@ class IpoApp extends React.Component {
             //unsave
             localStorage.removeItem(savedItem.ipo.id, "")
         }
-        this.setState({ipos: ipos});
+        this.setState({ ipos: ipos });
     }
 
     filterBySearch(input) {
@@ -160,7 +160,8 @@ class IpoApp extends React.Component {
     componentDidMount() {
         this.handleResize();
         window.addEventListener("resize", () => this.handleResize());
-        
+        document.addEventListener('scroll', this.trackScrolling);
+
         //Handle saved IPOs
         let ipos = this.state.ipos;
         for (let ipo of ipos) {
@@ -168,23 +169,40 @@ class IpoApp extends React.Component {
                 ipo.saved = true
             }
         }
-        this.setState({ipos: ipos});
+        this.setState({ ipos: ipos });
+    }
+
+    isBottom(el) {
+        return el.getBoundingClientRect().bottom <= window.innerHeight;
+    }
+
+
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.trackScrolling);
+    }
+
+    trackScrolling() {
+        const wrappedElement = document.getElementById('ipoBody');
+        if (this.isBottom(wrappedElement)) {
+            console.log('header bottom reached');
+            //document.removeEventListener('scroll', this.trackScrolling);
+        }
     }
 
     handleResize() {
         if (window.innerWidth < 1200) {
-            this.setState({sidebarLeftMargin: "32vw"})
+            this.setState({ sidebarLeftMargin: "32vw" })
             this.handleMobile()
         } if (window.innerWidth >= 1200) {
-            this.setState({sidebarLeftMargin: "22vw"})
+            this.setState({ sidebarLeftMargin: "22vw" })
         }
     }
-    
+
     handleMobile() {
         if (window.innerWidth <= 768) {
-            this.setState({collapsed: true, sidebarLeftMargin: "90vw"});
+            this.setState({ collapsed: true, sidebarLeftMargin: "90vw" });
         } else {
-            this.setState({collapsed: false});
+            this.setState({ collapsed: false });
         }
     }
 
@@ -192,44 +210,46 @@ class IpoApp extends React.Component {
         return (
             <div>
                 <Layout>
-                    <Sider 
+                    <Sider
                         width={this.state.sidebarLeftMargin}
                         bordered={false}
                         breakpoint='sm'
                         onBreakpoint={() => this.handleMobile()}
-                        trigger={null} 
-                        collapsed={this.state.collapsed} 
-                        collapsible collapsedWidth="0vw" 
+                        trigger={null}
+                        collapsed={this.state.collapsed}
+                        collapsible collapsedWidth="0vw"
                         style={{
-                        position: 'fixed',
-                        overflow: 'scroll',
-                        height: "100%",
-                        left: 0,
-                    }}>
-                        <MenuFoldOutlined 
-                            style={{color: "white", position: "fixed", fontSize: "2rem",
-                            left: this.state.collapsed ? -50 : `calc(${this.state.sidebarLeftMargin} - 50px)`, 
-                            top: 10, zIndex: 2}}
+                            position: 'fixed',
+                            overflow: 'scroll',
+                            height: "100%",
+                            left: 0,
+                        }}>
+                        <MenuFoldOutlined
+                            style={{
+                                color: "white", position: "fixed", fontSize: "2rem",
+                                left: this.state.collapsed ? -50 : `calc(${this.state.sidebarLeftMargin} - 50px)`,
+                                top: 10, zIndex: 2
+                            }}
                             onClick={() => this.toggleSidebar()} />
-                            
+
                         <div onClick={this.props.swapOverviewCallback} className="logo">IPO
                             <span>c</span></div>
-                        
+
                         <Space>
-                        <Input
-                            placeholder="Search IPOs"
-                            onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
-                            value={this.searchValue}
-                            style={{ width: "80%", margin: 10 }}>  
-                        </Input>
+                            <Input
+                                placeholder="Search IPOs"
+                                onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
+                                value={this.searchValue}
+                                style={{ width: "80%", margin: 10 }}>
+                            </Input>
                         </Space>
                         <Card title="Filters" className="filterContainer" bordered={false}>
 
                             <div className="sliderWrapper">
                                 <span>Show Saved</span>
-                                    <Switch  onChange={this.toggleVisibilitySavedIPOs}></Switch>
+                                <Switch onChange={this.toggleVisibilitySavedIPOs}></Switch>
                                 <span>Expand Cards</span>
-                                    <Switch onChange={this.toggleMinimizedCards}></Switch>
+                                <Switch onChange={this.toggleMinimizedCards}></Switch>
                             </div>
 
                             <Card title="Tags" className="filter" bordered={false}>
@@ -240,29 +260,31 @@ class IpoApp extends React.Component {
                             </Card>
 
                         </Card>
-                        
+
                     </Sider>
                     <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin }}>
-                        {this.state.collapsed ? 
-                        <Affix>
-                        <Header style={{backgroundColor: "black"}}>
-                            <MenuUnfoldOutlined style={{color: "white", fontSize: "2rem", position: "fixed", left: 10, top: 15}}
-                            onClick={() => this.toggleSidebar()} />
-                            <div className="logo">IPO<span>c</span></div>   
-                        </Header></Affix>: <></>}
+                        {this.state.collapsed ?
+                            <Affix>
+                                <Header style={{ backgroundColor: "black" }}>
+                                    <MenuUnfoldOutlined style={{ color: "white", fontSize: "2rem", position: "fixed", left: 10, top: 15 }}
+                                        onClick={() => this.toggleSidebar()} />
+                                    <div className="logo">IPO<span>c</span></div>
+                                </Header></Affix> : <></>}
 
-                        <Content style={{ margin: '0px 0px 0', overflow: 'initial' }}>
-                        {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
-                            <div className="content-wrapper">  
-                                {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} minimized={this.state.showCardsMinimized} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}   
-                            </div>:
-                            <div className="noContent">
-                                <span>Nothing matched your search!</span>
-                            </div>
-                        }
+                        <Content id="ipoBody" style={{ margin: '0px 0px 0', overflow: 'initial' }}>
+                            {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
+                                <div className="content-wrapper">
+                                    {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} minimized={this.state.showCardsMinimized} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
+                                </div> :
+                                <div className="noContent">
+                                    <span>Nothing matched your search!</span>
+                                </div>
+                            }
 
                         </Content>
-                        <Footer style={{minHeight: "5vh"}}>Footer</Footer>
+                        {/*
+                        <Footer style={{ minHeight: "5vh" }}>Footer</Footer>
+                        */}
                     </Layout>
                 </Layout>
 
