@@ -23,16 +23,7 @@ class IpoApp extends React.Component {
         this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
-            ipos: this.props.ipos.map((ipo, index) => {
-                return {
-                    ipo: ipo,
-                    cardId: index,
-                    tags: ipo.tags.map(tag => tag.name),
-                    status: ipo.status,
-                    visible: true,
-                    saved: false,
-                }
-            }),
+            ipos: this.getImportedIPOs(this.props.ipos),
             sidebarLeftMargin: "22vw",
             collapsed: false,
             tagFilters: [],
@@ -41,6 +32,25 @@ class IpoApp extends React.Component {
             searchValue: "",
             showCardsMinimized: true,
         }
+    }
+
+    addIpos(ipos) {
+        this.setState({
+            ipos: this.state.ipos.push(...this.getImportedIPOs(ipos))
+        });
+    }
+
+    getImportedIPOs(ipos) {
+        ipos.map((ipo, index) => {
+            return {
+                ipo: ipo,
+                cardId: index,
+                tags: ipo.tags.map(tag => tag.name),
+                status: ipo.status,
+                visible: true,
+                saved: false,
+            }
+        });
     }
 
     toggleSidebar() {
@@ -185,6 +195,8 @@ class IpoApp extends React.Component {
         const wrappedElement = document.getElementById('ipoBody');
         if (this.isBottom(wrappedElement)) {
             console.log('header bottom reached');
+            let self = this;
+            this.props.dataFetcher.fetchIpos(10).then(ipos => self.addIpos(ipos));
             //document.removeEventListener('scroll', this.trackScrolling);
         }
     }
