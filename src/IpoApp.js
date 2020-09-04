@@ -35,13 +35,17 @@ class IpoApp extends React.Component {
     }
 
     addIpos(ipos) {
+        let stateIpos = this.state.ipos;
+        stateIpos.push(...this.getImportedIPOs(ipos));
         this.setState({
-            ipos: this.state.ipos.push(...this.getImportedIPOs(ipos))
+            ipos: stateIpos
         });
     }
 
     getImportedIPOs(ipos) {
-        ipos.map((ipo, index) => {
+        console.log("getImportedIPOs");
+        console.log(ipos);
+        return ipos.map((ipo, index) => {
             return {
                 ipo: ipo,
                 cardId: index,
@@ -183,7 +187,8 @@ class IpoApp extends React.Component {
     }
 
     isBottom(el) {
-        return el.getBoundingClientRect().bottom <= window.innerHeight;
+        console.log(`${el.getBoundingClientRect().bottom} <= ${window.innerHeight} = ${el.getBoundingClientRect().bottom <= window.innerHeight}`);
+        return el.getBoundingClientRect().bottom-5 <= window.innerHeight;
     }
 
 
@@ -196,7 +201,10 @@ class IpoApp extends React.Component {
         if (this.isBottom(wrappedElement)) {
             console.log('header bottom reached');
             let self = this;
-            this.props.dataFetcher.fetchIpos(10).then(ipos => self.addIpos(ipos));
+            this.props.dataFetcher.fetchIpos(10).then(ipos => {
+                console.log(ipos);
+                self.addIpos(ipos.ipos);
+            });
             //document.removeEventListener('scroll', this.trackScrolling);
         }
     }

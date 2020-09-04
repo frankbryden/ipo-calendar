@@ -110,7 +110,7 @@ class IpoApiFetcher {
                 "date": this.getIpoDate(overview.DealStatus.value, allIpoInfo[i].frontPageDetails), //headache inducing
                 "ceo": overview.CEO.value,
                 "url": this.extractUrl(overview.CompanyWebsite.value),
-                "id": allIpoInfo[i].dealID,
+                "id": allIpoInfo[i].id,
                 "revenue": financial.financials[0].Revenue.value,
                 "income": financial.financials[0].NetIncome.value,
                 "stockholdersEquity": financial.financials[0].StockholdersEquity.value,

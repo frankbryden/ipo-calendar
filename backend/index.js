@@ -107,6 +107,12 @@ app.get('/ipos', (req, res) => {
             let valB = b.pricedDate ?? b.filedDate;
             return a.date < b.date;
         })
+        let dealIds = ipos.map(ipo => ipo.id);
+        console.log(dealIds);
+        let sortedDealIds = dealIds.sort((a, b) => {
+            return a < b;
+        });
+        console.log(sortedDealIds);
         let page = sorted.slice(req.query.s, req.query.e);
         res.json({"ipos": page})
     });
