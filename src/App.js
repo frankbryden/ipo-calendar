@@ -100,7 +100,11 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				{this.state.loading ?
-					<div><LoadingOutlined />Loading</div> :
+					
+					<div className="loadingScreen">
+						<div className="logo">IPO<span>c</span></div>
+						<LoadingOutlined />
+					</div> :
 					<div>
 
 						{this.state.overview ?

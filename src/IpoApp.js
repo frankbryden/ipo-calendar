@@ -254,6 +254,10 @@ class IpoApp extends React.Component {
 
                         <div onClick={this.props.swapOverviewCallback} className="logo">IPO
                             <span>c</span></div>
+                        
+                        <div>
+                            <p className="siteDescription">Discover and track the newest IPOs</p>
+                        </div>
 
                         <Space>
                             <Input
@@ -280,7 +284,9 @@ class IpoApp extends React.Component {
                             </Card>
 
                         </Card>
-
+                        <div>
+                            <p className="credits">Made by Frank Bryden and Maximilian von Bonsdorff</p>
+                        </div>    
                     </Sider>
                     <Layout className="site-layout" style={{ marginLeft: this.state.collapsed ? this.sidebarNoMargin : this.state.sidebarLeftMargin }}>
                         {this.state.collapsed ?
@@ -302,9 +308,9 @@ class IpoApp extends React.Component {
                             }
 
                         </Content>
-                        {/*
-                        <Footer style={{ minHeight: "5vh" }}>Footer</Footer>
-                        */}
+                        
+                        {/* <Footer style={{ minHeight: "5vh" }}>Footer</Footer> */}
+                       
                     </Layout>
                 </Layout>
 

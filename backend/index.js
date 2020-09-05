@@ -103,8 +103,8 @@ app.get('/ipos', (req, res) => {
     console.log(req.query.s, req.query.e);
     apiFetcher.getIpos().then(ipos => {
         let sorted = ipos.sort((a, b) => {
-            let valA = a.pricedDate ?? a.filedDate;
-            let valB = b.pricedDate ?? b.filedDate;
+            // let valA = a.pricedDate ?? a.filedDate;
+            // let valB = b.pricedDate ?? b.filedDate;
             return a.date < b.date;
         })
         let dealIds = ipos.map(ipo => ipo.id);

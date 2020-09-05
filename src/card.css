@@ -1,7 +1,7 @@
 .content-wrapper {
     padding-top: 20px;
     padding-bottom: 20px;
-    min-height: 95vh !important;
+    min-height: 100vh !important;
     display: grid;
     gap: 25px;
     grid-template-rows: auto;
@@ -14,7 +14,7 @@
     z-index: 0;
     background-color: var(--ipoCard-bg-color);
     border-radius: 5px;
-    transition: width 0.4s, height 0.4s;
+    transition: width 0.3s, height 0.3s;
 }
 
 .expanded {

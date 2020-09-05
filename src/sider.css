@@ -39,6 +39,16 @@
     color: #fff6f5;
 }
 
+.siteDescription, .credits {
+    font-size: 0.9rem;
+    color: #fff6f5;
+    margin-top: -20px;
+}
+
+.credits {
+    margin-top: 0;
+}
+
 .logo span {
 	background: linear-gradient(to right, #0860B3 0%, #1890ff 100%);
 	-webkit-background-clip: text;

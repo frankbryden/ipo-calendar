@@ -23,6 +23,12 @@
   background-color: var(--main-bg-color);
 }
 
+.loadingScreen {
+  color: #fff6f5;
+  height: 100vh;
+  width: 100vw;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

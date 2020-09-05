@@ -97,9 +97,9 @@ class IpoApiFetcher {
         let dataToSendToFront = [];
 
         for (let i = 0; i < allIpoInfo.length; i++) {
-            let overview = allIpoInfo[i].general.poOverview;
+            let overview = allIpoInfo[i].ipoOverview.poOverview;
             let financial = allIpoInfo[i].financial;
-            let description = this.stripCompanyDescription(allIpoInfo[i].general.companyInformation.companyDescription);
+            let description = this.stripCompanyDescription(allIpoInfo[i].ipoOverview.companyInformation.companyDescription);
             let companyInfo = {
                 "name": overview.CompanyName.value,
                 "ticker": overview.Symbol.value,
@@ -107,7 +107,7 @@ class IpoApiFetcher {
                 "description": description,
                 "tags": allIpoInfo[i].tags, // not done yet
                 "status": overview.DealStatus.value,
-                "date": this.getIpoDate(overview.DealStatus.value, allIpoInfo[i].frontPageDetails), //headache inducing
+                "date": allIpoInfo[i].ipoDate,
                 "ceo": overview.CEO.value,
                 "url": this.extractUrl(overview.CompanyWebsite.value),
                 "id": allIpoInfo[i].id,
@@ -129,7 +129,7 @@ class IpoApiFetcher {
         let currentTime = new Date().getTime();
         let delta = (currentTime - lastWriteTime)/(1000*60*60);
         console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
-        if (delta < 10) {
+        if (delta < 0.001) {
             console.log("It has been less than 10 hours since last write - skip");
             this.getIpos();
             return;
@@ -146,7 +146,7 @@ class IpoApiFetcher {
 
     async getIpoInformation() {
         let date = getDate();
-        date = "2020-08";
+        date = "2020-09";
         let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
 	console.log("Fetching initial data...");
         let res = await axios.get(url)
@@ -188,7 +188,19 @@ class IpoApiFetcher {
         financial_data = financial_data.data.data;
         let description = this.stripCompanyDescription(res.data.data.companyInformation.companyDescription);
         let associatedTags = this.tagger.determineTags(description);
-        return {tags: associatedTags, id: dealID, frontPageDetails: companyData, general: ipoOverview, financial: financial_data};
+        let dataObject = this.cleanData(dealID, companyData, associatedTags, ipoOverview, financial_data);
+        return dataObject;
+    }
+
+    cleanData(dealID, companyData, associatedTags, ipoOverview, financial_data) {
+        delete financial_data.companyInformation;
+        delete financial_data.dealID;
+        for (let i = 0; i < financial_data.filings.length; i++) {
+            delete financial_data.filings[i].CompanyName;
+        }
+        delete ipoOverview.poOverview.DealId;
+        let ipoDate = this.getIpoDate(ipoOverview.poOverview.DealStatus.value, companyData)
+        return {id: dealID, tags: associatedTags, ipoOverview, ipoDate, financial: financial_data}
     }
 
     sortFilings(filings) {

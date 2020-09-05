@@ -66,7 +66,7 @@ class IpoCard extends React.Component {
 
         this.setState({ variants: {
             open: { type: "spring", stiffness: 100, damping: 30, x: deltaX, y: deltaY},
-            closed: { type: "spring", stiffness: 50, damping: 30, x: 0, y: 0},
+            closed: { type: "spring", stiffness: 50, damping: 30, x: 0, y: 0, transitionEnd: {position: "relative"}},
           }});
     }
 
