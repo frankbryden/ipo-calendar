@@ -20,6 +20,7 @@ class IpoApp extends React.Component {
         this.toggleVisibilitySavedIPOs = this.toggleVisibilitySavedIPOs.bind(this);
         this.toggleMinimizedCards = this.toggleMinimizedCards.bind(this);
         this.trackScrolling = this.trackScrolling.bind(this);
+        this.unlockIpoFetching = this.unlockIpoFetching.bind(this);
         this.sidebarNoMargin = "0vw";
         this.state = {
             loading: true,
@@ -31,7 +32,9 @@ class IpoApp extends React.Component {
             showOnlySaved: false,
             searchValue: "",
             showCardsMinimized: true,
+            fetchedAllData: false
         }
+        this.ipoFetchingLocked = false;
     }
 
     addIpos(ipos) {
@@ -45,16 +48,22 @@ class IpoApp extends React.Component {
     getImportedIPOs(ipos) {
         console.log("getImportedIPOs");
         console.log(ipos);
+        let lastIndex = this.state == undefined ? 0 : (this.state.ipos[this.state.ipos.length - 1].cardId + 1);
+        console.log(lastIndex);
         return ipos.map((ipo, index) => {
             return {
                 ipo: ipo,
-                cardId: index,
+                cardId: lastIndex + index,
                 tags: ipo.tags.map(tag => tag.name),
                 status: ipo.status,
                 visible: true,
                 saved: false,
             }
         });
+    }
+
+    unlockIpoFetching(){
+        this.ipoFetchingLocked = false;
     }
 
     toggleSidebar() {
@@ -198,11 +207,18 @@ class IpoApp extends React.Component {
 
     trackScrolling() {
         const wrappedElement = document.getElementById('ipoBody');
-        if (this.isBottom(wrappedElement)) {
+        if (!this.ipoFetchingLocked && !this.state.fetchedAllData && this.isBottom(wrappedElement)) {
             console.log('header bottom reached');
             let self = this;
+            //lock fetching of IPOs, this is needed as this event fires multiple times for one scroll-to-bottom.
+            //So lock temporarily, letting a timeout unlock it.
+            this.ipoFetchingLocked = true;
+            setTimeout(this.unlockIpoFetching, 1000);
             this.props.dataFetcher.fetchIpos(10).then(ipos => {
                 console.log(ipos);
+                if (ipos.isEnd) {
+                    self.setState({fetchedAllData: true});
+                }
                 self.addIpos(ipos.ipos);
             });
             //document.removeEventListener('scroll', this.trackScrolling);

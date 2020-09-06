@@ -103,18 +103,42 @@ app.get('/ipos', (req, res) => {
     console.log(req.query.s, req.query.e);
     apiFetcher.getIpos().then(ipos => {
         let sorted = ipos.sort((a, b) => {
-            // let valA = a.pricedDate ?? a.filedDate;
-            // let valB = b.pricedDate ?? b.filedDate;
-            return a.date < b.date;
+            /*
+            * U could get the filed date
+            * And rank all the ones with no date set by their filed date
+            */
+            let aUndefined = false;
+            let bUndefined = false;
+            //TODO this is gonna be replaced by hasDateSet (i.e. simpler)
+            if (a.date == "No date set" || a.date == undefined) {
+                aUndefined = true;
+                //console.log(`${a.date} is undefined`);
+            }
+            if (b.date == "No date set" || b.date == undefined) {
+                bUndefined = true;
+                //console.log(`${b.date} is undefined`);
+            }
+
+            if (aUndefined && !bUndefined) {
+                return 1;
+            } else if (bUndefined && !aUndefined) {
+                return -1;
+            } else {
+                let aDate, bDate;
+                if (aUndefined && bUndefined) {
+                    aDate = new Date(a.filings[0][2]);
+                    bDate = new Date(b.filings[0][2]);
+                } else {
+                    aDate = new Date(a.date);
+                    bDate = new Date(b.date);
+                }
+                return aDate < bDate ? 1 : aDate.getTime() == bDate.getTime() ? 0 : -1;
+            }
         })
-        let dealIds = ipos.map(ipo => ipo.id);
-        console.log(dealIds);
-        let sortedDealIds = dealIds.sort((a, b) => {
-            return a < b;
-        });
-        console.log(sortedDealIds);
+        //console.log(sorted.map(s => `${s.date}:${s.filings[0][2]}`));
         let page = sorted.slice(req.query.s, req.query.e);
-        res.json({"ipos": page})
+        let end = req.query.e >= sorted.length;
+        res.json({"ipos": page, isEnd: end});
     });
 });
 

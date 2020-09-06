@@ -129,7 +129,7 @@ class IpoApiFetcher {
         let currentTime = new Date().getTime();
         let delta = (currentTime - lastWriteTime)/(1000*60*60);
         console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
-        if (delta < 0.001) {
+        if (delta < 10) {
             console.log("It has been less than 10 hours since last write - skip");
             this.getIpos();
             return;
@@ -148,7 +148,7 @@ class IpoApiFetcher {
         let date = getDate();
         date = "2020-09";
         let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
-	console.log("Fetching initial data...");
+	    console.log("Fetching initial data...");
         let res = await axios.get(url)
         let ipos = [];
         let pricedInCompanyInfo = res.data.data.priced.rows;
@@ -208,7 +208,9 @@ class IpoApiFetcher {
         for (let i = 0; i < filings.length; i++) {
             let formType = filings[i].FormType.value;
             let link = filings[i].FilingLink.value;
-            list_of_filings.push([formType, link])
+            let date = filings[i].DateReceived.value;
+            //Not a big fan of this list, would prefer key/value object
+            list_of_filings.push([formType, link, date])
         }
         return list_of_filings;
     }
