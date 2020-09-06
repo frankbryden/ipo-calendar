@@ -28,7 +28,7 @@ class IpoCard extends React.Component {
     }
 
     checkDate() {
-        if (this.props.ipo.date === "No date set") {
+        if (this.props.ipo.date.isDateSet == false) {
            return "grey";
         };
     }
@@ -93,7 +93,7 @@ class IpoCard extends React.Component {
                     ref={this.cardRef}
                     animate={ this.state.expanded ? "open" : "closed" }
                     variants={this.state.variants}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.4 }}
                     style={{zIndex: this.state.expanded ? 2 : 0}}>
 
                     <Card
@@ -111,11 +111,11 @@ class IpoCard extends React.Component {
                             <div className="marketCap"><strong>{this.props.ipo.marketCap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketCap}</strong></div>
                         </Popover>
 
-                        {this.props.minimized && !this.state.expanded ? <><div className="date dateMinimized" style={{ color: this.state.dateColor}}>{this.props.ipo.date}</div></>: 
+                        {this.props.minimized && !this.state.expanded ? <><div className="date dateMinimized" style={{color: this.state.dateColor}}>{this.props.ipo.date.value}</div></>: 
                             <>
                                 <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
                                 <div className="tradingDayWrapper">{this.state.statusText} 
-                                    <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date}</span>
+                                    <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date.value}</span>
                                     <span className="exchange">{this.props.ipo.exchange}</span>
                                 </div>
                             </>

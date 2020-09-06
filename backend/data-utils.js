@@ -129,7 +129,7 @@ class IpoApiFetcher {
         let currentTime = new Date().getTime();
         let delta = (currentTime - lastWriteTime)/(1000*60*60);
         console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
-        if (delta < 10) {
+        if (delta < 0.001) {
             console.log("It has been less than 10 hours since last write - skip");
             this.getIpos();
             return;
@@ -218,13 +218,16 @@ class IpoApiFetcher {
     getIpoDate(status, data) {
         if (status === "Filed") {
             if (data.expectedPriceDate == undefined) {
-                return "No date set";
+                return {value: "No date set", isDateSet: false};
             } else {
-                return data.expectedPriceDate;
+                return {value: data.expectedPriceDate, isDateSet: true};
             }
         }
         else if (status === "Priced") {
-            return data.pricedDate || data.expectedPriceDate;
+            if (data.expectedPriceDate == undefined && data.pricedDate == undefined) {
+                return {value: "No date set", isDateSet: false}
+            }
+            return {value: data.pricedDate || data.expectedPriceDate, isDateSet: true};
         }
     }
 

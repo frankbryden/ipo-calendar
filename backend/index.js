@@ -110,11 +110,11 @@ app.get('/ipos', (req, res) => {
             let aUndefined = false;
             let bUndefined = false;
             //TODO this is gonna be replaced by hasDateSet (i.e. simpler)
-            if (a.date == "No date set" || a.date == undefined) {
+            if (a.date.isDateSet == false || a.date.value == undefined) {
                 aUndefined = true;
                 //console.log(`${a.date} is undefined`);
             }
-            if (b.date == "No date set" || b.date == undefined) {
+            if (b.date.isDateSet == false || b.date.value == undefined) {
                 bUndefined = true;
                 //console.log(`${b.date} is undefined`);
             }
@@ -129,8 +129,8 @@ app.get('/ipos', (req, res) => {
                     aDate = new Date(a.filings[0][2]);
                     bDate = new Date(b.filings[0][2]);
                 } else {
-                    aDate = new Date(a.date);
-                    bDate = new Date(b.date);
+                    aDate = new Date(a.date.value);
+                    bDate = new Date(b.date.value);
                 }
                 return aDate < bDate ? 1 : aDate.getTime() == bDate.getTime() ? 0 : -1;
             }
