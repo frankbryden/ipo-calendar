@@ -24,6 +24,9 @@
 }
 
 .loadingScreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff6f5;
   height: 100vh;
   width: 100vw;

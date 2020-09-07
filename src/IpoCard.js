@@ -105,9 +105,9 @@ class IpoCard extends React.Component {
                             <StarTwoTone className="star" twoToneColor={this.props.saved ? starSavedColor : starUnsavedColor} onClick={this.saveIpo} />
                         </Popover>
 
-                        <div className="companyName">{this.state.expanded ? this.props.ipo.name + " (" + this.props.ipo.ticker + ")": this.props.ipo.name}</div>
+                        <div onClick={() => this.expandCard()} className="companyName">{this.state.expanded ? this.props.ipo.name + " (" + this.props.ipo.ticker + ")": this.props.ipo.name}</div>
                         <Popover content={"Expected market cap at proposed share price"}>
-                            <div className="marketCap"><strong>{this.props.ipo.marketCap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketCap}</strong></div>
+                            <div className="marketCap"><strong>{this.props.ipo.marketcap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketcap}</strong></div>
                         </Popover>
 
                         {this.props.minimized && !this.state.expanded ? <><div className="date dateMinimized" style={{color: this.state.dateColor}}>{this.props.ipo.date.value}</div></>: 

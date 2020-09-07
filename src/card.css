@@ -36,7 +36,7 @@
 .overlay {
     z-index: 1;
     position: fixed;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
     top: 0;
     bottom: 0;
     left: 0;
@@ -103,7 +103,7 @@
 }
 
 .dateMinimized {
-    font-family: "Rubik Light", sans-serif;
+    font-family: "Rubik Regular", sans-serif;
     font-size: 1.1rem;
     text-align: left;
     margin-top: -20px;
@@ -120,7 +120,7 @@
     font-weight: bold;
     display: inline-block;
     color: white;
-    margin: 5px;
+    margin: 5px 10px 5px 0px;
     padding: 7.5px;
     border-radius: 15px;
 }

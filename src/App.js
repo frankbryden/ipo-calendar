@@ -100,8 +100,7 @@ class App extends React.Component {
 				{this.state.loading ?
 					
 					<div className="loadingScreen">
-						<div className="logo">IPO<span>c</span></div>
-						<LoadingOutlined />
+						<div className="logo">IPO<span>c</span> <br></br><LoadingOutlined/></div>	
 					</div> :
 					<div>
 
