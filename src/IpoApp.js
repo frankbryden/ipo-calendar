@@ -4,6 +4,7 @@ import { Layout, Card, Button, Input, Space, Affix, Switch } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, CalculatorFilled } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import IpoCard from './IpoCard';
+import Ipo from './Ipo.js';
 import './card.css';
 import './sider.css';
 import { motion, AnimateSharedLayout } from 'framer-motion';
@@ -43,6 +44,7 @@ class IpoApp extends React.Component {
         this.setState({
             ipos: stateIpos
         });
+        this.applySavedIPOs();
     }
 
     getImportedIPOs(ipos) {
@@ -52,7 +54,7 @@ class IpoApp extends React.Component {
         console.log(lastIndex);
         return ipos.map((ipo, index) => {
             return {
-                ipo: ipo,
+                ipo: new Ipo(ipo),
                 cardId: lastIndex + index,
                 tags: ipo.tags.map(tag => tag.name),
                 status: ipo.status,
@@ -186,6 +188,10 @@ class IpoApp extends React.Component {
         window.addEventListener("resize", () => this.handleResize());
         document.addEventListener('scroll', this.trackScrolling);
 
+        this.applySavedIPOs();
+    }
+
+    applySavedIPOs() {
         //Handle saved IPOs
         let ipos = this.state.ipos;
         for (let ipo of ipos) {
