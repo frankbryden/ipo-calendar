@@ -87,13 +87,44 @@ class IpoApiFetcher {
         this.adminDbHandle = new DbAccess(dbUrl, adminDbName);
         this.adminDbHandle.initDb();
         this.tagger = tagger;
+        this.ipoCache = [];
         this.dataToSend = [];
     }
 
-    async getIpos(date) { //here i should sort the information.
+    async getIpos(query, ids) {
+        //QUERY: return ONLY ipos who's name OR ticker match query
+        //IDS: return ONLY ipos who's ID is within {ids}
+        //here i should sort the information.
         //TODO later, well soon probably, we'll need to only return ipos in a certain date range, as we'll have too many ipos in the db to send them all back
         //or even load them progressively.
-        let allIpoInfo = await this.dbHandle.readData({})
+        let data = [];
+        if (this.ipoCache.length > 0){
+            data = this.ipoCache;
+        } else {
+            data = await this.fetchIPOsFromDb();
+            this.ipoCache = data;
+        }
+        
+        if (query) {
+            query = query.toLowerCase();
+            
+            data = data.filter(ipo => {
+                return ipo.name.toLowerCase().includes(query) || ipo.ticker.toLowerCase().includes(query);
+            });
+        }
+
+        if (ids) {
+            data = data.filter(ipo => {
+                console.log(`${ipo.id} in ${ids} => ${ids.includes(ipo.id)}`);
+                return ids.includes(ipo.id);
+            });
+        }
+        
+        return data
+    }
+
+    async fetchIPOsFromDb(){
+        let allIpoInfo = await this.dbHandle.readData({});
         let dataToSendToFront = [];
 
         for (let i = 0; i < allIpoInfo.length; i++) {
@@ -119,7 +150,7 @@ class IpoApiFetcher {
             }
             dataToSendToFront.push(companyInfo);
         }
-        return dataToSendToFront
+        return dataToSendToFront;
     }
 
     async loadDailyDataToDb() {
@@ -129,7 +160,7 @@ class IpoApiFetcher {
         let currentTime = new Date().getTime();
         let delta = (currentTime - lastWriteTime)/(1000*60*60);
         console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
-        if (delta < 0.001) {
+        if (delta < 10) {
             console.log("It has been less than 10 hours since last write - skip");
             this.getIpos();
             return;
