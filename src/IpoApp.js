@@ -284,6 +284,7 @@ class IpoApp extends React.Component {
                                 style={{ width: "80%", margin: 10 }}>
                             </Input>
                         </Space>
+                        
                         <Card title="Filters" className="filterContainer" bordered={false}>
 
                             <div className="sliderWrapper">

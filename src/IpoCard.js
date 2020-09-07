@@ -136,7 +136,7 @@ class IpoCard extends React.Component {
                                     <div className="website"><a href={"http://" + this.props.ipo.url} target="_blank">Company Website</a></div>
                                 }
                                     
-                                    <div className="latestfilings">{this.props.ipo.filings.map(filing => <a href={filing[1]} target="_blank">{filing[0]}<br></br></a>)}</div>
+                                    <div className="latestfilings">{this.props.ipo.filings.map(filing => <a href={filing.link} target="_blank">{filing.formType}<br></br></a>)}</div>
                                 </div>
                                 
                             </div>

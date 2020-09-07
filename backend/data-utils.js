@@ -210,7 +210,7 @@ class IpoApiFetcher {
             let link = filings[i].FilingLink.value;
             let date = filings[i].DateReceived.value;
             //Not a big fan of this list, would prefer key/value object
-            list_of_filings.push([formType, link, date])
+            list_of_filings.push({formType, link, date})
         }
         return list_of_filings;
     }

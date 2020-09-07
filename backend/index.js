@@ -126,8 +126,8 @@ app.get('/ipos', (req, res) => {
             } else {
                 let aDate, bDate;
                 if (aUndefined && bUndefined) {
-                    aDate = new Date(a.filings[0][2]);
-                    bDate = new Date(b.filings[0][2]);
+                    aDate = new Date(a.filings[0].date);
+                    bDate = new Date(b.filings[0].date);
                 } else {
                     aDate = new Date(a.date.value);
                     bDate = new Date(b.date.value);
