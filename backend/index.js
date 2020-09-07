@@ -132,7 +132,7 @@ app.get('/ipos', (req, res) => {
                     aDate = new Date(a.date.value);
                     bDate = new Date(b.date.value);
                 }
-                return aDate < bDate ? 1 : aDate.getTime() == bDate.getTime() ? 0 : -1;
+                return aDate < bDate ? 1 : aDate.getTime() == bDate.getTime() ? a.id < b.id ? 1: -1 : -1;
             }
         })
         //console.log(sorted.map(s => `${s.date}:${s.filings[0][2]}`));

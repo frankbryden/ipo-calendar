@@ -203,7 +203,6 @@ class IpoApp extends React.Component {
     }
 
     isBottom(el) {
-        console.log(`${el.getBoundingClientRect().bottom} <= ${window.innerHeight} = ${el.getBoundingClientRect().bottom <= window.innerHeight}`);
         return el.getBoundingClientRect().bottom-5 <= window.innerHeight;
     }
 
