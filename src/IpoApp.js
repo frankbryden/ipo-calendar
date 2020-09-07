@@ -51,14 +51,18 @@ class IpoApp extends React.Component {
         if (!this.state) {
             return ipos;
         }
-        return ipos.filter(ipo => {
+        console.log(`Started with ${ipos.length} ipos`);
+        let filtered = ipos.filter(ipo => {
             for (let loadedIpo of this.state.ipos) {
-                if (loadedIpo.id == ipo) {
+                if (loadedIpo.ipo.id == ipo.id) {
                     return false;
+                } else {
+                    console.log(`${loadedIpo.ipo.id} == ${ipo} -> ${loadedIpo.ipo.id == ipo}`)
                 }
             }
             return true;
         });
+        return filtered;
     }
 
     getImportedIPOs(ipos) {
@@ -66,7 +70,6 @@ class IpoApp extends React.Component {
         console.log(ipos);
         ipos = this.filterExistingIPOs(ipos);
         let lastIndex = this.state == undefined ? 0 : (this.state.ipos[this.state.ipos.length - 1].cardId + 1);
-        console.log(lastIndex);
         return ipos.map((ipo, index) => {
             return {
                 ipo: new Ipo(ipo),
@@ -199,6 +202,10 @@ class IpoApp extends React.Component {
     }
 
     filterBySearch(input) {
+        let self = this;
+        this.props.dataFetcher.fetchIpos(-1, input, undefined).then(ipos => {
+            self.addIpos(ipos.ipos);
+        });
         this.setState({
             "searchValue": input
         });
