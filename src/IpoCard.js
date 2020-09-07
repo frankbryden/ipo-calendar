@@ -2,7 +2,6 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Card, Popover, Button } from 'antd';
 import { StarTwoTone, PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import Scrollbar  from 'react-scrollbars-custom';
 import TweenOne from 'rc-tween-one';
 import './card.css'
 import { motion, useMotionValue, MotionValue } from "framer-motion"
@@ -65,8 +64,8 @@ class IpoCard extends React.Component {
         let deltaY = targetHeight - rect.y;
 
         this.setState({ variants: {
-            open: { type: "spring", stiffness: 100, damping: 30, x: deltaX, y: deltaY},
-            closed: { type: "spring", stiffness: 50, damping: 30, x: 0, y: 0, transitionEnd: {position: "relative"}},
+            open: {  stiffness: 100, damping: 30, x: deltaX, y: deltaY},
+            closed: { stiffness: 100, damping: 30, x: 0, y: 0},
           }});
     }
 
@@ -93,7 +92,7 @@ class IpoCard extends React.Component {
                     ref={this.cardRef}
                     animate={ this.state.expanded ? "open" : "closed" }
                     variants={this.state.variants}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.3 }}
                     style={{zIndex: this.state.expanded ? 2 : 0}}>
 
                     <Card

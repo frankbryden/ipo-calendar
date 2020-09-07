@@ -137,12 +137,14 @@ class IpoApp extends React.Component {
         }
         if (includeSearch) {
             let companyName = ipo.ipo.name.toLowerCase();
-            console.log(`${this.searchValue} includes ${companyName}`);
             if (!companyName.includes(this.searchValue)) {
                 visible = false;
-            } else {
-                console.log(`${companyName} does not contain ${this.searchValue}`);
-            }
+            } 
+
+            let ticker = ipo.ipo.ticker.toLowerCase(); //beta version
+            if (ticker.includes(this.searchValue)) {
+                visible = true;
+            } 
         }
 
         return visible;
@@ -173,7 +175,6 @@ class IpoApp extends React.Component {
     }
 
     filterBySearch(input) {
-        console.log(`Setting search value to ${input}`);
         this.setState({
             "searchValue": input
         });
