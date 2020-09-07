@@ -104,7 +104,7 @@ app.get('/ipos', (req, res) => {
     apiFetcher.getIpos(req.query.q, req.query.id).then(ipos => {
         let sorted = ipos.sort((a, b) => {
             /*
-            * U could get the filed date
+            * You could get the filed date
             * And rank all the ones with no date set by their filed date
             */
             let aUndefined = false;

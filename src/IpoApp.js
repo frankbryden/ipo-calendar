@@ -47,9 +47,24 @@ class IpoApp extends React.Component {
         this.applySavedIPOs();
     }
 
+    filterExistingIPOs(ipos) {
+        if (!this.state) {
+            return ipos;
+        }
+        return ipos.filter(ipo => {
+            for (let loadedIpo of this.state.ipos) {
+                if (loadedIpo.id == ipo) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
     getImportedIPOs(ipos) {
         console.log("getImportedIPOs");
         console.log(ipos);
+        ipos = this.filterExistingIPOs(ipos);
         let lastIndex = this.state == undefined ? 0 : (this.state.ipos[this.state.ipos.length - 1].cardId + 1);
         console.log(lastIndex);
         return ipos.map((ipo, index) => {
@@ -103,6 +118,13 @@ class IpoApp extends React.Component {
     }
 
     toggleVisibilitySavedIPOs() {
+        if (!this.state.showOnlySaved) {
+            let self = this;
+            this.props.dataFetcher.fetchIpos(-1, undefined, Object.keys(localStorage)).then(ipos => {
+                console.log(ipos);
+                self.addIpos(ipos.ipos);
+            });
+        }
         this.setState({
             showOnlySaved: !this.state.showOnlySaved
         });
