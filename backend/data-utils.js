@@ -91,9 +91,10 @@ class IpoApiFetcher {
         this.dataToSend = [];
     }
 
-    async getIpos(query, ids) {
+    async getIpos(query, ids, tags) {
         //QUERY: return ONLY ipos who's name OR ticker match query
         //IDS: return ONLY ipos who's ID is within {ids}
+        //TAGS: return ONLY ipos tagged with AT LEAST one of the TAGS
         //here i should sort the information.
         //TODO later, well soon probably, we'll need to only return ipos in a certain date range, as we'll have too many ipos in the db to send them all back
         //or even load them progressively.
@@ -120,6 +121,18 @@ class IpoApiFetcher {
             });
         }
         
+
+        if (tags) {
+            data = data.filter(ipo => {
+                for (let tag of ipo.tags) {
+                    if (tags.includes(tag.name)){
+                        return true
+                    }
+                }
+                return false;
+            });
+        }
+
         return data
     }
 

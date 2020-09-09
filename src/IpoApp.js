@@ -94,7 +94,6 @@ class IpoApp extends React.Component {
 
 
     tagFilterChange(filter, toggle) {
-        console.log(`tag filter change with ${filter} and toggle = ${toggle}`);
         //toggle = true means filter was added
         let tagFilters = this.state.tagFilters;
         if (toggle) {
@@ -102,6 +101,11 @@ class IpoApp extends React.Component {
         } else {
             tagFilters.splice(tagFilters.indexOf(filter), 1);
         }
+        let self = this;
+        this.props.dataFetcher.fetchIpos(-1, undefined, undefined, tagFilters).then(ipos => {
+            self.addIpos(ipos.ipos);
+        });
+
         this.setState({
             tagFilters: tagFilters
         });

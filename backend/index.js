@@ -101,7 +101,7 @@ app.listen(port);
 
 app.get('/ipos', (req, res) => {
     console.log(req.query.id);
-    apiFetcher.getIpos(req.query.q, req.query.id).then(ipos => {
+    apiFetcher.getIpos(req.query.q, req.query.id, req.query.tag).then(ipos => {
         let sorted = ipos.sort((a, b) => {
             /*
             * You could get the filed date
@@ -112,11 +112,9 @@ app.get('/ipos', (req, res) => {
             //TODO this is gonna be replaced by hasDateSet (i.e. simpler)
             if (a.date.isDateSet == false || a.date.value == undefined) {
                 aUndefined = true;
-                //console.log(`${a.date} is undefined`);
             }
             if (b.date.isDateSet == false || b.date.value == undefined) {
                 bUndefined = true;
-                //console.log(`${b.date} is undefined`);
             }
 
             if (aUndefined && !bUndefined) {
@@ -134,8 +132,7 @@ app.get('/ipos', (req, res) => {
                 }
                 return aDate < bDate ? 1 : aDate.getTime() == bDate.getTime() ? a.id < b.id ? 1: -1 : -1;
             }
-        })
-        //console.log(sorted.map(s => `${s.date}:${s.filings[0][2]}`));
+        });
         let page = (req.query.s && req.query.e) ? sorted.slice(req.query.s, req.query.e) : sorted;
         let end = req.query.e >= sorted.length;
         res.json({"ipos": page, isEnd: end});
