@@ -265,7 +265,7 @@ class IpoApiFetcher {
     calculateMarketCap(sharePrice, sharesOutstanding) {
         sharePrice = parseInt(sharePrice.substr(1, sharePrice.length).replace(",", ""), 10);
         sharesOutstanding = parseInt(sharesOutstanding.replace(/,/g, ""), 10);
-        let marketCap = "$ " +(Math.floor(sharePrice * sharesOutstanding / 1000000)).toLocaleString() + "M";
+        let marketCap = "$ " + (Math.floor(sharePrice * sharesOutstanding / 1000000)).toLocaleString() + "M";
         return marketCap;
     }
 

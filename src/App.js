@@ -46,11 +46,21 @@ class App extends React.Component {
 	}
 
     async getIpos() {
-		const iposData = await this.dataFetcher.fetchIpos(10);
+		const iposData = await this.dataFetcher.fetchIpos(this.determineInitialCardLoad());
 		console.log(iposData);
         let ipoObjs = iposData.ipos.map(ipo => new Ipo(ipo));
 		this.ipos = ipoObjs;//ipoComponents;
 		this.dataReceived();
+	}
+
+	determineInitialCardLoad() {
+		let height = window.innerHeight;
+		let width = window.innerWidth; // as a user can minimize sider instantly we cannot calculate this depending on sider size
+		let card_height = 250;
+		let card_width = 400;
+		let height_ratio = height / card_height; //there is a gap between cards I'm going to disregard now.
+		let width_ratio = width / card_width;
+		return height_ratio * width_ratio
 	}
 	
 	async getStatusOpts() {
