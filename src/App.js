@@ -58,9 +58,9 @@ class App extends React.Component {
 		let width = window.innerWidth; // as a user can minimize sider instantly we cannot calculate this depending on sider size
 		let card_height = 250;
 		let card_width = 400;
-		let height_ratio = height / card_height; //there is a gap between cards I'm going to disregard now.
+		let height_ratio = height / card_height; //there is a gap between cards I'm going to disregard now. We'll see if we run into a situation
 		let width_ratio = width / card_width;
-		return height_ratio * width_ratio
+		return height_ratio * width_ratio + 1
 	}
 	
 	async getStatusOpts() {
