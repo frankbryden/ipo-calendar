@@ -160,6 +160,7 @@ class IpoApp extends React.Component {
             if (!this.state.statusFilters.includes(ipo.status)) {
                 visible = false;
             }
+
         }
         if (includeTagFilters) {
             if (!ipo.tags.map(tag => this.state.tagFilters.includes(tag)).includes(true)) {

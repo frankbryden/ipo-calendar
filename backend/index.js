@@ -100,7 +100,7 @@ app.use(cors())
 app.listen(port);
 
 app.get('/ipos', (req, res) => {
-    console.log(req.query.id);
+    //console.log(req.query.id);
     apiFetcher.getIpos(req.query.q, req.query.id, req.query.tag).then(ipos => {
         let sorted = ipos.sort((a, b) => {
             /*

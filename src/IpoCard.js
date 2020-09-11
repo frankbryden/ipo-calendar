@@ -21,23 +21,6 @@ class IpoCard extends React.Component {
             expanded: false,
             showExpand: false,
             variants: {},
-            dateColor: this.checkDate(),
-            statusText: this.checkStatus(),
-        }
-    }
-
-    checkDate() {
-        if (this.props.ipo.date.isDateSet == false) {
-           return "grey";
-        };
-    }
-
-    checkStatus() {
-        if (this.props.ipo.status === "Priced") {
-            return "Priced: ";
-        }
-        if (this.props.ipo.status === "Filed") {
-            return "First Trading Day: ";
         }
     }
 
@@ -113,7 +96,7 @@ class IpoCard extends React.Component {
                         {this.props.minimized && !this.state.expanded ? <><div className="date dateMinimized" style={{color: this.state.dateColor}}>{this.props.ipo.date.value}</div></>: 
                             <>
                                 <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
-                                <div className="tradingDayWrapper">{this.state.statusText} 
+                                <div className="tradingDayWrapper">{this.props.ipo.status == "Priced" ? "Priced: ": "First Trading Day: "} 
                                     <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date.value}</span>
                                     <span className="exchange">{this.props.ipo.exchange}</span>
                                 </div>

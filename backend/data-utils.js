@@ -150,7 +150,7 @@ class IpoApiFetcher {
                 "marketcap": this.calculateMarketCap(overview.ProposedSharePrice.value, overview.SharesOutstanding.value),
                 "description": description,
                 "tags": allIpoInfo[i].tags, // not done yet
-                "status": overview.DealStatus.value,
+                "status": this.setCorrectStatus(overview.DealStatus.value, allIpoInfo[i].ipoDate),
                 "date": allIpoInfo[i].ipoDate,
                 "ceo": overview.CEO.value,
                 "url": this.extractUrl(overview.CompanyWebsite.value),
@@ -234,6 +234,18 @@ class IpoApiFetcher {
         let associatedTags = this.tagger.determineTags(description);
         let dataObject = this.cleanData(dealID, companyData, associatedTags, ipoOverview, financial_data);
         return dataObject;
+    }
+
+    setCorrectStatus(status, date) {
+        if (status == "Filed" && date.isDateSet == false) {
+            return "Filed"
+        }
+        else if (status == "Filed" && date.isDateSet == true) {
+            return "Upcoming"
+        }
+        else if (status == "Priced") {
+            return "Priced"
+        }
     }
 
     cleanData(dealID, companyData, associatedTags, ipoOverview, financial_data) {
