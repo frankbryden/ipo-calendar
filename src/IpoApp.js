@@ -10,6 +10,7 @@ import './sider.css';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 
 const { Footer, Sider, Content, Header } = Layout;
+const IPOS_PER_PAGE = 20;
 
 class IpoApp extends React.Component {
     constructor(props) {
@@ -357,7 +358,10 @@ class IpoApp extends React.Component {
                         <Content id="ipoBody" style={{ margin: '0px 0px 0', overflow: 'initial' }}>
                             {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                                 <div className="content-wrapper">
-                                    {this.state.ipos.filter(ipo => this.determineIPOVisibility(ipo)).map((ipo, index) => <IpoCard key={index} cardId={ipo.cardId} minimized={this.state.showCardsMinimized} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />)}
+                                    {this.state.ipos.reduce((acc, ipo, index) => {
+                                        if (this.determineIPOVisibility(ipo) && acc.length < IPOS_PER_PAGE) { acc.push(<IpoCard key={index} cardId={ipo.cardId} minimized={this.state.showCardsMinimized} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />) }
+                                        return acc
+                                    }, [])}
                                 </div> :
                                 <div className="noContent">
                                     <span>Nothing matched your search!</span>
@@ -367,7 +371,8 @@ class IpoApp extends React.Component {
                         </Content>
                         
                         {/* <Footer style={{ minHeight: "5vh" }}>Footer</Footer> */}
-                       
+                        
+                        
                     </Layout>
                 </Layout>
 
