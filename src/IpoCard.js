@@ -93,11 +93,11 @@ class IpoCard extends React.Component {
                             <div className="marketCap"><strong>{this.props.ipo.marketcap === "$ NaNM" ? "Market Cap not set": this.props.ipo.marketcap}</strong></div>
                         </Popover>
 
-                        {this.props.minimized && !this.state.expanded ? <><div className="date dateMinimized" style={{color: this.state.dateColor}}>{this.props.ipo.date.value}</div></>: 
+                        {this.props.minimized && !this.state.expanded ? <><div className="date dateMinimized" style={{color: this.props.ipo.status == "Priced" || this.props.ipo.status == "Filed" ? "grey": "#1E90FF"}}>{this.props.ipo.date.value}</div></>: 
                             <>
                                 <div className="description">{this.state.expanded ? this.props.ipo.description: this.props.ipo.description.slice(0, 350) + "..."}</div>
                                 <div className="tradingDayWrapper">{this.props.ipo.status == "Priced" ? "Priced: ": "First Trading Day: "} 
-                                    <span className="date" style={{ color: this.state.dateColor }}>{this.props.ipo.date.value}</span>
+                                    <span className="date" style={{ color: this.props.ipo.status == "Priced" || this.props.ipo.status == "Filed" ? "grey": "#1E90FF" }}>{this.props.ipo.date.value}</span>
                                     <span className="exchange">{this.props.ipo.exchange}</span>
                                 </div>
                             </>

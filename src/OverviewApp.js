@@ -4,8 +4,18 @@ import { Layout, Card, Button, Input, Space, Affix } from 'antd';
 import {Doughnut} from 'react-chartjs-2';
 import './card.css';
 import './sider.css';
+import './overview.css';
 
 const { Footer, Sider, Content, Header } = Layout;
+const legendOpts = {
+    display: true,
+    position: 'bottom',
+    fullWidth: true,
+    reverse: false,
+    labels: {
+      fontColor: 'rgb(255, 99, 132)'
+    }
+};
 
 class OverviewApp extends React.Component {
     constructor(props) {
@@ -15,6 +25,7 @@ class OverviewApp extends React.Component {
         console.log(formattedData)
         this.state = {
             sidebarLeftMargin: "22vw",
+            legend: legendOpts,
             data: {
                 labels: formattedData.labels,
                 datasets: [
@@ -22,7 +33,7 @@ class OverviewApp extends React.Component {
                         label: 'My First dataset',
                         backgroundColor: 'rgba(255,99,132,0.2)',
                         backgroundColor: formattedData.colors,
-                        borderWidth: 1,
+                        borderWidth: 0,
                         hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                         hoverBorderColor: 'rgba(255,99,132,1)',
                         data: formattedData.counts
@@ -81,10 +92,22 @@ class OverviewApp extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                <Doughnut  width={100} height={50}data={this.state.data} />
-                <Button onClick={this.props.swapOverviewCallback}>Swap</Button>
+            <div className="statpage">
+                <div className="overview">
+                    <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
+                    <Doughnut data={this.state.data} width={50} height={50} options={{cutoutPercentage: 0}} legend={this.state.legend}/>
+                </div>
+
+                <div className="overview">
+                    <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
+                    <Doughnut data={this.state.data} width={50} height={50}  options={{cutoutPercentage: 0}} legend={this.state.legend}/>
+                </div>
+
+                <div className="overview">
+                    <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
+                    <Doughnut data={this.state.data} width={50} height={50}  options={{cutoutPercentage: 0}} legend={this.state.legend}/>
+                    <Button onClick={this.props.swapOverviewCallback}>Swap</Button>
+                </div>
             </div>
         )
     }

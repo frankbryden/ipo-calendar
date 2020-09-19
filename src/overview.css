@@ -1,0 +1,14 @@
+.statpage {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.overview {
+    font-size: 1.1rem;
+    margin: 40px;
+}
+
+.headline {
+    font-family: "Rubik Regular", sans-serif;
+    color: #fff6f5;
+}
