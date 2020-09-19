@@ -341,6 +341,35 @@ class StatTracker {
     }
 }
 
+class TwitterFetcher {
+    constructor() {
+        this.config = {
+            method: 'get',
+            headers: {
+                'Authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAAwFHAEAAAAALiabYmv7Uq3aUzTHK6kaR5qcRA8%3DShr2Rrbs6grB1lHNoC3ZsulvL28UWmCYSOkTDgtzCCxQGz7c3y',
+            }
+        };
+    }
+
+    async twitterQuery(query) {
+        let results = await this.fetchTwitterPage(query, true, null, []);
+        console.log(results);
+    }
+
+    async fetchTwitterPage(query, firstPage, nextPageToken, results) {
+        let url = `https://api.twitter.com/2/tweets/search/recent?query=${query}${nextPageToken != null ? `?next_token=${nextPageToken}` : ""}`
+        console.log(typeof(url));
+        this.config.url = url;
+        let res = await axios(this.config);
+        let next_token = res.data.meta.token;
+        if (next_token != undefined) {
+            return this.fetchTwitterPage(query, false, next_token, results.concat(res.data.data))
+        } else {
+            return results.concat(res.data.data);
+        }
+    }
+}
+
 function getDate() {
     let date = new Date();
     let month = String(date.getMonth() + 1).padStart(2, "0");
@@ -352,6 +381,7 @@ module.exports = {
     DbAccess,
     IpoApiFetcher,
     StatTracker,
+    TwitterFetcher,
     dbUrl,
     dbName,
     overviewStatsDbName
