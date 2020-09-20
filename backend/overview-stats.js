@@ -6,10 +6,12 @@ class OverviewStatsGen {
         this.statsDbHandle = new dataUtils.DbAccess(dataUtils.dbUrl, dataUtils.overviewStatsDbName);
         this.statsDbHandle.initDb();
         this.ipoDbHandle = new dataUtils.DbAccess(dataUtils.dbUrl, dataUtils.dbName);
+        this.dataFunction = new dataUtils.IpoApiFetcher();
         this.ipoDbHandle.initDb();
         this.ipos = [];
         this.ipoCount = -1;
         this.tagCounts = {};
+        this.marketcapData = [];
     }
 
     updateStats() {
@@ -26,6 +28,7 @@ class OverviewStatsGen {
         this.ipos = ipos;
         this.computeIpoCounts();
         this.computeTagCounts();
+        this.computeMarketcap();
     }
 
     computeIpoCounts() {
@@ -41,9 +44,23 @@ class OverviewStatsGen {
                 } else {
                     this.tagCounts[tag.name] = 1;
                 }
-            }
-            
+            }      
         }
+    }
+
+    computeMarketcap() {
+        let marketcapSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for (let ipo of this.ipos) {
+            let status = this.dataFunction.setCorrectStatus(ipo.ipoOverview.poOverview.DealStatus.value, ipo.ipoDate);
+            if (status === "Priced") {
+                let date = new Date(ipo.ipoDate.value);
+                let month = date.getMonth() + 1;
+                let sharePrice = parseInt(ipo.ipoOverview.poOverview.ProposedSharePrice.value.substr(1, ipo.ipoOverview.poOverview.ProposedSharePrice.value.length).replace(",", ""), 10);
+                let sharesOutstanding = parseInt(ipo.ipoOverview.poOverview.SharesOutstanding.value.replace(/,/g, ""), 10);
+                marketcapSum[month] = marketcapSum[month] + (sharePrice * sharesOutstanding);
+            }
+        }
+        this.marketcapData = marketcapSum;
     }
 }
 

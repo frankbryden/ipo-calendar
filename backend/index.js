@@ -84,17 +84,13 @@ let apiFetcher = new dataUtils.IpoApiFetcher(myTagger);
 //Stat tracker
 let statTracker = new dataUtils.StatTracker();
 
-//Twitter Integration
-let twitterFetcher = new dataUtils.TwitterFetcher();
-twitterFetcher.twitterQuery("Inhibrx, Inc.");
-
 //Overview stats
 let overviewStats = new statsLib.OverviewStatsGen();
 
-/*apiFetcher.loadDailyDataToDb().then(() => {
+apiFetcher.loadDailyDataToDb().then(() => {
     console.log("IPO db operations done, moving onto to overview stats...");
     overviewStats.updateStats();
-});*/
+});
 
 const port = 5000;
 
@@ -156,6 +152,7 @@ app.get('/tags', (req, res) => {
 app.get('/stats', (req, res) => {
     res.json({
         ipoCount: overviewStats.ipoCount,
-        tagCounts: overviewStats.tagCounts
+        tagCounts: overviewStats.tagCounts,
+        marketcapData: overviewStats.marketcapData,
     });
 });

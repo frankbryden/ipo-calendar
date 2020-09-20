@@ -99,6 +99,10 @@
     margin-bottom: 10px;
 }
 
+.date {
+    color: #1E90FF;
+}
+
 .dateMinimized {
     font-family: "Rubik Regular", sans-serif;
     font-size: 1.1rem;

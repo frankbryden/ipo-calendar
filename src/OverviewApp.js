@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Layout, Card, Button, Input, Space, Affix } from 'antd';
-import {Doughnut} from 'react-chartjs-2';
+import {Doughnut, Bar} from 'react-chartjs-2';
 import './card.css';
 import './sider.css';
 import './overview.css';
@@ -22,7 +22,8 @@ class OverviewApp extends React.Component {
         super(props);
         this.sidebarNoMargin = "0vw";
         let formattedData = this.breakdownStats(this.props.stats.tagCounts, this.props.tags);
-        console.log(formattedData)
+        console.log("yo")
+        console.log(this.props.stats.marketcapData);
         this.state = {
             sidebarLeftMargin: "22vw",
             legend: legendOpts,
@@ -38,6 +39,20 @@ class OverviewApp extends React.Component {
                         hoverBorderColor: 'rgba(255,99,132,1)',
                         data: formattedData.counts
                     }
+                ]
+            },
+            marketCapData: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', "June", "August", "September", "October", "November", "December"],
+                datasets: [
+                  {
+                    label: 'Sum',
+                    backgroundColor: 'rgba(255,99,132,0.2)',
+                    borderColor: 'rgba(255,99,132,1)',
+                    borderWidth: 1,
+                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                    hoverBorderColor: 'rgba(255,99,132,1)',
+                    data: this.props.stats.marketcapData,
+                  }
                 ]
             }
         }
@@ -95,12 +110,12 @@ class OverviewApp extends React.Component {
             <div className="statpage">
                 <div className="overview">
                     <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                    <Doughnut data={this.state.data} width={50} height={50} options={{cutoutPercentage: 0}} legend={this.state.legend}/>
+                    <Doughnut data={this.state.data} width={50} height={50} options={{cutoutPercentage: 50}} legend={this.state.legend}/>
                 </div>
-
+                
                 <div className="overview">
-                    <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                    <Doughnut data={this.state.data} width={50} height={50}  options={{cutoutPercentage: 0}} legend={this.state.legend}/>
+                    <h1 className="headline">Total market cap priced in over time</h1>
+                    <Bar data={this.state.marketCapData} width={50} height={50}/>
                 </div>
 
                 <div className="overview">
