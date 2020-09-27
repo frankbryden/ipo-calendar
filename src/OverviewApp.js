@@ -22,8 +22,6 @@ class OverviewApp extends React.Component {
         super(props);
         this.sidebarNoMargin = "0vw";
         let formattedData = this.breakdownStats(this.props.stats.tagCounts, this.props.tags);
-        console.log("yo")
-        console.log(this.props.stats.marketcapData);
         this.state = {
             sidebarLeftMargin: "22vw",
             legend: legendOpts,
@@ -48,7 +46,7 @@ class OverviewApp extends React.Component {
                     label: 'Sum',
                     backgroundColor: 'rgba(255,99,132,0.2)',
                     borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
+                    borderWidth: 3,
                     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                     hoverBorderColor: 'rgba(255,99,132,1)',
                     data: this.props.stats.marketcapData,
@@ -106,24 +104,23 @@ class OverviewApp extends React.Component {
     }
 
     render() {
-        return (
-            <div className="statpage">
+        return (  
+        <div>
+            <Header className="statHeader">
+                <div className="logo" style={{ color: "white", position: "fixed", fontSize: "3rem", left: 35, top: 10}}onClick={this.props.swapOverviewCallback}>&lt; Go Bac<span>c</span></div>
+            </Header>
+            <div className="statpage">       
                 <div className="overview">
                     <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                    <Doughnut data={this.state.data} width={50} height={50} options={{cutoutPercentage: 50}} legend={this.state.legend}/>
+                    <Doughnut data={this.state.data} height={50} width={50} options={{cutoutPercentage: 50}} legend={this.state.legend}/>
                 </div>
                 
                 <div className="overview">
                     <h1 className="headline">Total market cap priced in over time</h1>
-                    <Bar data={this.state.marketCapData} width={50} height={50}/>
-                </div>
-
-                <div className="overview">
-                    <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                    <Doughnut data={this.state.data} width={50} height={50}  options={{cutoutPercentage: 0}} legend={this.state.legend}/>
-                    <Button onClick={this.props.swapOverviewCallback}>Swap</Button>
+                    <Bar data={this.state.marketCapData} height={50} width={50}/>
                 </div>
             </div>
+        </div>
         )
     }
 }

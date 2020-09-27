@@ -1,14 +1,22 @@
+body {
+    background-color: #363434;
+}
+
 .statpage {
     display: flex;
     flex-wrap: wrap;
-}
-
-.overview {
-    font-size: 1.1rem;
-    margin: 40px;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .headline {
+    font-size: 2rem;
     font-family: "Rubik Regular", sans-serif;
     color: #fff6f5;
 }
+
+.statHeader {
+    background-color: #363434;
+}
+
+
