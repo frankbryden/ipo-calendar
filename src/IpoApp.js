@@ -57,8 +57,6 @@ class IpoApp extends React.Component {
             for (let loadedIpo of this.state.ipos) {
                 if (loadedIpo.ipo.id == ipo.id) {
                     return false;
-                } else {
-                    console.log(`${loadedIpo.ipo.id} == ${ipo} -> ${loadedIpo.ipo.id == ipo}`)
                 }
             }
             return true;
@@ -96,6 +94,7 @@ class IpoApp extends React.Component {
 
     tagFilterChange(filter, toggle) {
         //toggle = true means filter was added
+        console.time("render");
         let tagFilters = this.state.tagFilters;
         if (toggle) {
             tagFilters.push(filter);
@@ -283,6 +282,10 @@ class IpoApp extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        console.timeEnd("render");
+    }
+
     render() {
         return (
             <div>
@@ -358,10 +361,15 @@ class IpoApp extends React.Component {
                         <Content id="ipoBody" style={{ margin: '0px 0px 0', overflow: 'initial' }}>
                             {this.state.ipos.filter(ipo => ipo.visible).length > 0 ?
                                 <div className="content-wrapper">
-                                    {this.state.ipos.reduce((acc, ipo, index) => {
-                                        if (this.determineIPOVisibility(ipo) && acc.length < IPOS_PER_PAGE) { acc.push(<IpoCard key={index} cardId={ipo.cardId} minimized={this.state.showCardsMinimized} saved={ipo.saved} ipo={ipo.ipo} onSave={this.saveIPOLocally} />) }
-                                        return acc
-                                    }, [])}
+                                    {this.state.ipos.map((ipo, index) => {
+                                        return (<IpoCard key={index} cardId={ipo.cardId}
+                                                    minimized={this.state.showCardsMinimized} 
+                                                    saved={ipo.saved} 
+                                                    ipo={ipo.ipo} 
+                                                    onSave={this.saveIPOLocally} 
+                                                    visible={this.determineIPOVisibility(ipo)} />)})
+                                        
+                                    }
                                 </div> :
                                 <div className="noContent">
                                     <span>Nothing matched your search!</span>
