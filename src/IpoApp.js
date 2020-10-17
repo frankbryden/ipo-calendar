@@ -10,7 +10,7 @@ import './sider.css';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 
 const { Footer, Sider, Content, Header } = Layout;
-const IPOS_PER_PAGE = 20;
+const IPOS_PER_PAGE = 100;
 
 class IpoApp extends React.Component {
     constructor(props) {
