@@ -30,7 +30,7 @@ class DataFetcher {
 
     async fetchData(resource) {
         //const resp = await fetch(`http://8.9.4.228:5000/${resource}`);
-        const resp = await fetch(`http://192.168.1.156:5000/${resource}`);
+        const resp = await fetch(`http://localhost:5000/${resource}`);
         let js = resp.json();
         return js;
     }

@@ -190,7 +190,7 @@ class IpoApiFetcher {
 
     async getIpoInformation() {
         let date = getDate();
-        date = "2020-09";
+        date = "2020-10";
         let url = `https://api.nasdaq.com/api/ipo/calendar?date=${date}`;
 	    console.log("Fetching initial data...");
         let res = await axios.get(url)
@@ -236,15 +236,17 @@ class IpoApiFetcher {
         return dataObject;
     }
 
-    setCorrectStatus(status, date) {
+    setCorrectStatus(status, date) { 
         if (status == "Filed" && date.isDateSet == false) {
             return "Filed"
         }
         else if (status == "Filed" && date.isDateSet == true) {
             return "Upcoming"
         }
-        else if (status == "Priced") {
+        else if (status == "Priced" && date.isDateSet) {
             return "Priced"
+        } else {
+            return "Filed"
         }
     }
 

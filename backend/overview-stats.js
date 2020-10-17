@@ -52,12 +52,12 @@ class OverviewStatsGen {
         let marketcapSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         for (let ipo of this.ipos) {
             let status = this.dataFunction.setCorrectStatus(ipo.ipoOverview.poOverview.DealStatus.value, ipo.ipoDate);
-            if (status === "Priced") {
+            let sharesOutstanding = parseInt(ipo.ipoOverview.poOverview.SharesOutstanding.value.replace(/,/g, ""), 10);
+            if (status === "Priced" && !isNaN(sharesOutstanding)) {
                 let date = new Date(ipo.ipoDate.value);
                 let month = date.getMonth() + 1;
                 let sharePrice = parseInt(ipo.ipoOverview.poOverview.ProposedSharePrice.value.substr(1, ipo.ipoOverview.poOverview.ProposedSharePrice.value.length).replace(",", ""), 10);
-                let sharesOutstanding = parseInt(ipo.ipoOverview.poOverview.SharesOutstanding.value.replace(/,/g, ""), 10);
-                marketcapSum[month] = marketcapSum[month] + (sharePrice * sharesOutstanding);
+                marketcapSum[month] += (sharePrice * sharesOutstanding);
             }
         }
         this.marketcapData = marketcapSum;
