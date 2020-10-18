@@ -5,6 +5,7 @@ import {Doughnut, Bar} from 'react-chartjs-2';
 import './card.css';
 import './sider.css';
 import './overview.css';
+import Title from 'antd/lib/skeleton/Title';
 
 const { Footer, Sider, Content, Header } = Layout;
 const legendOpts = {
@@ -17,11 +18,45 @@ const legendOpts = {
     }
 };
 
+const stringFormat = {
+    scales: {
+        xAxes: [{  // for the months
+            ticks: {
+            callback(value) {
+                const monthNames = ["January", "February", "March", "April", "May", "June",
+                                    "July", "August", "September", "October", "November", "December"];
+                let date = value.split("/");
+                let datetest = new Date();
+                datetest.setMonth(date[0] - 1);
+                return monthNames[datetest.getMonth()].substr(0, 3) + " " + date[1].substr(2, 4);
+
+            }
+        }
+        }],
+        yAxes: [{
+            ticks: {
+                min: 0,
+                callback(value) {
+                    return "$ " + (value / 1000000000).toLocaleString() + "B"
+                }
+            }
+        }],
+    },
+    tooltips: {
+        callbacks: {
+            label: function(value) {
+                return "$ " + (value.value / 1000000000).toLocaleString() + "B"
+            },
+        }
+    }
+};
+
 class OverviewApp extends React.Component {
     constructor(props) {
         super(props);
         this.sidebarNoMargin = "0vw";
         let formattedData = this.breakdownStats(this.props.stats.tagCounts, this.props.tags);
+        let formattedMarketcapData = this.breakdownMarketcap(this.props.stats.marketcapData);
         this.state = {
             sidebarLeftMargin: "22vw",
             legend: legendOpts,
@@ -40,7 +75,7 @@ class OverviewApp extends React.Component {
                 ]
             },
             marketCapData: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', "June", "August", "September", "October", "November", "December"],
+                labels: formattedMarketcapData.labels,
                 datasets: [
                   {
                     label: 'Sum',
@@ -49,7 +84,7 @@ class OverviewApp extends React.Component {
                     borderWidth: 3,
                     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                     hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: this.props.stats.marketcapData,
+                    data: formattedMarketcapData.sum, 
                   }
                 ]
             }
@@ -103,6 +138,30 @@ class OverviewApp extends React.Component {
         return formattedData;
     }
 
+    breakdownMarketcap(data) {
+        //from an object of the form
+        // {"09/2020": 12388501, "08/2020": 192439}
+        //produce
+        // {"Sep 20": 12388501, "Aug 20": 192439}
+        let formattedData = {
+            labels: [],
+            sum: []
+        }
+        let currentDate = new Date();
+        for (let i = 6; i > -1; i--) {
+            let previousDate = new Date();
+            previousDate.setMonth(currentDate.getMonth() - i);
+            let month = String(previousDate.getMonth() + 1).padStart(2, "0");
+            let year = previousDate.getFullYear();
+            if (data[month + "/" + year]) {
+                formattedData.labels.push(month + "/" + year);
+                formattedData.sum.push(data[month + "/" + year]);
+            }
+        }
+        return formattedData;
+
+    }
+
     render() {
         return (  
         <div>
@@ -117,7 +176,7 @@ class OverviewApp extends React.Component {
                 
                 <div className="overview">
                     <h1 className="headline">Total market cap priced in over time</h1>
-                    <Bar data={this.state.marketCapData} height={50} width={50}/>
+                    <Bar data={this.state.marketCapData} options={stringFormat} height={50} width={50}/>
                 </div>
             </div>
         </div>

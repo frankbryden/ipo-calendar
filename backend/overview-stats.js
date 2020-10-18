@@ -11,7 +11,7 @@ class OverviewStatsGen {
         this.ipos = [];
         this.ipoCount = -1;
         this.tagCounts = {};
-        this.marketcapData = [];
+        this.marketcapData = {};
     }
 
     updateStats() {
@@ -29,6 +29,7 @@ class OverviewStatsGen {
         this.computeIpoCounts();
         this.computeTagCounts();
         this.computeMarketcap();
+        console.log(this.marketcapData);
     }
 
     computeIpoCounts() {
@@ -49,18 +50,22 @@ class OverviewStatsGen {
     }
 
     computeMarketcap() {
-        let marketcapSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let marketcapData = {};
         for (let ipo of this.ipos) {
             let status = this.dataFunction.setCorrectStatus(ipo.ipoOverview.poOverview.DealStatus.value, ipo.ipoDate);
             let sharesOutstanding = parseInt(ipo.ipoOverview.poOverview.SharesOutstanding.value.replace(/,/g, ""), 10);
             if (status === "Priced" && !isNaN(sharesOutstanding)) {
                 let date = new Date(ipo.ipoDate.value);
-                let month = date.getMonth() + 1;
+                let month = String(date.getMonth() + 1).padStart(2, "0");
+                let year = date.getFullYear();
                 let sharePrice = parseInt(ipo.ipoOverview.poOverview.ProposedSharePrice.value.substr(1, ipo.ipoOverview.poOverview.ProposedSharePrice.value.length).replace(",", ""), 10);
-                marketcapSum[month] += (sharePrice * sharesOutstanding);
+                if (!marketcapData[`${month}` + "/" + `${year}`]) {
+                    marketcapData[`${month}` + "/" + `${year}`] = 0
+                }
+                marketcapData[`${month}` + "/" + `${year}`] += (sharePrice * sharesOutstanding);
             }
         }
-        this.marketcapData = marketcapSum;
+        this.marketcapData = marketcapData;
     }
 }
 

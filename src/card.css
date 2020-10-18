@@ -161,13 +161,13 @@
 }
 
 .expanded .tradingDayWrapper {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin-bottom: 20px;
 }
 
 .expanded .exchange {
     float: right;
-    margin-right: 100px;
+    margin-right: 15px;
 }
 
 .exchange {
