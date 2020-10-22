@@ -7,6 +7,11 @@
     background-color: var(--tags-bg-color);
 }
 
+.filterTitle {
+    font-size: 2rem;
+    color: #fff6f5;
+}
+
 .ant-layout-sider .ant-card-head-title, h2 {
     font-size: 1.5rem;
     color: #fff6f5;
@@ -53,6 +58,12 @@
 	background: linear-gradient(to right, #0860B3 0%, #1890ff 100%);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
+}
+
+.resourceButton {
+    color: black;
+    margin: 5px;
+    font-weight: bold;
 }
 
 .mobileFilter {

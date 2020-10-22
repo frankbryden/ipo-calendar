@@ -1,7 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Layout, Card, Button, Input, Space, Affix, Switch } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, CalculatorFilled } from '@ant-design/icons';
+import { Layout, Card, Button, Input, Space, Affix, Switch, Row, Col } from 'antd';
+import { MenuUnfoldOutlined, MenuFoldOutlined, SearchOutlined, CalculatorFilled, AreaChartOutlined, FilterOutlined, StockOutlined } from '@ant-design/icons';
 import FilterSelector from './FilterSelector';
 import IpoCard from './IpoCard';
 import Ipo from './Ipo.js';
@@ -321,12 +321,13 @@ class IpoApp extends React.Component {
                                 placeholder="Search IPOs"
                                 onInput={value => this.filterBySearch(value.target.value.toLowerCase())}
                                 value={this.searchValue}
-                                style={{ width: "80%", margin: 10 }}>
+                                style={{ width: "80%", margin: 10, marginBottom: 40 }}>
                             </Input>
                         </Space>
                         
-                        <Card title="Filters" className="filterContainer" bordered={false}>
-
+                        <Card title={<span className="filterTitle">Filters <FilterOutlined></FilterOutlined></span>} className="filterContainer" bordered={false}>
+                            
+                            
                             <div className="sliderWrapper">
                                 <span>Show Saved</span>
                                 <Switch onChange={this.toggleVisibilitySavedIPOs}></Switch>
@@ -342,6 +343,13 @@ class IpoApp extends React.Component {
                             </Card>
 
                         </Card>
+
+                        <Card title={<span className="filterTitle">Resources <StockOutlined></StockOutlined></span>} className="filterContainer" bordered={false}>
+                            <Button onClick={this.props.swapOverviewCallback} className="resourceButton">Graphs &amp; Stats <AreaChartOutlined></AreaChartOutlined></Button>
+                            <Button href={"https://www.investopedia.com/terms/i/ipo.asp"} target="_blank" className="resourceButton">What is an IPO?</Button>
+                            <Button href={"https://twitter.com/frankbryden"} target="_blank" className="resourceButton">Contact Us</Button>
+                        </Card>
+
                         <div>
                             <p className="credits">Made by Frank Bryden and Maximilian von Bonsdorff</p>
                         </div>    

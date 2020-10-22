@@ -5,18 +5,22 @@ body {
 .statpage {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
     align-items: center;
 }
 
 .headline {
     font-size: 2rem;
     font-family: "Rubik Regular", sans-serif;
-    color: #fff6f5;
+    color: #363434;
 }
 
 .statHeader {
     background-color: #363434;
 }
 
-
+.overview {
+    background-color: #fff6f5;
+    padding: 25px;
+    margin: 20px;
+    border-radius: 20px;
+}
