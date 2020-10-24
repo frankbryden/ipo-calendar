@@ -143,6 +143,7 @@ class IpoApiFetcher {
         for (let i = 0; i < allIpoInfo.length; i++) {
             let overview = allIpoInfo[i].ipoOverview.poOverview;
             let financial = allIpoInfo[i].financial;
+            console.log(allIpoInfo[i].ipoDate);
             let description = this.stripCompanyDescription(allIpoInfo[i].ipoOverview.companyInformation.companyDescription);
             let companyInfo = {
                 "name": overview.CompanyName.value,
@@ -237,7 +238,10 @@ class IpoApiFetcher {
     }
 
     setCorrectStatus(status, date) { 
-        if (status == "Filed" && date.isDateSet == false) {
+        if (status == "Withdrawn") {
+            return "Withdrawn"
+        }
+        else if (status == "Filed" && date.isDateSet == false) {
             return "Filed"
         }
         else if (status == "Filed" && date.isDateSet == true) {
@@ -257,7 +261,7 @@ class IpoApiFetcher {
             delete financial_data.filings[i].CompanyName;
         }
         delete ipoOverview.poOverview.DealId;
-        let ipoDate = this.getIpoDate(ipoOverview.poOverview.DealStatus.value, companyData)
+        let ipoDate = this.getIpoDate(ipoOverview.poOverview.DealStatus.value, companyData);
         return {id: dealID, tags: associatedTags, ipoOverview, ipoDate, financial: financial_data}
     }
 
@@ -267,8 +271,7 @@ class IpoApiFetcher {
             let formType = filings[i].FormType.value;
             let link = filings[i].FilingLink.value;
             let date = filings[i].DateReceived.value;
-            //Not a big fan of this list, would prefer key/value object
-            list_of_filings.push({formType, link, date})
+            list_of_filings.push({formType, link, date});
         }
         return list_of_filings;
     }
@@ -286,6 +289,9 @@ class IpoApiFetcher {
                 return {value: "No date set", isDateSet: false}
             }
             return {value: data.pricedDate || data.expectedPriceDate, isDateSet: true};
+        }
+        else if (status === "Withdrawn") {
+            return {value: "Withdrawn", isDateSet: false}
         }
     }
 

@@ -1,6 +1,7 @@
 .ant-layout-sider, .filterContainer {
     font-family: "Rubik Light", sans-serif;
     background-color: var(--tags-bg-color);
+    box-shadow: 2px 0px 5px black;
 }
 
 .filter {

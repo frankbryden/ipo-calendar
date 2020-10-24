@@ -107,6 +107,8 @@ app.get('/ipos', (req, res) => {
     //console.log(req.query.id);
     apiFetcher.getIpos(req.query.q, req.query.id, req.query.tag).then(ipos => {
         let sorted = ipos.sort((a, b) => {
+            // console.log(a);
+            // console.log(b.date.isDateSet);
             /*
             * You could get the filed date
             * And rank all the ones with no date set by their filed date

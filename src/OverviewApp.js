@@ -171,12 +171,12 @@ class OverviewApp extends React.Component {
             <div className="statpage">       
                 <div className="overview">
                     <h1 className="headline">Currently tracking {this.props.stats.ipoCount} IPOs</h1>
-                    <Doughnut data={this.state.data} height={50} width={50} options={{cutoutPercentage: 50}} legend={this.state.legend}/>
+                    <Doughnut data={this.state.data} legend={this.state.legend} height={70} width={50}/>
                 </div>
                 
                 <div className="overview">
                     <h1 className="headline">Total market cap priced in over time</h1>
-                    <Bar data={this.state.marketCapData} options={stringFormat} height={50} width={50}/>
+                    <Bar data={this.state.marketCapData} options={stringFormat} height={60} width={50}/>
                 </div>
             </div>
         </div>
