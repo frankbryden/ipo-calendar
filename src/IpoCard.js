@@ -110,7 +110,7 @@ class IpoCard extends React.Component {
                                 <div className="financialInfo"> <h2>Financial information:</h2>
                                     <div>Revenue: <span className="financialData">{this.props.ipo.revenue}</span></div>
                                     <div>Net income: <span className="financialData">{this.props.ipo.income}</span></div>
-                                    <div>Stockholders Equity: <span className="financialData" style={{color: this.props.ipo.stockholdersEquity.includes("(") ? '#AD2403': '#04ad72'}}>{this.props.ipo.stockholdersEquity}</span></div>
+                                    <div>Stockh. Eq: <span className="financialData" style={{color: this.props.ipo.stockholdersEquity.includes("(") ? '#AD2403': '#04ad72'}}>{this.props.ipo.stockholdersEquity}</span></div>
                                     <div>CEO: <span className="financialData">{this.props.ipo.ceo}</span></div>
                                 </div>
                                 <div className="furtherReading"> <h2>Further Reading:</h2>

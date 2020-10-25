@@ -143,7 +143,6 @@ class IpoApiFetcher {
         for (let i = 0; i < allIpoInfo.length; i++) {
             let overview = allIpoInfo[i].ipoOverview.poOverview;
             let financial = allIpoInfo[i].financial;
-            console.log(allIpoInfo[i].ipoDate);
             let description = this.stripCompanyDescription(allIpoInfo[i].ipoOverview.companyInformation.companyDescription);
             let companyInfo = {
                 "name": overview.CompanyName.value,
@@ -174,7 +173,7 @@ class IpoApiFetcher {
         let currentTime = new Date().getTime();
         let delta = (currentTime - lastWriteTime)/(1000*60*60);
         console.log(`lastWriteObj = ${JSON.stringify(lastWriteObj)}, lastWriteTime = ${lastWriteTime}, delta = ${delta}`);
-        if (delta < 10) {
+        if (delta < 0.001) {
             console.log("It has been less than 10 hours since last write - skip");
             this.getIpos();
             return;
@@ -196,23 +195,6 @@ class IpoApiFetcher {
 	    console.log("Fetching initial data...");
         let res = await axios.get(url)
         let ipos = [];
-        let pricedInCompanyInfo = res.data.data.priced.rows;
-        if (pricedInCompanyInfo != null) {
-            for (let item in pricedInCompanyInfo) {
-                console.log(".");
-                let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
-                ipos.push(dealDetails);
-            }
-        }
-
-        let upcomingCompanyInfo = res.data.data.upcoming.upcomingTable.rows;
-        if (upcomingCompanyInfo != null) {
-            for (let item in upcomingCompanyInfo) {
-                console.log("/");
-                let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
-                ipos.push(dealDetails);
-            }
-        }
 
         let filedCompanyInfo = res.data.data.filed.rows;
         if (filedCompanyInfo != null) {
@@ -221,7 +203,23 @@ class IpoApiFetcher {
                 let dealDetails = await this.getDealDetails(filedCompanyInfo[item].dealID, filedCompanyInfo[item]);
                 ipos.push(dealDetails);
             }
-        }   
+        } 
+        let upcomingCompanyInfo = res.data.data.upcoming.upcomingTable.rows;
+        if (upcomingCompanyInfo != null) {
+            for (let item in upcomingCompanyInfo) {
+                console.log("/");
+                let dealDetails = await this.getDealDetails(upcomingCompanyInfo[item].dealID, upcomingCompanyInfo[item]);
+                ipos.push(dealDetails);
+            }
+        }  
+        let pricedInCompanyInfo = res.data.data.priced.rows;
+        if (pricedInCompanyInfo != null) {
+            for (let item in pricedInCompanyInfo) {
+                console.log(".");
+                let dealDetails = await this.getDealDetails(pricedInCompanyInfo[item].dealID, pricedInCompanyInfo[item]);
+                ipos.push(dealDetails);
+            }
+        }
 
         return ipos;
     }
@@ -278,17 +276,17 @@ class IpoApiFetcher {
 
     getIpoDate(status, data) {
         if (status === "Filed") {
-            if (data.expectedPriceDate == undefined) {
-                return {value: "No date set", isDateSet: false};
-            } else {
+            if ("expectedPriceDate" in data) {
                 return {value: data.expectedPriceDate, isDateSet: true};
+            } else { 
+                return {value: "No date set", isDateSet: false};
             }
         }
         else if (status === "Priced") {
-            if (data.expectedPriceDate == undefined && data.pricedDate == undefined) {
-                return {value: "No date set", isDateSet: false}
+            if ("pricedDate" in data) {
+                return {value: data.pricedDate, isDateSet: true};
             }
-            return {value: data.pricedDate || data.expectedPriceDate, isDateSet: true};
+            return {value: "No date set", isDateSet: false}
         }
         else if (status === "Withdrawn") {
             return {value: "Withdrawn", isDateSet: false}
